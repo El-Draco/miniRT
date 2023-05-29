@@ -23,12 +23,17 @@
 
 typedef struct s_vec3
 {
-	float	v[3];
+	float	x;
+	float	y;
+	float	z;
 }	t_vec3;
 
 typedef struct s_hvec
 {
-	float	v[4];
+	float	x;
+	float	y;
+	float	z;
+	float	h;
 }	t_hvec;
 
 typedef struct s_rgb
@@ -71,9 +76,9 @@ t_color		convert_rgb(t_rgb r);
 // t_matrix - a 4x4 matrix for transformations
 
 t_matrix	mat_multiply(t_matrix m1, t_matrix m2);
-t_vec3		transform_location(t_matrix kernal, t_vec3 v); //[or is it hvec??]
-t_vec3		transform_direction(t_matrix kernal, t_vec3 v);
-t_vec3		transform_surface_normal(t_matrix kernal, t_vec3 v);
+t_vec3		transform_location(t_matrix kernel, t_vec3 v); //[or is it hvec??]
+t_vec3		transform_direction(t_matrix kernel, t_vec3 v);
+t_vec3		transform_surface_normal(t_matrix kernel, t_vec3 v);
 
 // t_image - mlx image matrix (t_color[HEIGHT][WIDTH] /*where the parameters are defined as preprocessor constants*/);
 

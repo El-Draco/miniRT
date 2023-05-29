@@ -12,10 +12,12 @@
 
 #include "../inc/minirt.h"
 
+// global t_scene *g_scene;
+
 int	main(void)
 {
 	t_scene	scene;
-
+	// Initialize:
 	scene.mlx = mlx_init();
 	scene.window = mlx_new_window(scene.mlx, 1920, 1080, "MiniRT");
 	scene.image.img = mlx_new_image(scene.mlx, 1920, 1080);
@@ -28,5 +30,16 @@ int	main(void)
 	mlx_mouse_hook(scene.window, &mouse_hook, &scene);
 	mlx_hook(scene.window, 17, 0, &close_program, &scene);
 	mlx_loop(scene.mlx);
+	// Parse Scene
+	// Render Scene (Ray Tracing)
+	/*
+	 * For each pixel:
+	 * 	t_vec3 ray = get_ray();
+	 * 	t_hit_record *rec = closest_hit(ray, 0, INFINITY);
+	 * 	if (rec == NULL) handle_background();
+	 * 	t_rgb color = shade(rec);
+	 * 	image.set_pixel(x, y, color);
+	 */
+	// Push Image to Window
 	return (0);
 }
