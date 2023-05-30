@@ -35,5 +35,4 @@ int	close_program(t_scene *scene)
 {
 	mlx_destroy_window(scene->mlx, scene->window);
 	exit(0);
-	return (0);
 }

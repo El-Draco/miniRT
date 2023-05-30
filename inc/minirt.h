@@ -20,6 +20,9 @@
 # include <math.h>
 # include <stdio.h>
 
+# define HEIGHT 1920
+# define WIDTH 1080
+
 typedef struct s_image
 {
 	void	*img;
@@ -37,11 +40,19 @@ typedef struct s_ambi_light
 	t_rgb	color;
 }			t_ambi_light;
 
+typedef struct s_basis
+{
+	t_vec3	u;
+	t_vec3	v;
+	t_vec3	w;
+}			t_basis;
+
 typedef struct s_camera
 {
 	t_vec3			origin;
 	t_vec3			orientation;
 	unsigned char	field_of_view;
+	t_basis			basis;
 }					t_camera;
 
 typedef struct s_point_light
@@ -97,10 +108,14 @@ typedef struct s_hit_record
 	t_vec3		normal;
 }				t_hit_record;
 
+
+
 int		key_hook(int keycode, t_scene *scene);
 int		mouse_hook(int keycode, int x, int y, t_scene *scene);
 int		close_program(t_scene *scene);
 void	my_mlx_pixel_put(t_image *data, int x, int y, int color);
+t_vec3 construct_basis();
+t_vec3 evaluate_ray(t_ray *ray, float t);
 
 extern t_scene	g_scene;
 

@@ -32,9 +32,15 @@ int	main(void)
 	// Parse Scene
 	// Render Scene (Ray Tracing)
 	/*
+	 *
+	 * Set Basis Vector of Camera: */
+	g_scene.camera.basis.w = scale_vec3(g_scene.camera.orientation, -1);
+	g_scene.camera.basis.u = construct_basis();
+	g_scene.camera.basis.v = cross_vec3(g_scene.camera.basis.w, g_scene.camera.basis.u);
+	/*
 	 * For each pixel:
 	 * 	t_vec3 ray = get_ray();
-	 * 	t_hit_record *rec = closest_hit(ray, 0, INFINITY);
+	 * 	t_hit_record *rec = closest_hit(ray, 1, INFINITY);
 	 * 	if (rec == NULL) handle_background();
 	 * 	t_rgb color = shade(rec);
 	 * 	image.set_pixel(x, y, color);
