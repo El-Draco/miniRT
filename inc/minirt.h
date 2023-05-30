@@ -85,7 +85,8 @@ typedef struct s_scene
 
 typedef struct s_ray
 {
-	t_vec3	ray[2];
+    t_vec3	origin;
+    t_vec3	direction;
 }	t_ray;
 // t_ray[0] = origin & t_ray[1] = direction
 
@@ -100,5 +101,7 @@ int		key_hook(int keycode, t_scene *scene);
 int		mouse_hook(int keycode, int x, int y, t_scene *scene);
 int		close_program(t_scene *scene);
 void	my_mlx_pixel_put(t_image *data, int x, int y, int color);
+
+extern t_scene	g_scene;
 
 #endif

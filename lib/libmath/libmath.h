@@ -49,27 +49,27 @@ typedef struct s_matrix
 }	t_matrix;
 
 // t_vec3 - 3 dimensional vector (float[3])
-t_vec3		add_vec3(t_vec3 *v1, t_vec3 *v2);
-t_vec3		sub_vec3(t_vec3 *v1, t_vec3 *v2);
-float		dot_vec3(t_vec3 *v1, t_vec3 *v2);
-t_vec3		cross_vec3(t_vec3 *v1, t_vec3 *v2);
-t_vec3		scale_vec3(t_vec3 *v, float scale);
+t_vec3		add_vec3(t_vec3 v1, t_vec3 v2);
+t_vec3		sub_vec3(t_vec3 v1, t_vec3 v2);
+float		dot_vec3(t_vec3 v1, t_vec3 v2);
+t_vec3		cross_vec3(t_vec3 v1, t_vec3 v2);
+t_vec3		scale_vec3(t_vec3 v, float scale);
 t_vec3		normalize_vec3(t_vec3 v);
 
 // t_hvec - homogenous vector with 4 components
-t_hvec		add_hvec(t_hvec *hv1, t_hvec *hv2);
-t_hvec		sub_hvec(t_hvec *hv1, t_hvec *hv2);
-t_hvec		scale_hvec(t_hvec* hv, float scale);
-t_hvec		normalize_hvec(t_hvec *hv);
-float		dot_hvec(t_hvec *hv1, t_hvec *hv2);// ignore 4th dimension
+t_hvec		add_hvec(t_hvec hv1, t_hvec hv2);
+t_hvec		sub_hvec(t_hvec hv1, t_hvec hv2);
+t_hvec		scale_hvec(t_hvec hv, float scale);
+t_hvec		normalize_hvec(t_hvec hv);
+float		dot_hvec(t_hvec hv1, t_hvec hv2);// ignore 4th dimension
 
 // t_rgb - color type {int red, int green, int blue}
-t_rgb		add_rgb(t_rgb *r1, t_rgb *r2);
-t_rgb		sub_rgb(t_rgb *r1, t_rgb *r2);
-t_rgb		mult_rgb(t_rgb *r1, t_rgb *r2); //- Multiply rgb values
-t_rgb		scale_rgb(t_rgb *r, float scale);
-t_rgb		interpolate(t_rgb *r1, t_rgb *r2, float scale);
-t_color		convert_rgb(t_rgb *r);
+t_rgb		add_rgb(t_rgb r1, t_rgb r2);
+t_rgb		sub_rgb(t_rgb r1, t_rgb r2);
+t_rgb		mult_rgb(t_rgb r1, t_rgb r2); //- Multiply rgb values
+t_rgb		scale_rgb(t_rgb r, float scale);
+t_rgb		interpolate(t_rgb r1, t_rgb r2, float scale);
+t_color		convert_rgb(t_rgb r);
 
 // t_color (defined in libft and used in mlx) is just {int alpha, t_rgb color}
 

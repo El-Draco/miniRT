@@ -12,24 +12,23 @@
 
 #include "../inc/minirt.h"
 
-// global t_scene *g_scene;
+t_scene g_scene;
 
 int	main(void)
 {
-	t_scene	scene;
 	// Initialize:
-	scene.mlx = mlx_init();
-	scene.window = mlx_new_window(scene.mlx, 1920, 1080, "MiniRT");
-	scene.image.img = mlx_new_image(scene.mlx, 1920, 1080);
-	scene.image.addr = mlx_get_data_addr(scene.image.img,
-			&scene.image.bits_per_pixel, &scene.image.line_length,
-			&scene.image.endian);
-	my_mlx_pixel_put(scene.image.img, 5, 5, 0x00FF0000);
-	mlx_put_image_to_window(scene.mlx, scene.window, scene.image.img, 0, 0);
-	mlx_key_hook(scene.window, &key_hook, &scene);
-	mlx_mouse_hook(scene.window, &mouse_hook, &scene);
-	mlx_hook(scene.window, 17, 0, &close_program, &scene);
-	mlx_loop(scene.mlx);
+	g_scene.mlx = mlx_init();
+	g_scene.window = mlx_new_window(g_scene.mlx, 1920, 1080, "MiniRT");
+	g_scene.image.img = mlx_new_image(g_scene.mlx, 1920, 1080);
+	g_scene.image.addr = mlx_get_data_addr(g_scene.image.img,
+			&g_scene.image.bits_per_pixel, &g_scene.image.line_length,
+			&g_scene.image.endian);
+	my_mlx_pixel_put(g_scene.image.img, 5, 5, 0x00FF0000);
+	mlx_put_image_to_window(g_scene.mlx, g_scene.window, g_scene.image.img, 0, 0);
+	mlx_key_hook(g_scene.window, &key_hook, &g_scene);
+	mlx_mouse_hook(g_scene.window, &mouse_hook, &g_scene);
+	mlx_hook(g_scene.window, 17, 0, &close_program, &g_scene);
+	mlx_loop(g_scene.mlx);
 	// Parse Scene
 	// Render Scene (Ray Tracing)
 	/*
