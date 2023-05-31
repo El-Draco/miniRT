@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:46:47 by rriyas            #+#    #+#             */
-/*   Updated: 2023/05/31 17:56:04 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/05/31 19:48:40 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ t_scene g_scene;
 int	main(void)
 {
 	int i = -1, j = -1;
+	
 	// Initialize:
 	g_scene.mlx = mlx_init();
 	g_scene.window = mlx_new_window(g_scene.mlx, 1920, 1080, "MiniRT");

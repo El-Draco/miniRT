@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:53:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/05/31 15:58:07 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/05/31 19:50:40 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <unistd.h>
 # include <math.h>
 # include <stdio.h>
+# include <fcntl.h>
 
 # define HEIGHT 1920
 # define WIDTH 1080
