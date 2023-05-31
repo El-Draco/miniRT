@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:46:47 by rriyas            #+#    #+#             */
-/*   Updated: 2023/03/18 11:56:21 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/05/31 17:56:04 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ t_scene g_scene;
 
 int	main(void)
 {
+	int i = -1, j = -1;
 	// Initialize:
 	g_scene.mlx = mlx_init();
 	g_scene.window = mlx_new_window(g_scene.mlx, 1920, 1080, "MiniRT");
@@ -37,14 +38,32 @@ int	main(void)
 	g_scene.camera.basis.w = scale_vec3(g_scene.camera.orientation, -1);
 	g_scene.camera.basis.u = construct_basis();
 	g_scene.camera.basis.v = cross_vec3(g_scene.camera.basis.w, g_scene.camera.basis.u);
-	/*
-	 * For each pixel:
-	 * 	t_vec3 ray = get_ray();
-	 * 	t_hit_record *rec = closest_hit(ray, 1, INFINITY);
-	 * 	if (rec == NULL) handle_background();
-	 * 	t_rgb color = shade(rec);
-	 * 	image.set_pixel(x, y, color);
-	 */
+
+	t_ray ray;
+	// t_hit_record *rec;
+	// t_color color;
+	while (++i < WIDTH)
+	{
+		j = -1;
+		while (++j < HEIGHT)
+		{
+			ray = get_ray(i, j);
+			// rec = closest_hit(ray, 1, INFINITY);
+			// if (rec == NULL)
+			// 	handle_background();
+			// color = shade(rec);
+			// my_mlx_pixel_put(g_scene.image.img, i, j, color);
+		}
+	}
 	// Push Image to Window
 	return (0);
 }
+
+/*
+ * For each pixel:
+ * 	t_vec3 ray = get_ray();
+ * 	t_hit_record *rec = closest_hit(ray, 1, INFINITY);
+ * 	if (rec == NULL) handle_background();
+ * 	t_rgb color = shade(rec);
+ * 	image.set_pixel(x, y, color);
+ */

@@ -33,7 +33,7 @@ t_vec3 non_collinear_vec(t_vec3 vector)
 
 t_vec3 construct_basis()
 {
-	t_vec3 basis;
+	// t_vec3 basis;
 	t_vec3 w;
 	t_vec3 t;
 	t_vec3 u;
@@ -53,16 +53,41 @@ float get_focal_distance()
 
 t_ray get_ray(unsigned int i, unsigned int j)
 {
-	t_ray result;
 	float focal_length;
-	// TODO: compute u and v using the following equations
-	// u = l + (r  - l)(i + 0.5) / WIDTH
-	// v = b + (t - b)(j + 0.5) / HEIGHT
-	// where l, r, b, t are the left, right, bottom, top of the view plane
+	t_vec3 u;
+	t_vec3 v;
+	t_vec3 o;
+
+	t_vec3 l, b, r, t;
+	t_ray result;
+
+	l = (t_vec3){-1 * sin(g_scene.camera.field_of_view / 2), 0, 0};
+	r = (t_vec3){1 * sin(g_scene.camera.field_of_view / 2), 0, 0};
+	b = (t_vec3){0, -1 * sin(g_scene.camera.field_of_view / 2), 0};
+	t = (t_vec3){0, 1 * sin(g_scene.camera.field_of_view / 2), 0};
+
+	u.x = l.x + ((r.x - l.x) * (i + 0.5) / WIDTH);
+	u.y = r.y * (i + 0.5) / WIDTH;
+	u.z = 0;
+	v.x = t.x + ((t.x - b.x) * (j + 0.5) / HEIGHT);
+	v.y = t.y * (j + 0.5) / HEIGHT;
+	v.z = 0;
 	result.origin = g_scene.camera.origin;
 	focal_length = (WIDTH / 2) * get_focal_distance();
-	// TODO: compute ray direction using the following equation
-	// d = -W * focal_length + U * u + V * v
-	// where W, U, V are the basis vectors of the camera
+
+	o = scale_vec3(g_scene.camera.basis.w, -1 * focal_length);
+	o = add_vec3(o, u);
+	o = add_vec3(o, v);
+	result.direction = scale_vec3(g_scene.camera.basis.w, -1);
+	result.origin = o;
 	return (result);
 }
+
+// TODO: compute u and v using the following equations
+// u = l + (r  - l)(i + 0.5) / WIDTH
+// v = b + (t - b)(j + 0.5) / HEIGHT
+// where l, r, b, t are the left, right, bottom, top of the view plane
+
+// TODO: compute ray direction using the following equation
+// d = -W * focal_length + U * u + V * v
+// where W, U, V are the basis vectors of the camera

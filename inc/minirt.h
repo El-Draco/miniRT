@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:53:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/03/17 19:14:37 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/05/31 15:58:07 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,10 @@ int		close_program(t_scene *scene);
 void	my_mlx_pixel_put(t_image *data, int x, int y, int color);
 t_vec3 construct_basis();
 t_vec3 evaluate_ray(t_ray *ray, float t);
-
-extern t_scene	g_scene;
+t_vec3 non_collinear_vec(t_vec3 vector);
+t_vec3 construct_basis();
+float get_focal_distance();
+t_ray get_ray(unsigned int i, unsigned int j);
+extern t_scene g_scene;
 
 #endif
