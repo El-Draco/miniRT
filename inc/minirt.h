@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:53:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/05/31 19:50:40 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/03 21:35:01 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,11 @@ typedef enum e_shape {SPHERE, PLANE, CYLINDER}	t_shape;
 
 typedef struct s_surface
 {
-	t_vec3		origin;
-	t_rgb		color;
-	void		*attributes;
-	t_shape		type;
+	t_vec3				origin;
+	t_rgb				color;
+	void				*attributes;
+	t_shape				type;
+	struct s_surface	*next;
 }	t_surface;
 
 // NOTE: attributes will point to a float (diameter) if sphere
@@ -121,6 +122,7 @@ t_vec3 non_collinear_vec(t_vec3 vector);
 t_vec3 construct_basis();
 float get_focal_distance();
 t_ray get_ray(unsigned int i, unsigned int j);
+int parser(char *filename);
 extern t_scene g_scene;
 
 #endif

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kalmheir <kalmheir@student.42.fr>          +#+  +:+       +#+         #
+#    By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/30 12:12:15 by kalmheir          #+#    #+#              #
-#    Updated: 2022/07/30 18:11:55 by kalmheir         ###   ########.fr        #
+#    Updated: 2023/06/03 20:10:56 by rriyas           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,9 +22,9 @@ MLXUTILS	:= $(shell find src/mlx -name '*.c')
 MLXUOBJS	:= $(MLXFLAGS) $(MLXUTILS:.c=.o)
 OBJECTS		:= $(SOURCES:.c=.o)
 LIBC		:= ar rcs
-CC			:= gcc
+CC			:= gcc -g3
 RM			:= rm -f
-CFLAGS		:= -Wall -Wextra -Werror
+CFLAGS		:= -Wall -Wextra -Werror -g3
 MLXFLAGS	:= -Imlx
 
 nomlxc: nomlx clean

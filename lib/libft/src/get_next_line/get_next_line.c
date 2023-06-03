@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalmheir <kalmheir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 17:43:32 by kalmheir          #+#    #+#             */
-/*   Updated: 2022/07/30 18:08:53 by kalmheir         ###   ########.fr       */
+/*   Updated: 2023/06/03 20:09:57 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ char	*get_next_line(int fd)
 	rd = read(fd, &character, 1);
 	while (rd > 0)
 	{
-		rd = read(fd, &character, 1);
 		buffer[i++] = character;
 		if (character == '\n')
 			break ;
+		rd = read(fd, &character, 1);
 	}
 	if ((!buffer[i - 1] && !rd) || rd == -1)
 	{
