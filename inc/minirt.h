@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:53:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/04 15:12:29 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/04 16:35:32 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,8 @@ t_vec3 non_collinear_vec(t_vec3 vector);
 t_vec3 construct_basis();
 float get_focal_distance();
 t_ray get_ray(unsigned int i, unsigned int j);
+void display_ray(t_ray ray);
 int parser(char *filename);
-static t_scene g_scene;
+extern t_scene g_scene;
 
 #endif

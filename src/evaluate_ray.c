@@ -24,11 +24,11 @@ t_vec3 non_collinear_vec(t_vec3 vector)
 		minimum = 'z';
 
 	if (minimum == 'x')
-		return ((t_vec3){vector.x + 1, vector.z, -vector.y});
+		return ((t_vec3){1, vector.y + 1.1, vector.z});
 	else if (minimum == 'y')
-		return ((t_vec3){vector.z, vector.y + 1, -vector.x});
+		return ((t_vec3){vector.x + 1, 1.1, vector.z});
 	else
-		return ((t_vec3){vector.y, -vector.x, vector.z + 1});
+		return ((t_vec3){vector.x, vector.y + 1,1.1});
 }
 
 t_vec3 construct_basis()
@@ -41,7 +41,6 @@ t_vec3 construct_basis()
 	w = scale_vec3(g_scene.camera.orientation, -1);
 	t = non_collinear_vec(w);
 	u = normalize_vec3(cross_vec3(t, w));
-
 	return (u);
 }
 
@@ -49,6 +48,15 @@ float get_focal_distance()
 {
 	// WARNING: possible division by 0
 	return (1 / tan(g_scene.camera.field_of_view / 2));
+}
+
+void display_ray(t_ray ray)
+{
+	printf("[ Ray : Direction - ");
+	print_vec3(ray.direction);
+	printf("\t Origin - ");
+	print_vec3(ray.origin);
+	printf("\n");
 }
 
 t_ray get_ray(unsigned int i, unsigned int j)
@@ -83,11 +91,24 @@ t_ray get_ray(unsigned int i, unsigned int j)
 	return (result);
 }
 
-// TODO: compute u and v using the following equations
-// u = l + (r  - l)(i + 0.5) / WIDTH
-// v = b + (t - b)(j + 0.5) / HEIGHT
-// where l, r, b, t are the left, right, bottom, top of the view plane
+t_hit_record closest_hit(t_ray ray, float t0, float t1)
+{
+	t_hit_record closest;
+	t_surface *surf;
+	t_hit_record rec;
 
-// TODO: compute ray direction using the following equation
-// d = -W * focal_length + U * u + V * v
-// where W, U, V are the basis vectors of the camera
+	surf = g_scene.surfaces;
+	closest.distance = INFINITY;
+	while (surf)
+	{
+		rec = hit(surf, t0, t1);
+		if (rec.distance < INFINITY)
+		{
+			closest = rec;
+			t1 = rec.distance;
+		}
+		surf = surf->next;
+	}
+
+	return (closest);
+}
