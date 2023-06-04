@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:53:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/03 21:35:01 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/04 15:12:29 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,6 @@ t_vec3 construct_basis();
 float get_focal_distance();
 t_ray get_ray(unsigned int i, unsigned int j);
 int parser(char *filename);
-extern t_scene g_scene;
+static t_scene g_scene;
 
 #endif

@@ -6,13 +6,13 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 19:47:49 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/03 23:39:45 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/04 15:39:19 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minirt.h"
 
-double float_parser(char *s)
+float float_parser(char *s)
 {
 	int i;
 	int neg;
@@ -50,7 +50,7 @@ char *input_sanitizer(char *line)
 	t_list *toks;
 	t_list *iter;
 	t_list *node;
-
+	char	*ret;
 	tokens = ft_split(line, ' ');
 	if (!tokens)
 		return (NULL);
@@ -88,7 +88,9 @@ char *input_sanitizer(char *line)
 		iter = iter->next;
 	}
 	ft_lstclear(&toks, free);
-	return (line);
+	ret = ft_substr(line, 0, ft_strlen(line) - 2);
+	free(line);
+	return (ret);
 }
 
 void retrieve_amb_light(char *line)
@@ -217,6 +219,7 @@ t_surface *retrieve_shapes(t_list *lines)
 	t_surface *surfaces;
 	t_surface *surf;
 	t_list *iter;
+	t_surface *head;
 
 	surfaces = NULL;
 	iter = lines;
@@ -232,18 +235,25 @@ t_surface *retrieve_shapes(t_list *lines)
 			surf = retrieve_plane(tokens);
 		else if (!ft_strncmp(tokens[0], "cy", 3))
 			surf = retrieve_cylinder(tokens);
-		if (surfaces == NULL)
-			surfaces = surf;
 		i = -1;
 		while (tokens[++i])
 			free(tokens[i]);
 		free(tokens);
+		if (surfaces == NULL)
+		{
+			surfaces = surf;
+			head = surfaces;
+		}
+		else
+		{
+			surfaces->next = surf;
+			g_scene.num_surfaces++;
+			surfaces = surfaces->next;
+		}
 		iter = iter->next;
-		surf = surf->next;
-		g_scene.num_surfaces++;
 	}
-	surf = NULL;
-	return (surfaces);
+	surfaces->next = NULL;
+	return (head);
 }
 
 void display_metadata()
@@ -259,32 +269,33 @@ void display_metadata()
 	a = g_scene.ambient;
 	l = g_scene.light;
 	iter = g_scene.surfaces;
-	ft_printf("Raytracer Scene Data:\n\n");
-	ft_printf("Ambient Lighting\t RGB: %d,%d,%d\t Intensity: %f\n",g_scene.ambient.color.red,g_scene.ambient.color.green,g_scene.ambient.color.blue, g_scene.ambient.intensity);
-	ft_printf("Camera\t Origin: %d,%d,%d\t Orientation: %d,%d,%d\t FOV: %d\n", c.origin.x, c.origin.y, c.origin.z, c.orientation.x, c.orientation.y, c.orientation.z, c.field_of_view);
-	ft_printf("Point Light\t Origin: %d,%d,%d\t Brightness: %f\t RGB: %d,%d,%d\n", l.origin.x, l.origin.y, l.origin.z, l.intensity, l.color.red, l.color.green, l.color.blue);
+	printf("Raytracer Scene Data:\n\n");
+	printf("Ambient Lighting\n\tRGB: %d,%d,%d\t\t\tIntensity: %f\n",g_scene.ambient.color.red,g_scene.ambient.color.green,g_scene.ambient.color.blue, g_scene.ambient.intensity);
 
-	ft_printf("Shapes:\n\n");
+	printf("Camera\n\tOrigin: %f,%f,%f\tOrientation: %f,%f,%f\t\tFOV: %d\n", c.origin.x, c.origin.y, c.origin.z, c.orientation.x, c.orientation.y, c.orientation.z, c.field_of_view);
+	printf("Point Light\n\tOrigin: %f,%f,%f\tBrightness: %f\t\t\t\tRGB: %d,%d,%d\n", l.origin.x, l.origin.y, l.origin.z, l.intensity, l.color.red, l.color.green, l.color.blue);
+
+	printf("\nShapes:\n\n");
 	while (iter)
 	{
 		if (iter->type == SPHERE)
 		{
-			ft_printf("SPHERE\t");
-			ft_printf("Diameter: %f\t", *((float*)(iter->attributes)));
+			printf("SPHERE\t\t");
+			printf("Diameter: %f\t", *((float*)(iter->attributes)));
 		}
 		if (iter->type == PLANE)
 		{
-			ft_printf("PLANE\t");
+			printf("PLANE\t\t");
 			attr = (t_vec3*)(iter->attributes);
-			ft_printf("Normal Vector: %d,%d,%d\t", attr->x, attr->y, attr->z);
+			printf("Normal Vector: %f,%f,%f\t", attr->x, attr->y, attr->z);
 		}
 		if (iter->type == CYLINDER)
 		{
-			ft_printf("CYLINDER\t");
+			printf("CYLINDER\t");
 			cyl = (t_cylinder*)(iter->attributes);
-			ft_printf("Normal Vector: %d,%d,%d\t Diameter: %f\t Height: %f\t", attr->x, attr->y, attr->z, cyl->diameter, cyl->height);
+			printf("Normal Vector: %f,%f,%f\t Diameter: %f\t Height: %f\t", attr->x, attr->y, attr->z, cyl->diameter, cyl->height);
 		}
-		ft_printf("Origin: %d,%d,%d\t RGB: %d,%d,%d\n", l.origin.x, l.origin.y, l.origin.z, l.color.red, l.color.green, l.color.blue);
+		printf("\tOrigin: %f,%f,%f\t RGB: %d,%d,%d\n", l.origin.x, l.origin.y, l.origin.z, l.color.red, l.color.green, l.color.blue);
 		iter = iter->next;
 	}
 
@@ -301,7 +312,7 @@ int parser(char *filename)
 	fd = open(filename, O_RDONLY, 0666);
 	if (fd < 0)
 	{
-		ft_printf("Error while opening file\n");
+		printf("Error while opening file\n");
 		return (0);
 	}
 	line = get_next_line(fd);
@@ -315,14 +326,13 @@ int parser(char *filename)
 	iter = lines;
 	while (iter)
 	{
-		ft_printf("%s\n", iter->content);
+		printf("%s\n", iter->content);
 		iter = iter->next;
 	}
 	retrieve_amb_light((char *)(lines->content));
 	retrieve_camera((char *)(lines->next->content));
 	retrieve_point_light((char *)(lines->next->next->content));
 	g_scene.surfaces = retrieve_shapes(lines->next->next->next);
-
 	display_metadata();
 	close(fd);
 	return (0);

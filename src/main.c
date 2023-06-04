@@ -6,18 +6,18 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:46:47 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/03 18:40:48 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/04 15:34:03 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minirt.h"
 
-t_scene g_scene;
+static t_scene g_scene;
 
-int	main(void)
+int	main()
 {
-	int i = -1, j = -1;
 	parser("radi.rt");
+	int i = -1, j = -1;
 	// Initialize:
 	g_scene.mlx = mlx_init();
 	g_scene.window = mlx_new_window(g_scene.mlx, 1920, 1080, "MiniRT");
@@ -31,6 +31,8 @@ int	main(void)
 	mlx_mouse_hook(g_scene.window, &mouse_hook, &g_scene);
 	mlx_hook(g_scene.window, 17, 0, &close_program, &g_scene);
 	mlx_loop(g_scene.mlx);
+	//
+	// validate argc argv
 	// Parse Scene
 	// Render Scene (Ray Tracing)
 	/*

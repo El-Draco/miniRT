@@ -1,0 +1,16 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "C++ Launch",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/minirt",
+			"args": [],
+			"environment": [],
+			"cwd": "${workspaceFolder}",
+			"MIMode": "lldb",
+			"preLaunchTask": "C/C++: gcc build active file"
+		}
+	]
+}

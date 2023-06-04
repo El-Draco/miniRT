@@ -53,5 +53,4 @@ dkms.conf
 
 # OS and IDE Data
 .idea
-.vscode
 .DS_Store
