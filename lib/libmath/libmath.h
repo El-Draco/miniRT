@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 14:45:11 by rriyas            #+#    #+#             */
-/*   Updated: 2023/03/19 17:34:00 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/04 15:47:58 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,11 @@ t_vec3		transform_direction(t_matrix kernel, t_vec3 v);
 t_vec3		transform_surface_normal(t_matrix kernel, t_vec3 v);
 
 // t_image - mlx image matrix (t_color[HEIGHT][WIDTH] /*where the parameters are defined as preprocessor constants*/);
+
+void		print_vec3(t_vec3 v);
+void		print_hvec(t_hvec hv);
+void		print_rgb(t_rgb rgb);
+void		print_matrix(t_matrix m);
+
 
 #endif

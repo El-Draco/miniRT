@@ -3,7 +3,6 @@
 //
 
 #include "libmath.h"
-#include <math.h>
 
 t_hvec  add_hvec(t_hvec hv1, t_hvec hv2)
 {

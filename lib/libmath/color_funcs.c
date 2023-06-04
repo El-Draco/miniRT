@@ -3,7 +3,6 @@
 //
 
 #include "libmath.h"
-#include <math.h>
 
 t_rgb add_rgb(t_rgb v1, t_rgb v2)
 {

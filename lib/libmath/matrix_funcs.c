@@ -3,7 +3,6 @@
 //
 
 #include "libmath.h"
-#include <math.h>
 
 t_matrix mat_multiply(t_matrix m1, t_matrix m2)
 {
