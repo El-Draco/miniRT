@@ -91,6 +91,53 @@ t_ray get_ray(unsigned int i, unsigned int j)
 	return (result);
 }
 
+void ft_swap (float *a, float *b)
+{
+	float temp;
+
+	if (*a < *b)
+	{
+		temp = *a;
+		*a = *b;
+		*b = temp;
+	}
+}
+
+t_hit_record *ray_sphere_intersect(t_ray ray, t_surface sphere, float t0, float t1)
+{
+	float discriminant;
+	float x1;
+	float x2;
+	t_vec3 neg_cam;
+	float radius;
+	t_hit_record *rec;
+
+	rec = malloc(sizeof(t_hit_record));
+	radius = *(float *)(sphere.attributes);
+	neg_cam = scale_vec3(g_scene.camera.origin, -1);
+	discriminant = pow(dot_vec3(ray.direction, neg_cam), 2);
+	discriminant -= dot_vec3(ray.direction, ray.direction) * ((dot_vec3(add_vec3(g_scene.camera.origin, neg_cam), add_vec3(g_scene.camera.origin, neg_cam))) - (radius * radius));
+	if (discriminant < 0)
+	{
+		rec->distance = INFINITY;
+		return (rec);
+	}
+	x1 = (dot_vec3(scale_vec3(ray.direction, -1), add_vec3(g_scene.camera.origin, neg_cam)) + sqrt(discriminant)) / dot_vec3(ray.direction, ray.direction);
+	x2 = (dot_vec3(scale_vec3(ray.direction, -1), add_vec3(g_scene.camera.origin, neg_cam)) - sqrt(discriminant)) / dot_vec3(ray.direction, ray.direction);
+	ft_swap(&x1, &x2);
+	if (x1 >= t0 && x1 <= t1)
+		rec->distance = x1;
+	else if (x2 >= t0 && x2 <= t1)
+		rec->distance = x2;
+	return (rec);
+}
+
+
+t_hit_record hit_surface(t_surface *surf, float t0, float t1)
+{
+
+}
+
 t_hit_record closest_hit(t_ray ray, float t0, float t1)
 {
 	t_hit_record closest;
@@ -101,7 +148,7 @@ t_hit_record closest_hit(t_ray ray, float t0, float t1)
 	closest.distance = INFINITY;
 	while (surf)
 	{
-		rec = hit(surf, t0, t1);
+		rec = hit_surface(surf, t0, t1);
 		if (rec.distance < INFINITY)
 		{
 			closest = rec;
