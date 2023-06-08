@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 19:47:49 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/04 15:56:24 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/08 15:20:35 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,54 +93,54 @@ char *input_sanitizer(char *line)
 	return (ret);
 }
 
-void retrieve_amb_light(char *line)
+void retrieve_amb_light(t_scene *scene, char *line)
 {
 	char **tokens;
 	int i;
 
 	tokens = ft_split(line, ' ');
-	g_scene.ambient.intensity = float_parser(tokens[1]);
-	g_scene.ambient.color.red = float_parser(tokens[2]);
-	g_scene.ambient.color.green = float_parser(tokens[3]);
-	g_scene.ambient.color.blue = float_parser(tokens[4]);
+	scene->ambient.intensity = float_parser(tokens[1]);
+	scene->ambient.color.red = float_parser(tokens[2]);
+	scene->ambient.color.green = float_parser(tokens[3]);
+	scene->ambient.color.blue = float_parser(tokens[4]);
 	i = -1;
 	while (tokens[++i])
 		free(tokens[i]);
 	free(tokens);
 }
 
-void retrieve_camera(char *line)
+void retrieve_camera(t_scene *scene, char *line)
 {
 	char **tokens;
 	int i;
 
 	tokens = ft_split(line, ' ');
-	g_scene.camera.origin.x = float_parser(tokens[1]);
-	g_scene.camera.origin.y = float_parser(tokens[2]);
-	g_scene.camera.origin.z = float_parser(tokens[3]);
-	g_scene.camera.orientation.x = float_parser(tokens[4]);
-	g_scene.camera.orientation.y = float_parser(tokens[5]);
-	g_scene.camera.orientation.z = float_parser(tokens[6]);
-	g_scene.camera.field_of_view = float_parser(tokens[7]);
+	scene->camera.origin.x = float_parser(tokens[1]);
+	scene->camera.origin.y = float_parser(tokens[2]);
+	scene->camera.origin.z = float_parser(tokens[3]);
+	scene->camera.orientation.x = float_parser(tokens[4]);
+	scene->camera.orientation.y = float_parser(tokens[5]);
+	scene->camera.orientation.z = float_parser(tokens[6]);
+	scene->camera.field_of_view = float_parser(tokens[7]);
 	i = -1;
 	while (tokens[++i])
 		free(tokens[i]);
 	free(tokens);
 }
 
-void retrieve_point_light(char *line)
+void retrieve_point_light(t_scene *scene, char *line)
 {
 	char **tokens;
 	int i;
 
 	tokens = ft_split(line, ' ');
-	g_scene.light.origin.x = float_parser(tokens[1]);
-	g_scene.light.origin.y = float_parser(tokens[2]);
-	g_scene.light.origin.z = float_parser(tokens[3]);
-	g_scene.light.intensity = float_parser(tokens[4]);
-	g_scene.light.color.red = float_parser(tokens[5]);
-	g_scene.light.color.green = float_parser(tokens[6]);
-	g_scene.light.color.blue = float_parser(tokens[7]);
+	scene->light.origin.x = float_parser(tokens[1]);
+	scene->light.origin.y = float_parser(tokens[2]);
+	scene->light.origin.z = float_parser(tokens[3]);
+	scene->light.intensity = float_parser(tokens[4]);
+	scene->light.color.red = float_parser(tokens[5]);
+	scene->light.color.green = float_parser(tokens[6]);
+	scene->light.color.blue = float_parser(tokens[7]);
 	i = -1;
 	while (tokens[++i])
 		free(tokens[i]);
@@ -212,7 +212,7 @@ t_surface *retrieve_cylinder(char **tokens)
 	return (surf);
 }
 
-t_surface *retrieve_shapes(t_list *lines)
+t_surface *retrieve_shapes(t_scene *scene, t_list *lines)
 {
 	int i;
 	char **tokens;
@@ -223,7 +223,7 @@ t_surface *retrieve_shapes(t_list *lines)
 
 	surfaces = NULL;
 	iter = lines;
-	g_scene.num_surfaces = 0;
+	scene->num_surfaces = 0;
 	while (iter)
 	{
 		tokens = ft_split((char *)(iter->content), ' ');
@@ -247,7 +247,7 @@ t_surface *retrieve_shapes(t_list *lines)
 		else
 		{
 			surfaces->next = surf;
-			g_scene.num_surfaces++;
+			scene->num_surfaces++;
 			surfaces = surfaces->next;
 		}
 		iter = iter->next;
@@ -256,7 +256,7 @@ t_surface *retrieve_shapes(t_list *lines)
 	return (head);
 }
 
-void display_metadata()
+void display_metadata(t_scene *scene)
 {
 	t_ambi_light a;
 	t_camera c;
@@ -265,12 +265,12 @@ void display_metadata()
 	t_vec3 *attr;
 	t_cylinder *cyl;
 
-	c = g_scene.camera;
-	a = g_scene.ambient;
-	l = g_scene.light;
-	iter = g_scene.surfaces;
+	c = scene->camera;
+	a = scene->ambient;
+	l = scene->light;
+	iter = scene->surfaces;
 	printf("Raytracer Scene Data:\n\n");
-	printf("Ambient Lighting\n\tRGB: %d,%d,%d\t\t\tIntensity: %f\n",g_scene.ambient.color.red,g_scene.ambient.color.green,g_scene.ambient.color.blue, g_scene.ambient.intensity);
+	printf("Ambient Lighting\n\tRGB: %d,%d,%d\t\t\tIntensity: %f\n",scene->ambient.color.red,scene->ambient.color.green,scene->ambient.color.blue, scene->ambient.intensity);
 
 	printf("Camera\n\tOrigin: %f,%f,%f\tOrientation: %f,%f,%f\t\tFOV: %d\n", c.origin.x, c.origin.y, c.origin.z, c.orientation.x, c.orientation.y, c.orientation.z, c.field_of_view);
 	printf("Point Light\n\tOrigin: %f,%f,%f\tBrightness: %f\t\t\t\tRGB: %d,%d,%d\n", l.origin.x, l.origin.y, l.origin.z, l.intensity, l.color.red, l.color.green, l.color.blue);
@@ -301,7 +301,7 @@ void display_metadata()
 
 }
 
-int parser(char *filename)
+int parser(t_scene *scene, char *filename)
 {
 	char *line;
 	t_list *lines;
@@ -329,11 +329,11 @@ int parser(char *filename)
 		printf("%s\n", iter->content);
 		iter = iter->next;
 	}
-	retrieve_amb_light((char *)(lines->content));
-	retrieve_camera((char *)(lines->next->content));
-	retrieve_point_light((char *)(lines->next->next->content));
-	g_scene.surfaces = retrieve_shapes(lines->next->next->next);
-	display_metadata();
+	retrieve_amb_light(scene, (char *)(lines->content));
+	retrieve_camera(scene, (char *)(lines->next->content));
+	retrieve_point_light(scene, (char *)(lines->next->next->content));
+	scene->surfaces = retrieve_shapes(scene, lines->next->next->next);
+	display_metadata(scene);
 	close(fd);
 	return (0);
 }

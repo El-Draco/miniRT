@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:53:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/04 16:35:32 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/08 17:19:15 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 # include <stdio.h>
 # include <fcntl.h>
 
-# define HEIGHT 1920
-# define WIDTH 1080
+# define HEIGHT 1000
+# define WIDTH 1000
 
 typedef struct s_image
 {
@@ -116,14 +116,13 @@ int		key_hook(int keycode, t_scene *scene);
 int		mouse_hook(int keycode, int x, int y, t_scene *scene);
 int		close_program(t_scene *scene);
 void	my_mlx_pixel_put(t_image *data, int x, int y, int color);
-t_vec3 construct_basis();
+t_vec3 construct_basis(t_scene *scene);
 t_vec3 evaluate_ray(t_ray *ray, float t);
 t_vec3 non_collinear_vec(t_vec3 vector);
-t_vec3 construct_basis();
-float get_focal_distance();
-t_ray get_ray(unsigned int i, unsigned int j);
+float get_focal_distance(t_scene *scene);
+t_ray get_ray(t_scene *scene, unsigned int i, unsigned int j);
 void display_ray(t_ray ray);
-int parser(char *filename);
-extern t_scene g_scene;
+int parser(t_scene *scene, char *filename);
+t_hit_record *closest_hit(t_scene *scene, t_ray ray, float t0, float t1);
 
 #endif
