@@ -62,30 +62,26 @@ void display_ray(t_ray ray)
 t_ray get_ray(t_scene *scene, unsigned int i, unsigned int j)
 {
 	float focal_length;
-	t_vec3 u;
-	t_vec3 v;
+	float u;
+	float v;
 	t_vec3 o;
 
-	t_vec3 l, b, r, t;
+	float l, b, r, t;
 	t_ray result;
 
-	l = (t_vec3){-1 * sin(scene->camera.field_of_view / 2), 0, 0};
-	r = (t_vec3){1 * sin(scene->camera.field_of_view / 2), 0, 0};
-	b = (t_vec3){0, -1 * sin(scene->camera.field_of_view / 2), 0};
-	t = (t_vec3){0, 1 * sin(scene->camera.field_of_view / 2), 0};
+	l = -1 * sin(scene->camera.field_of_view / 2);
+	r = 1 * sin(scene->camera.field_of_view / 2);
+	b = -1 * sin(scene->camera.field_of_view / 2);
+	t = 1 * sin(scene->camera.field_of_view / 2);
 
-	u.x = l.x + (((r.x - l.x) * (i + 0.5)) / WIDTH);
-	u.y = r.y * ((i + 0.5) / WIDTH);
-	u.z = 0;
-	v.x = t.x + ((t.x - b.x) * (j + 0.5) / HEIGHT);
-	v.y = t.y * ((j + 0.5) / HEIGHT);
-	v.z = 0;
+	u = l + (((r - l) * (i + 0.5)) / WIDTH);
+	v = b + ((t - b) * (j + 0.5) / HEIGHT);
 	result.origin = scene->camera.origin;
 	focal_length = (WIDTH / 2) * get_focal_distance(scene);
-
+	o = scene->camera.origin;
 	o = scale_vec3(scene->camera.basis.w, -1 * focal_length);
-	o = add_vec3(o, u);
-	o = add_vec3(o, v);
+	o = add_vec3(o, scale_vec3(scene->camera.basis.u, u));
+	o = add_vec3(o, scale_vec3(scene->camera.basis.v, v));
 	result.direction = scale_vec3(scene->camera.basis.w, -1);
 	result.origin = o;
 	return (result);
@@ -157,6 +153,7 @@ t_hit_record *closest_hit(t_scene *scene, t_ray ray, float t0, float t1)
 		{
 			closest = rec;
 			t1 = rec->distance;
+			closest->surface = surf;
 		}
 		surf = surf->next;
 	}

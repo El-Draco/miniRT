@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 14:45:11 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/04 15:47:58 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/08 21:12:54 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ t_vec3		add_vec3(t_vec3 v1, t_vec3 v2);
 t_vec3		sub_vec3(t_vec3 v1, t_vec3 v2);
 float		dot_vec3(t_vec3 v1, t_vec3 v2);
 t_vec3		cross_vec3(t_vec3 v1, t_vec3 v2);
-t_vec3		scale_vec3(t_vec3 v, float scale);
+t_vec3		scale_vec3(t_vec3 v, float scsale);
+float		get_vec3_magnitude(t_vec3 vec);
 t_vec3		normalize_vec3(t_vec3 v);
 
 // t_hvec - homogenous vector with 4 components
@@ -69,13 +70,13 @@ t_rgb		sub_rgb(t_rgb r1, t_rgb r2);
 t_rgb		mult_rgb(t_rgb r1, t_rgb r2); //- Multiply rgb values
 t_rgb		scale_rgb(t_rgb r, float scale);
 t_rgb		interpolate(t_rgb r1, t_rgb r2, float scale);
-t_color		convert_rgb(t_rgb r);
+t_color		rgb_to_color(t_rgb rgb);
 
-// t_color (defined in libft and used in mlx) is just {int alpha, t_rgb color}
+	// t_color (defined in libft and used in mlx) is just {int alpha, t_rgb color}
 
-// t_matrix - a 4x4 matrix for transformations
+	// t_matrix - a 4x4 matrix for transformations
 
-t_matrix	mat_multiply(t_matrix m1, t_matrix m2);
+	t_matrix mat_multiply(t_matrix m1, t_matrix m2);
 t_vec3		transform_location(t_matrix kernel, t_vec3 v); //[or is it hvec??]
 t_vec3		transform_direction(t_matrix kernel, t_vec3 v);
 t_vec3		transform_surface_normal(t_matrix kernel, t_vec3 v);

@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 12:10:26 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/04 15:48:47 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/08 19:13:15 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,17 @@ t_vec3  scale_vec3(t_vec3 v, float scale)
 	return (ret);
 }
 
+float get_vec3_magnitude(t_vec3 vec)
+{
+	return (sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z));
+}
+
 t_vec3  normalize_vec3(t_vec3 v)
 {
 	t_vec3  ret;
 	float   mag;
 
-	mag = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+	mag = get_vec3_magnitude(v);
 	ret.x = v.x / mag;
 	ret.y = v.y / mag;
 	ret.z = v.z / mag;
