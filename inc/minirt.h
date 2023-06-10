@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:53:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/08 21:24:58 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/10 22:52:43 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 # include <stdio.h>
 # include <fcntl.h>
 
-# define HEIGHT 500
-# define WIDTH 500
+# define HEIGHT 1000
+# define WIDTH 1000
 
 typedef struct s_image
 {
@@ -124,6 +124,6 @@ t_ray get_ray(t_scene *scene, unsigned int i, unsigned int j);
 void display_ray(t_ray ray);
 int parser(t_scene *scene, char *filename);
 t_hit_record *closest_hit(t_scene *scene, t_ray ray, float t0, float t1);
-t_color shade(t_scene *scene, t_ray ray, float t0, float t1);
+t_color shade(t_scene *scene, t_hit_record *hrec, t_ray ray);
 
 #endif

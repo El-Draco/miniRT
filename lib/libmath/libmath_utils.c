@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 15:45:47 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/04 16:14:23 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/10 16:47:34 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void print_hvec(t_hvec hv)
 
 void print_rgb(t_rgb rgb)
 {
-	printf(" [ RGB (%d, %d, %d) ] ", rgb.red, rgb.green, rgb.blue);
+	printf(" [ RGB (%f, %f, %f) ] ", rgb.red, rgb.green, rgb.blue);
 }
 
 void print_matrix(t_matrix m)

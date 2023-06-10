@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 14:45:11 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/08 21:12:54 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/10 16:33:50 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ typedef struct s_hvec
 
 typedef struct s_rgb
 {
-	int	red;
-	int	green;
-	int	blue;
+	float	red;
+	float	green;
+	float	blue;
 }	t_rgb;
 
 typedef struct s_matrix

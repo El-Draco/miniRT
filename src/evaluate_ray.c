@@ -65,7 +65,6 @@ t_ray get_ray(t_scene *scene, unsigned int i, unsigned int j)
 	float u;
 	float v;
 	t_vec3 o;
-
 	float l, b, r, t;
 	t_ray result;
 
@@ -78,12 +77,11 @@ t_ray get_ray(t_scene *scene, unsigned int i, unsigned int j)
 	v = b + ((t - b) * (j + 0.5) / HEIGHT);
 	result.origin = scene->camera.origin;
 	focal_length = (WIDTH / 2) * get_focal_distance(scene);
-	o = scene->camera.origin;
 	o = scale_vec3(scene->camera.basis.w, -1 * focal_length);
 	o = add_vec3(o, scale_vec3(scene->camera.basis.u, u));
 	o = add_vec3(o, scale_vec3(scene->camera.basis.v, v));
-	result.direction = scale_vec3(scene->camera.basis.w, -1);
-	result.origin = o;
+	result.direction = o;
+	result.origin = scene->camera.origin;
 	return (result);
 }
 
@@ -107,6 +105,7 @@ t_hit_record *ray_sphere_intersect(t_scene *scene, t_ray ray, t_surface *sphere,
 	t_vec3 neg_c;
 	float radius;
 	t_hit_record *rec;
+	t_vec3 p;
 
 	(void)scene;
 	rec = malloc(sizeof(t_hit_record));
@@ -126,7 +125,9 @@ t_hit_record *ray_sphere_intersect(t_scene *scene, t_ray ray, t_surface *sphere,
 		rec->distance = x1;
 	else if (x2 >= t0 && x2 <= t1)
 		rec->distance = x2;
-	rec->normal = scale_vec3(add_vec3(scale_vec3(ray.direction, rec->distance), neg_c), 1/radius);
+	p = add_vec3(ray.origin, scale_vec3(ray.direction, rec->distance));
+	rec->surface = sphere;
+	rec->normal = scale_vec3(add_vec3(p, neg_c), 1/radius);
 	return (rec);
 }
 
@@ -157,7 +158,5 @@ t_hit_record *closest_hit(t_scene *scene, t_ray ray, float t0, float t1)
 		}
 		surf = surf->next;
 	}
-	if (closest->distance != 0)
-		printf("t = %f\n", closest->distance);
 	return (closest);
 }

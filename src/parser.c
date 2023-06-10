@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 19:47:49 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/08 15:20:35 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/10 16:47:04 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,50 +256,50 @@ t_surface *retrieve_shapes(t_scene *scene, t_list *lines)
 	return (head);
 }
 
-void display_metadata(t_scene *scene)
-{
-	t_ambi_light a;
-	t_camera c;
-	t_point_light l;
-	t_surface *iter;
-	t_vec3 *attr;
-	t_cylinder *cyl;
+// void display_metadata(t_scene *scene)
+// {
+// 	t_ambi_light a;
+// 	t_camera c;
+// 	t_point_light l;
+// 	t_surface *iter;
+// 	t_vec3 *attr;
+// 	t_cylinder *cyl;
 
-	c = scene->camera;
-	a = scene->ambient;
-	l = scene->light;
-	iter = scene->surfaces;
-	printf("Raytracer Scene Data:\n\n");
-	printf("Ambient Lighting\n\tRGB: %d,%d,%d\t\t\tIntensity: %f\n",scene->ambient.color.red,scene->ambient.color.green,scene->ambient.color.blue, scene->ambient.intensity);
+// 	c = scene->camera;
+// 	a = scene->ambient;
+// 	l = scene->light;
+// 	iter = scene->surfaces;
+// 	printf("Raytracer Scene Data:\n\n");
+// 	printf("Ambient Lighting\n\tRGB: %d,%d,%d\t\t\tIntensity: %f\n",scene->ambient.color.red,scene->ambient.color.green,scene->ambient.color.blue, scene->ambient.intensity);
 
-	printf("Camera\n\tOrigin: %f,%f,%f\tOrientation: %f,%f,%f\t\tFOV: %d\n", c.origin.x, c.origin.y, c.origin.z, c.orientation.x, c.orientation.y, c.orientation.z, c.field_of_view);
-	printf("Point Light\n\tOrigin: %f,%f,%f\tBrightness: %f\t\t\t\tRGB: %d,%d,%d\n", l.origin.x, l.origin.y, l.origin.z, l.intensity, l.color.red, l.color.green, l.color.blue);
+// 	printf("Camera\n\tOrigin: %f,%f,%f\tOrientation: %f,%f,%f\t\tFOV: %d\n", c.origin.x, c.origin.y, c.origin.z, c.orientation.x, c.orientation.y, c.orientation.z, c.field_of_view);
+// 	printf("Point Light\n\tOrigin: %f,%f,%f\tBrightness: %f\t\t\t\tRGB: %d,%d,%d\n", l.origin.x, l.origin.y, l.origin.z, l.intensity, l.color.red, l.color.green, l.color.blue);
 
-	printf("\nShapes:\n\n");
-	while (iter)
-	{
-		if (iter->type == SPHERE)
-		{
-			printf("SPHERE\t\t");
-			printf("Diameter: %f\t", *((float*)(iter->attributes)));
-		}
-		if (iter->type == PLANE)
-		{
-			printf("PLANE\t\t");
-			attr = (t_vec3*)(iter->attributes);
-			printf("Normal Vector: %f,%f,%f\t", attr->x, attr->y, attr->z);
-		}
-		if (iter->type == CYLINDER)
-		{
-			printf("CYLINDER\t");
-			cyl = (t_cylinder*)(iter->attributes);
-			printf("Normal Vector: %f,%f,%f\t Diameter: %f\t Height: %f\t", attr->x, attr->y, attr->z, cyl->diameter, cyl->height);
-		}
-		printf("\tOrigin: %f,%f,%f\t RGB: %d,%d,%d\n", l.origin.x, l.origin.y, l.origin.z, l.color.red, l.color.green, l.color.blue);
-		iter = iter->next;
-	}
+// 	printf("\nShapes:\n\n");
+// 	while (iter)
+// 	{
+// 		if (iter->type == SPHERE)
+// 		{
+// 			printf("SPHERE\t\t");
+// 			printf("Diameter: %f\t", *((float*)(iter->attributes)));
+// 		}
+// 		if (iter->type == PLANE)
+// 		{
+// 			printf("PLANE\t\t");
+// 			attr = (t_vec3*)(iter->attributes);
+// 			printf("Normal Vector: %f,%f,%f\t", attr->x, attr->y, attr->z);
+// 		}
+// 		if (iter->type == CYLINDER)
+// 		{
+// 			printf("CYLINDER\t");
+// 			cyl = (t_cylinder*)(iter->attributes);
+// 			printf("Normal Vector: %f,%f,%f\t Diameter: %f\t Height: %f\t", attr->x, attr->y, attr->z, cyl->diameter, cyl->height);
+// 		}
+// 		printf("\tOrigin: %f,%f,%f\t RGB: %d,%d,%d\n", l.origin.x, l.origin.y, l.origin.z, l.color.red, l.color.green, l.color.blue);
+// 		iter = iter->next;
+// 	}
 
-}
+// }
 
 int parser(t_scene *scene, char *filename)
 {
@@ -333,7 +333,7 @@ int parser(t_scene *scene, char *filename)
 	retrieve_camera(scene, (char *)(lines->next->content));
 	retrieve_point_light(scene, (char *)(lines->next->next->content));
 	scene->surfaces = retrieve_shapes(scene, lines->next->next->next);
-	display_metadata(scene);
+	// display_metadata(scene);
 	close(fd);
 	return (0);
 }
