@@ -44,10 +44,10 @@ t_vec3 construct_basis(t_scene *scene)
 	return (u);
 }
 
-float get_focal_distance(t_scene *scene)
+float get_focal_distance(float fov)
 {
 	// WARNING: possible division by 0
-	return (1 / tan(scene->camera.field_of_view / 2));
+	return (1 / tan(fov / 2));
 }
 
 void display_ray(t_ray ray)
@@ -59,29 +59,32 @@ void display_ray(t_ray ray)
 	printf("\n");
 }
 
+#include <stdio.h>
+
 t_ray get_ray(t_scene *scene, unsigned int i, unsigned int j)
 {
-	float focal_length;
+	// float focal_distance = get_focal_distance(scene);
 	float u;
 	float v;
-	t_vec3 o;
+	double fov = scene->camera.field_of_view * M_PI / 180;
+	double vfov = 2 * atan(tan(fov/2) * HEIGHT / WIDTH);
+	t_vec3 direction;
 	float l, b, r, t;
 	t_ray result;
 
-	l = -1 * sin(scene->camera.field_of_view / 2);
-	r = 1 * sin(scene->camera.field_of_view / 2);
-	b = -1 * sin(scene->camera.field_of_view / 2);
-	t = 1 * sin(scene->camera.field_of_view / 2);
+	l = -get_focal_distance(fov) * tan(fov / 2);
+	r = -l;
+	b = -1 * tan(vfov / 2);
+	t = -b;
 
-	u = l + (((r - l) * (i + 0.5)) / WIDTH);
-	v = b + ((t - b) * (j + 0.5) / HEIGHT);
+
+	u = l + (((r - l) * (i + 0.5)) / WIDTH) ;
+	v = b + ((t - b) * (j + 0.5) / HEIGHT) ;
 	result.origin = scene->camera.origin;
-	focal_length = (WIDTH / 2) * get_focal_distance(scene);
-	o = scale_vec3(scene->camera.basis.w, -1 * focal_length);
-	o = add_vec3(o, scale_vec3(scene->camera.basis.u, u));
-	o = add_vec3(o, scale_vec3(scene->camera.basis.v, v));
-	result.direction = o;
-	result.origin = scene->camera.origin;
+	direction = scale_vec3(scene->camera.basis.w, 1);
+	direction = add_vec3(scale_vec3(scene->camera.basis.u, u), direction);
+	direction = add_vec3(scale_vec3(scene->camera.basis.v, v), direction);
+	result.direction = direction;
 	return (result);
 }
 
@@ -127,7 +130,7 @@ t_hit_record *ray_sphere_intersect(t_scene *scene, t_ray ray, t_surface *sphere,
 		rec->distance = x2;
 	p = add_vec3(ray.origin, scale_vec3(ray.direction, rec->distance));
 	rec->surface = sphere;
-	rec->normal = scale_vec3(add_vec3(p, neg_c), 1/radius);
+	rec->normal = normalize_vec3(scale_vec3(add_vec3(p, neg_c), 1/radius));
 	return (rec);
 }
 

@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:53:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/10 22:52:43 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/11 15:47:25 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 # include <stdio.h>
 # include <fcntl.h>
 
-# define HEIGHT 1000
-# define WIDTH 1000
+# define HEIGHT 1080
+# define WIDTH 1920
 
 typedef struct s_image
 {
@@ -110,8 +110,6 @@ typedef struct s_hit_record
 	t_vec3		normal;
 }				t_hit_record;
 
-
-
 int		key_hook(int keycode, t_scene *scene);
 int		mouse_hook(int keycode, int x, int y, t_scene *scene);
 int		close_program(t_scene *scene);
@@ -119,11 +117,11 @@ void	my_mlx_pixel_put(t_image *data, int x, int y, int color);
 t_vec3 construct_basis(t_scene *scene);
 t_vec3 evaluate_ray(t_ray *ray, float t);
 t_vec3 non_collinear_vec(t_vec3 vector);
-float get_focal_distance(t_scene *scene);
+float get_focal_distance(float fov);
 t_ray get_ray(t_scene *scene, unsigned int i, unsigned int j);
 void display_ray(t_ray ray);
 int parser(t_scene *scene, char *filename);
 t_hit_record *closest_hit(t_scene *scene, t_ray ray, float t0, float t1);
-t_color shade(t_scene *scene, t_hit_record *hrec, t_ray ray);
+t_rgb shade(t_scene *scene, t_hit_record *hrec, t_ray ray);
 
 #endif

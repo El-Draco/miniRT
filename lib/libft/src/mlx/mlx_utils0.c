@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   mlx_utils0.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kalmheir <kalmheir@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/24 13:52:38 by kalmheir          #+#    #+#             */
-/*   Updated: 2022/06/26 18:33:07 by kalmheir         ###   ########.fr       */
+/*   Updated: 2023/06/11 15:16:07 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifdef __APPLE__
-# include "../../../minilibx_mms_20191025_beta/mlx.h"
+#include "../../../minilibx_opengl_20191021/mlx.h"
 #else
 # include "../../../minilibx-linux/mlx.h"
 #endif

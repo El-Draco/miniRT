@@ -6,7 +6,7 @@
 #    By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/17 11:45:08 by rriyas            #+#    #+#              #
-#    Updated: 2023/06/03 20:11:30 by rriyas           ###   ########.fr        #
+#    Updated: 2023/06/11 15:03:33 by rriyas           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ libmath.a:
 			make -C lib/libmath/
 			mv lib/libmath/libmath.a ./
 libft.a:
-			make -C lib/libft/
+			make -C lib/libft/ all
 			mv lib/libft/libft.a ./
 
 all:	$(NAME)

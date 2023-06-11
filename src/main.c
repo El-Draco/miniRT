@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:46:47 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/10 22:48:29 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/11 17:43:38 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,57 +29,33 @@ float ft_max(float x, float y)
 	return (x);
 }
 
-t_color illuminate(t_scene *scene, t_ray ray, t_hit_record *hrec)
+t_rgb illuminate(t_scene *scene, t_ray ray, t_hit_record *hrec)
 {
-	t_vec3 x;
-	t_vec3 l;
-	t_vec3 n;
-	t_color E;
-	float r;
-	float max;
-	float dot;
 	t_rgb diffuse;
-	t_rgb amb;
-	float dummy;
+	// t_rgb amb;
+	// float dummy;
 
-	x = add_vec3(scale_vec3(ray.direction, hrec->distance), ray.origin);
-	r = get_vec3_magnitude(add_vec3(scene->light.origin, scale_vec3(x, -1)));
-	l = scale_vec3(add_vec3(scene->light.origin, scale_vec3(x, -1)), 1/r);
-	n = hrec->normal;
-	dot = (dot_vec3(n, l));
-	max = ft_max(0, dot_vec3(n, l));
-	if (max != 0)
-		printf("oops");
-	diffuse = scale_rgb(scene->light.color, scene->light.intensity * (max * 1.0 / (r * r)));
-	diffuse = scale_rgb(diffuse, 1.0/255.0);
-	diffuse = mult_rgb(diffuse, scale_rgb(hrec->surface->color, 1.0));
-	amb = (t_rgb) {scene->ambient.color.red, scene->ambient.color.green, scene->ambient.color.blue};
-	dummy = amb.red + amb.blue + amb.green ;
-	amb = scale_rgb(amb, scene->ambient.intensity * 1.0 / 255);
-	amb.red = amb.red / dummy;
-	amb.green = amb.green / dummy;
-	amb.blue = amb.blue / dummy;
-	amb = mult_rgb(amb, scale_rgb(hrec->surface->color, 0.1));
-	diffuse = add_rgb(diffuse, amb);
-	E = rgb_to_color(diffuse);
-	if (E.blue > 255 || E.green > 255 || E.red > 255)
-		printf("oops");
-	return (E);
+
+	t_vec3 point_on_sphere = evaluate_ray(&ray, hrec->distance);
+	t_vec3 light_ray = sub_vec3(scene->light.origin, point_on_sphere);
+	float distance = get_vec3_magnitude(light_ray);
+	t_vec3 light_normal = normalize_vec3(light_ray);
+	t_vec3 hit_normal = hrec->normal;
+	diffuse = scale_rgb(scene->light.color, fmaxf(0.0, dot_vec3(hit_normal, light_normal)) / powf(distance, 2));
+	return (mult_rgb(diffuse, hrec->surface->color));
 }
 
 
-t_color shade(t_scene *scene, t_hit_record* hrec, t_ray ray)
+t_rgb shade(t_scene *scene, t_hit_record* hrec, t_ray ray)
 {
-	t_color col;
+	t_rgb col;
 
 	if (hrec && hrec->distance < INFINITY)
 	{
 		col = illuminate(scene, ray, hrec);
-		if (col.blue > 0 || col.green > 0 || col.red > 0)
-			printf("oops");
 		return (col);
 	}
-	return ((t_color){0,0,0,0});
+	return ((t_rgb){0,0,0});
 }
 
 int	main()
@@ -97,26 +73,29 @@ int	main()
 
 	t_ray ray;
 	t_hit_record *rec;
-	t_color color;
-	while (++i < HEIGHT)
+	t_rgb color;
+	while (++j < HEIGHT)
 	{
-		j = -1;
-		while (++j < WIDTH)
+		i = -1;
+		while (++i < WIDTH)
 		{
 			ray = get_ray(&scene, i, j);
 			rec = closest_hit(&scene, ray, 1, INFINITY);
 			// if (rec && rec->distance != INFINITY)
 			// {
-			// 		color = (t_color){0, 14, 56, 92};
+			// 		color = (t_color){0, 14, 56, 92};b
 			// 		my_mlx_pixel_put(&scene.image, i, j, rec->surface->color.red | rec->surface->color.green << 8 | rec->surface->color.blue << 16);
 			// }
 			if (rec && rec->distance != INFINITY)
 			{
 				color = shade(&scene, rec, ray);
-				if (color.blue > 0 || color.green > 0 || color.red > 0)
-					printf("oops");
-				my_mlx_pixel_put(&scene.image, i, j, color.red | color.green << 8 | color.blue << 16);
+				if (j == 720)
+					printf("uhh");
+				my_mlx_pixel_put(&scene.image, i, j, get_color(rgb_to_color(color)));
+				// my_mlx_pixel_put(&scene.image, i, j, 0xFFFFFFFF);
 			}
+			else
+				my_mlx_pixel_put(&scene.image, i, j, get_color(rgb_to_color(scene.ambient.color)));
 		}
 	}
 	mlx_put_image_to_window(scene.mlx, scene.window, scene.image.img, 0, 0);
