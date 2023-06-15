@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 19:47:49 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/10 16:47:04 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/15 20:58:41 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -333,7 +333,6 @@ int parser(t_scene *scene, char *filename)
 	retrieve_camera(scene, (char *)(lines->next->content));
 	retrieve_point_light(scene, (char *)(lines->next->next->content));
 	scene->surfaces = retrieve_shapes(scene, lines->next->next->next);
-	// display_metadata(scene);
 	close(fd);
 	return (0);
 }

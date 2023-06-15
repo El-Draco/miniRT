@@ -8,7 +8,7 @@ t_vec3    evaluate_ray(t_ray *ray, float t)
 {
     t_vec3	result;
 
-    result = add_vec3(ray->origin, scale_vec3(ray->direction, t));
+    result = add_vec3(ray->origin, scale_vec3(normalize_vec3(ray->direction), t));
     return (result);
 }
 
@@ -67,21 +67,19 @@ t_ray get_ray(t_scene *scene, unsigned int i, unsigned int j)
 	float u;
 	float v;
 	double fov = scene->camera.field_of_view * M_PI / 180;
-	double vfov = 2 * atan(tan(fov/2) * HEIGHT / WIDTH);
 	t_vec3 direction;
 	float l, b, r, t;
 	t_ray result;
 
-	l = -get_focal_distance(fov) * tan(fov / 2);
-	r = -l;
-	b = -1 * tan(vfov / 2);
-	t = -b;
-
+	t = tan(fov / 2);
+	b = -t;
+	r = t * WIDTH / HEIGHT;
+	l = -r;
 
 	u = l + (((r - l) * (i + 0.5)) / WIDTH) ;
 	v = b + ((t - b) * (j + 0.5) / HEIGHT) ;
 	result.origin = scene->camera.origin;
-	direction = scale_vec3(scene->camera.basis.w, 1);
+	direction = scale_vec3(scene->camera.basis.w, -1);
 	direction = add_vec3(scale_vec3(scene->camera.basis.u, u), direction);
 	direction = add_vec3(scale_vec3(scene->camera.basis.v, v), direction);
 	result.direction = direction;
@@ -105,7 +103,6 @@ t_hit_record *ray_sphere_intersect(t_scene *scene, t_ray ray, t_surface *sphere,
 	float discriminant;
 	float x1;
 	float x2;
-	t_vec3 neg_c;
 	float radius;
 	t_hit_record *rec;
 	t_vec3 p;
@@ -113,24 +110,25 @@ t_hit_record *ray_sphere_intersect(t_scene *scene, t_ray ray, t_surface *sphere,
 	(void)scene;
 	rec = malloc(sizeof(t_hit_record));
 	radius = *(float *)(sphere->attributes);
-	neg_c = scale_vec3(sphere->origin, -1);
-	discriminant = pow(dot_vec3(ray.direction, add_vec3(ray.origin, neg_c)), 2);
-	discriminant -= dot_vec3(ray.direction, ray.direction) * ((dot_vec3(add_vec3(ray.origin, neg_c), add_vec3(ray.origin, neg_c))) - (radius * radius));
+	discriminant = pow(dot_vec3(ray.direction, sub_vec3(ray.origin, sphere->origin)), 2);
+	discriminant -= dot_vec3(ray.direction, ray.direction) * ((dot_vec3(sub_vec3(ray.origin, sphere->origin), sub_vec3(ray.origin, sphere->origin))) - (radius * radius));
 	if (discriminant < 0)
 	{
 		rec->distance = INFINITY;
 		return (rec);
 	}
-	x1 = (dot_vec3(scale_vec3(ray.direction, -1), add_vec3(ray.origin, neg_c)) + sqrt(discriminant)) / dot_vec3(ray.direction, ray.direction);
-	x2 = (dot_vec3(scale_vec3(ray.direction, -1), add_vec3(ray.origin, neg_c)) - sqrt(discriminant)) / dot_vec3(ray.direction, ray.direction);
+	x1 = (dot_vec3(scale_vec3(ray.direction, -1), sub_vec3(ray.origin, sphere->origin)) + sqrt(discriminant)) / dot_vec3(ray.direction, ray.direction);
+	x2 = (dot_vec3(scale_vec3(ray.direction, -1), sub_vec3(ray.origin, sphere->origin)) - sqrt(discriminant)) / dot_vec3(ray.direction, ray.direction);
 	ft_swap(&x1, &x2);
 	if (x1 >= t0 && x1 <= t1)
 		rec->distance = x1;
 	else if (x2 >= t0 && x2 <= t1)
 		rec->distance = x2;
+	else
+		rec->distance = 0;
 	p = add_vec3(ray.origin, scale_vec3(ray.direction, rec->distance));
 	rec->surface = sphere;
-	rec->normal = normalize_vec3(scale_vec3(add_vec3(p, neg_c), 1/radius));
+	rec->normal = normalize_vec3(scale_vec3(sub_vec3(p, sphere->origin), 1/radius));
 	return (rec);
 }
 
@@ -153,7 +151,7 @@ t_hit_record *closest_hit(t_scene *scene, t_ray ray, float t0, float t1)
 	while (surf)
 	{
 		rec = hit_surface(scene, ray, surf, t0, t1);
-		if (rec && rec->distance < INFINITY)
+		if (rec && rec->distance > 0 && rec->distance < INFINITY)
 		{
 			closest = rec;
 			t1 = rec->distance;

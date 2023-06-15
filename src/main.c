@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:46:47 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/11 17:43:38 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/15 20:20:20 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,21 @@ float ft_max(float x, float y)
 t_rgb illuminate(t_scene *scene, t_ray ray, t_hit_record *hrec)
 {
 	t_rgb diffuse;
+	t_rgb surf_col;
 	// t_rgb amb;
-	// float dummy;
-
 
 	t_vec3 point_on_sphere = evaluate_ray(&ray, hrec->distance);
-	t_vec3 light_ray = sub_vec3(scene->light.origin, point_on_sphere);
+	t_vec3 light_ray = sub_vec3(point_on_sphere, scene->light.origin);
 	float distance = get_vec3_magnitude(light_ray);
 	t_vec3 light_normal = normalize_vec3(light_ray);
 	t_vec3 hit_normal = hrec->normal;
-	diffuse = scale_rgb(scene->light.color, fmaxf(0.0, dot_vec3(hit_normal, light_normal)) / powf(distance, 2));
-	return (mult_rgb(diffuse, hrec->surface->color));
+	diffuse = scale_rgb(scene->light.color, 5.2 * scene->light.intensity * fmaxf(0.0, dot_vec3(hit_normal, light_normal)) / (distance * distance));
+	surf_col = hrec->surface->color;
+	diffuse = mult_rgb(diffuse, surf_col);
+	// amb = scene->ambient.color;
+	// amb = mult_rgb(amb, surf_col);
+	// diffuse = add_rgb(diffuse, amb);
+	return (diffuse);
 }
 
 
@@ -81,21 +85,11 @@ int	main()
 		{
 			ray = get_ray(&scene, i, j);
 			rec = closest_hit(&scene, ray, 1, INFINITY);
-			// if (rec && rec->distance != INFINITY)
-			// {
-			// 		color = (t_color){0, 14, 56, 92};b
-			// 		my_mlx_pixel_put(&scene.image, i, j, rec->surface->color.red | rec->surface->color.green << 8 | rec->surface->color.blue << 16);
-			// }
-			if (rec && rec->distance != INFINITY)
+			if (rec && rec->distance >= 0 && rec->distance != INFINITY)
 			{
 				color = shade(&scene, rec, ray);
-				if (j == 720)
-					printf("uhh");
 				my_mlx_pixel_put(&scene.image, i, j, get_color(rgb_to_color(color)));
-				// my_mlx_pixel_put(&scene.image, i, j, 0xFFFFFFFF);
 			}
-			else
-				my_mlx_pixel_put(&scene.image, i, j, get_color(rgb_to_color(scene.ambient.color)));
 		}
 	}
 	mlx_put_image_to_window(scene.mlx, scene.window, scene.image.img, 0, 0);

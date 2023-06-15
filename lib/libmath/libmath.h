@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 14:45:11 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/10 16:33:50 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/15 12:25:15 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ t_rgb		mult_rgb(t_rgb r1, t_rgb r2); //- Multiply rgb values
 t_rgb		scale_rgb(t_rgb r, float scale);
 t_rgb		interpolate(t_rgb r1, t_rgb r2, float scale);
 t_color		rgb_to_color(t_rgb rgb);
+t_rgb		normalize_rgb(t_rgb rgb);
 
 	// t_color (defined in libft and used in mlx) is just {int alpha, t_rgb color}
 

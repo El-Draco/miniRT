@@ -60,9 +60,9 @@ t_color	rgb_to_color(t_rgb rgb)
 	t_color ret;
 
 	ret.alpha = 0;
-	ret.red = (int)(rgb.red);
-	ret.green = (int)(rgb.green);
-	ret.blue = (int)(rgb.blue);
+	ret.red = (int)(rgb.red) * 255;
+	ret.green = (int)(rgb.green) * 255;
+	ret.blue = (int)(rgb.blue) * 255;
 	if (ret.red > 255)
 		ret.red = 255;
 	if (ret.green > 255)
@@ -75,5 +75,19 @@ t_color	rgb_to_color(t_rgb rgb)
 		ret.green = 0;
 	if (ret.blue < 0)
 		ret.blue = 0;
+	return (ret);
+}
+
+t_rgb normalize_rgb(t_rgb rgb)
+{
+	t_rgb ret;
+	float dummy;
+
+	dummy = ret.red + ret.blue + ret.green;
+	if (dummy == 0)
+		dummy = 0.00001;
+	ret.red = ret.red / dummy;
+	ret.green = ret.green / dummy;
+	ret.blue = ret.blue / dummy;
 	return (ret);
 }
