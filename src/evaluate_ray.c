@@ -38,8 +38,8 @@ t_vec3 construct_basis(t_scene *scene)
 	t_vec3 t;
 	t_vec3 u;
 
-	w = scale_vec3(scene->camera.orientation, -1);
-	t = non_collinear_vec(w);
+	w = normalize_vec3(scale_vec3(scene->camera.orientation, -1));
+	t = normalize_vec3(non_collinear_vec(w));
 	u = normalize_vec3(cross_vec3(t, w));
 	return (u);
 }
@@ -63,7 +63,6 @@ void display_ray(t_ray ray)
 
 t_ray get_ray(t_scene *scene, unsigned int i, unsigned int j)
 {
-	// float focal_distance = get_focal_distance(scene);
 	float u;
 	float v;
 	double fov = scene->camera.field_of_view * M_PI / 180;
@@ -75,7 +74,6 @@ t_ray get_ray(t_scene *scene, unsigned int i, unsigned int j)
 	b = -t;
 	r = t * WIDTH / HEIGHT;
 	l = -r;
-
 	u = l + (((r - l) * (i + 0.5)) / WIDTH) ;
 	v = b + ((t - b) * (j + 0.5) / HEIGHT) ;
 	result.origin = scene->camera.origin;
@@ -111,7 +109,7 @@ t_hit_record *ray_sphere_intersect(t_scene *scene, t_ray ray, t_surface *sphere,
 	rec = malloc(sizeof(t_hit_record));
 	radius = *(float *)(sphere->attributes);
 	discriminant = pow(dot_vec3(ray.direction, sub_vec3(ray.origin, sphere->origin)), 2);
-	discriminant -= dot_vec3(ray.direction, ray.direction) * ((dot_vec3(sub_vec3(ray.origin, sphere->origin), sub_vec3(ray.origin, sphere->origin))) - (radius * radius));
+	discriminant -= (dot_vec3(ray.direction, ray.direction) * ((dot_vec3(sub_vec3(ray.origin, sphere->origin), sub_vec3(ray.origin, sphere->origin))) - (radius * radius)));
 	if (discriminant < 0)
 	{
 		rec->distance = INFINITY;

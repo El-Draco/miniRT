@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:46:47 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/17 21:30:34 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/17 21:54:00 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_rgb illuminate(t_scene *scene, t_ray ray, t_hit_record *hrec)
 	t_rgb amb;
 
 	t_vec3 point_on_sphere = evaluate_ray(&ray, hrec->distance);
-	t_vec3 light_ray = sub_vec3(point_on_sphere, scene->light.origin);
+	t_vec3 light_ray = sub_vec3(scene->light.origin, point_on_sphere);
 	t_vec3 light_normal = normalize_vec3(light_ray);
 	t_vec3 hit_normal = hrec->normal;
 	surf_col = hrec->surface->color;
@@ -46,7 +46,6 @@ t_rgb illuminate(t_scene *scene, t_ray ray, t_hit_record *hrec)
 	amb = mult_rgb(amb, surf_col);
 	amb = scale_rgb(amb, 0.2 * scene->ambient.intensity);
 	diffuse = add_rgb(diffuse, amb);
-
 	return (diffuse);
 }
 
@@ -72,9 +71,9 @@ int	main()
 	parser(&scene, "radi.rt");
 	scene.light.color = normalize_rgb(scene.light.color);
 	/*Set Basis Vector of Camera: */
-	scene.camera.basis.w = scale_vec3(scene.camera.orientation, -1);
+	scene.camera.basis.w = normalize_vec3(scale_vec3(scene.camera.orientation, -1));
 	scene.camera.basis.u = construct_basis(&scene);
-	scene.camera.basis.v = cross_vec3(scene.camera.basis.w, scene.camera.basis.u);
+	scene.camera.basis.v = normalize_vec3(cross_vec3(scene.camera.basis.u, scene.camera.basis.w));
 
 	t_ray ray;
 	t_hit_record *rec;
