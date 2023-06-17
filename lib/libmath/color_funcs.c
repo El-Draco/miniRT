@@ -28,9 +28,9 @@ t_rgb mult_rgb(t_rgb v1, t_rgb v2)
 {
 	t_rgb  ret;
 
-	ret.red = (v1.red * v2.red) / 255;
-	ret.green = (v1.green * v2.green) / 255;
-	ret.blue = (v1.blue * v2.blue) / 255;
+	ret.red = (v1.red * v2.red) ;
+	ret.green = (v1.green * v2.green);
+	ret.blue = (v1.blue * v2.blue);
 
 	return (ret);
 }
@@ -60,9 +60,9 @@ t_color	rgb_to_color(t_rgb rgb)
 	t_color ret;
 
 	ret.alpha = 0;
-	ret.red = (int)(rgb.red) * 255;
-	ret.green = (int)(rgb.green) * 255;
-	ret.blue = (int)(rgb.blue) * 255;
+	ret.red = (int)(rgb.red * 255);
+	ret.green = (int)(rgb.green * 255);
+	ret.blue = (int)(rgb.blue * 255);
 	if (ret.red > 255)
 		ret.red = 255;
 	if (ret.green > 255)
@@ -83,11 +83,11 @@ t_rgb normalize_rgb(t_rgb rgb)
 	t_rgb ret;
 	float dummy;
 
-	dummy = ret.red + ret.blue + ret.green;
+	dummy = rgb.red + rgb.blue + rgb.green;
 	if (dummy == 0)
 		dummy = 0.00001;
-	ret.red = ret.red / dummy;
-	ret.green = ret.green / dummy;
-	ret.blue = ret.blue / dummy;
+	ret.red = rgb.red / dummy;
+	ret.green = rgb.green / dummy;
+	ret.blue = rgb.blue / dummy;
 	return (ret);
 }

@@ -38,7 +38,7 @@ t_vec3 construct_basis(t_scene *scene)
 	t_vec3 t;
 	t_vec3 u;
 
-	w = scale_vec3(scene->camera.orientation, 1);
+	w = scale_vec3(scene->camera.orientation, -1);
 	t = non_collinear_vec(w);
 	u = normalize_vec3(cross_vec3(t, w));
 	return (u);
@@ -79,10 +79,10 @@ t_ray get_ray(t_scene *scene, unsigned int i, unsigned int j)
 	u = l + (((r - l) * (i + 0.5)) / WIDTH) ;
 	v = b + ((t - b) * (j + 0.5) / HEIGHT) ;
 	result.origin = scene->camera.origin;
-	direction = scale_vec3(scene->camera.basis.w, -1);
+	direction = scale_vec3(scene->camera.basis.w, -1 * get_focal_distance(fov));
 	direction = add_vec3(scale_vec3(scene->camera.basis.u, u), direction);
 	direction = add_vec3(scale_vec3(scene->camera.basis.v, v), direction);
-	result.direction = direction;
+	result.direction = normalize_vec3(direction);
 	return (result);
 }
 

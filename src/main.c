@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:46:47 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/15 20:20:20 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/17 21:30:34 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,20 @@ t_rgb illuminate(t_scene *scene, t_ray ray, t_hit_record *hrec)
 {
 	t_rgb diffuse;
 	t_rgb surf_col;
-	// t_rgb amb;
+	t_rgb amb;
 
 	t_vec3 point_on_sphere = evaluate_ray(&ray, hrec->distance);
 	t_vec3 light_ray = sub_vec3(point_on_sphere, scene->light.origin);
-	float distance = get_vec3_magnitude(light_ray);
 	t_vec3 light_normal = normalize_vec3(light_ray);
 	t_vec3 hit_normal = hrec->normal;
-	diffuse = scale_rgb(scene->light.color, 5.2 * scene->light.intensity * fmaxf(0.0, dot_vec3(hit_normal, light_normal)) / (distance * distance));
 	surf_col = hrec->surface->color;
-	diffuse = mult_rgb(diffuse, surf_col);
-	// amb = scene->ambient.color;
-	// amb = mult_rgb(amb, surf_col);
-	// diffuse = add_rgb(diffuse, amb);
+	diffuse = mult_rgb(scene->light.color, surf_col);
+	diffuse = scale_rgb(diffuse, 0.9 * 2 * scene->light.intensity * fmaxf(0.0, dot_vec3(hit_normal, light_normal)));
+	amb = scene->ambient.color;
+	amb = mult_rgb(amb, surf_col);
+	amb = scale_rgb(amb, 0.2 * scene->ambient.intensity);
+	diffuse = add_rgb(diffuse, amb);
+
 	return (diffuse);
 }
 
@@ -69,7 +70,7 @@ int	main()
 	int j = -1;
 	initialize_mlx(&scene);
 	parser(&scene, "radi.rt");
-
+	scene.light.color = normalize_rgb(scene.light.color);
 	/*Set Basis Vector of Camera: */
 	scene.camera.basis.w = scale_vec3(scene.camera.orientation, -1);
 	scene.camera.basis.u = construct_basis(&scene);

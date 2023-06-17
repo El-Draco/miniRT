@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 19:47:49 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/15 20:58:41 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/17 21:22:18 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,12 +97,16 @@ void retrieve_amb_light(t_scene *scene, char *line)
 {
 	char **tokens;
 	int i;
-
+	t_rgb temp;
 	tokens = ft_split(line, ' ');
 	scene->ambient.intensity = float_parser(tokens[1]);
-	scene->ambient.color.red = float_parser(tokens[2]);
-	scene->ambient.color.green = float_parser(tokens[3]);
-	scene->ambient.color.blue = float_parser(tokens[4]);
+	scene->ambient.color.red = float_parser(tokens[2]) / 255.0;
+	scene->ambient.color.green = float_parser(tokens[3]) / 255.0;
+	scene->ambient.color.blue = float_parser(tokens[4]) / 255.0;
+	temp = normalize_rgb(scene->ambient.color);
+	scene->ambient.color.red = temp.red;
+	scene->ambient.color.green = temp.green;
+	scene->ambient.color.blue = temp.blue;
 	i = -1;
 	while (tokens[++i])
 		free(tokens[i]);
@@ -138,9 +142,9 @@ void retrieve_point_light(t_scene *scene, char *line)
 	scene->light.origin.y = float_parser(tokens[2]);
 	scene->light.origin.z = float_parser(tokens[3]);
 	scene->light.intensity = float_parser(tokens[4]);
-	scene->light.color.red = float_parser(tokens[5]);
-	scene->light.color.green = float_parser(tokens[6]);
-	scene->light.color.blue = float_parser(tokens[7]);
+	scene->light.color.red = float_parser(tokens[5]) / 255.0;
+	scene->light.color.green = float_parser(tokens[6]) / 255.0;
+	scene->light.color.blue = float_parser(tokens[7]) / 255.0;
 	i = -1;
 	while (tokens[++i])
 		free(tokens[i]);
@@ -149,7 +153,6 @@ void retrieve_point_light(t_scene *scene, char *line)
 
 t_surface *retrieve_sphere(char **tokens)
 {
-
 	float *diameter;
 	t_surface *surf;
 
@@ -161,10 +164,9 @@ t_surface *retrieve_sphere(char **tokens)
 	diameter = malloc(sizeof(float) * 1);
 	*diameter = float_parser(tokens[4]);
 	surf->attributes = diameter;
-	surf->color.red = float_parser(tokens[5]);
-	surf->color.green = float_parser(tokens[6]);
-	surf->color.blue = float_parser(tokens[7]);
-
+	surf->color.red = float_parser(tokens[5]) / 255.0;
+	surf->color.green = float_parser(tokens[6]) / 255.0;
+	surf->color.blue = float_parser(tokens[7]) / 255.0;
 	return (surf);
 }
 
@@ -183,9 +185,9 @@ t_surface *retrieve_plane(char **tokens)
 	orientation->y = float_parser(tokens[5]);
 	orientation->z = float_parser(tokens[6]);
 	surf->attributes = orientation;
-	surf->color.red = float_parser(tokens[7]);
-	surf->color.green = float_parser(tokens[8]);
-	surf->color.blue = float_parser(tokens[9]);
+	surf->color.red = float_parser(tokens[7]) / 255.0;
+	surf->color.green = float_parser(tokens[8]) / 255.0;
+	surf->color.blue = float_parser(tokens[9]) / 255.0;
 	return (surf);
 }
 
@@ -206,9 +208,9 @@ t_surface *retrieve_cylinder(char **tokens)
 	props->diameter = float_parser(tokens[7]);
 	props->height = float_parser(tokens[8]);
 	surf->attributes = props;
-	surf->color.red = float_parser(tokens[9]);
-	surf->color.green = float_parser(tokens[10]);
-	surf->color.blue = float_parser(tokens[11]);
+	surf->color.red = float_parser(tokens[9]) / 255.0;
+	surf->color.green = float_parser(tokens[10]) / 255.0;
+	surf->color.blue = float_parser(tokens[11]) / 255.0;
 	return (surf);
 }
 
