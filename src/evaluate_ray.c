@@ -40,7 +40,7 @@ t_vec3 construct_basis(t_scene *scene)
 
 	w = normalize_vec3(scale_vec3(scene->camera.orientation, -1));
 	t = normalize_vec3(non_collinear_vec(w));
-	u = normalize_vec3(cross_vec3(t, w));
+	u = normalize_vec3(cross_vec3(w, t));
 	return (u);
 }
 

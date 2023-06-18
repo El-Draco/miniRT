@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:46:47 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/18 16:57:41 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/18 17:11:44 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	main()
 	/*Set Basis Vector of Camera: */
 	scene.camera.basis.w = normalize_vec3(scale_vec3(scene.camera.orientation, -1));
 	scene.camera.basis.u = construct_basis(&scene);
-	scene.camera.basis.v = normalize_vec3(cross_vec3(scene.camera.basis.u, scene.camera.basis.w));
+	scene.camera.basis.v = normalize_vec3(cross_vec3(scene.camera.basis.w, scene.camera.basis.u));
 	t_ray ray;
 	t_hit_record *rec;
 	t_rgb color;
