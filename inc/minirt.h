@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:53:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/11 15:47:25 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/18 16:51:41 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 # include <stdio.h>
 # include <fcntl.h>
 
-# define HEIGHT 1080
-# define WIDTH 1920
+# define HEIGHT 720
+# define WIDTH 1080
 
 typedef struct s_image
 {

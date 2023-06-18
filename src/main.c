@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:46:47 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/17 21:54:00 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/18 16:52:09 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,16 @@ t_rgb illuminate(t_scene *scene, t_ray ray, t_hit_record *hrec)
 	t_rgb diffuse;
 	t_rgb surf_col;
 	t_rgb amb;
-
 	t_vec3 point_on_sphere = evaluate_ray(&ray, hrec->distance);
 	t_vec3 light_ray = sub_vec3(scene->light.origin, point_on_sphere);
 	t_vec3 light_normal = normalize_vec3(light_ray);
 	t_vec3 hit_normal = hrec->normal;
 	surf_col = hrec->surface->color;
 	diffuse = mult_rgb(scene->light.color, surf_col);
-	diffuse = scale_rgb(diffuse, 0.9 * 2 * scene->light.intensity * fmaxf(0.0, dot_vec3(hit_normal, light_normal)));
+	diffuse = scale_rgb(diffuse, 1.2 * scene->light.intensity * fmaxf(0.0, dot_vec3(hit_normal, light_normal)) * (1 / pow(get_vec3_magnitude(light_normal), 2)));
 	amb = scene->ambient.color;
 	amb = mult_rgb(amb, surf_col);
-	amb = scale_rgb(amb, 0.2 * scene->ambient.intensity);
+	amb = scale_rgb(amb, scene->ambient.intensity);
 	diffuse = add_rgb(diffuse, amb);
 	return (diffuse);
 }
@@ -74,7 +73,6 @@ int	main()
 	scene.camera.basis.w = normalize_vec3(scale_vec3(scene.camera.orientation, -1));
 	scene.camera.basis.u = construct_basis(&scene);
 	scene.camera.basis.v = normalize_vec3(cross_vec3(scene.camera.basis.u, scene.camera.basis.w));
-
 	t_ray ray;
 	t_hit_record *rec;
 	t_rgb color;
@@ -83,6 +81,8 @@ int	main()
 		i = -1;
 		while (++i < WIDTH)
 		{
+			if (j == HEIGHT - 50)
+				printf("sup");
 			ray = get_ray(&scene, i, j);
 			rec = closest_hit(&scene, ray, 1, INFINITY);
 			if (rec && rec->distance >= 0 && rec->distance != INFINITY)

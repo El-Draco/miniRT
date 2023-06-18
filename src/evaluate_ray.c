@@ -96,6 +96,11 @@ void ft_swap (float *a, float *b)
 	}
 }
 
+t_bool fequal(float a, float b)
+{
+	return fabs(a - b) < 0.000001;
+}
+
 t_hit_record *ray_sphere_intersect(t_scene *scene, t_ray ray, t_surface *sphere, float t0, float t1)
 {
 	float discriminant;
@@ -130,10 +135,41 @@ t_hit_record *ray_sphere_intersect(t_scene *scene, t_ray ray, t_surface *sphere,
 	return (rec);
 }
 
+t_hit_record *ray_plane_intersect(t_scene *scene, t_ray ray, t_surface *plane, float t0, float t1)
+{
+	t_hit_record *hrec;
+	t_vec3 normal;
+	float denom;
+	t_vec3 pl;
+	float t;
+	(void)scene;
+	hrec = malloc(sizeof(t_hit_record));
+	normal = *(t_vec3 *)(plane->attributes);
+	denom = -1 * dot_vec3(normal, ray.direction);
+	if (denom > 1e-6)
+	{
+		pl = sub_vec3(ray.origin, plane->origin);
+		t = dot_vec3(pl, normal) / denom;
+		if (t >= t0 && t <= t1)
+		{
+			hrec->surface = plane;
+			hrec->normal = normal;
+			hrec->distance = t;
+		}
+		if (t >= 0)
+			return (hrec);
+	}
+
+	hrec->distance = INFINITY;
+	return hrec;
+}
+
 t_hit_record *hit_surface(t_scene *scene, t_ray ray, t_surface *surf, float t0, float t1)
 {
 	if (surf->type == SPHERE)
 		return (ray_sphere_intersect(scene, ray, surf, t0, t1));
+	if (surf->type == PLANE)
+		return (ray_plane_intersect(scene, ray, surf, t0, t1));
 	return (NULL);
 }
 

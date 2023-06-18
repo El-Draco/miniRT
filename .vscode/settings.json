@@ -3,6 +3,7 @@
 		"minirt.h": "c",
 		"libft.h": "c",
 		"mlx.h": "c",
-		"libmath.h": "c"
+		"libmath.h": "c",
+		"limits": "c"
 	}
 }

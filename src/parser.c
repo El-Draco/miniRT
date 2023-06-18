@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 19:47:49 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/17 21:22:18 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/18 15:24:27 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,7 @@ t_surface *retrieve_sphere(char **tokens)
 t_surface *retrieve_plane(char **tokens)
 {
 	t_vec3 *orientation;
+	t_vec3 temp;
 	t_surface *surf;
 
 	surf = malloc(sizeof(t_surface));
@@ -184,6 +185,10 @@ t_surface *retrieve_plane(char **tokens)
 	orientation->x = float_parser(tokens[4]);
 	orientation->y = float_parser(tokens[5]);
 	orientation->z = float_parser(tokens[6]);
+	surf->attributes = orientation;
+	temp = *orientation;
+	temp = normalize_vec3(temp);
+	*orientation = temp;
 	surf->attributes = orientation;
 	surf->color.red = float_parser(tokens[7]) / 255.0;
 	surf->color.green = float_parser(tokens[8]) / 255.0;
