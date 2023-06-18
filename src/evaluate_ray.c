@@ -146,7 +146,7 @@ t_hit_record *ray_plane_intersect(t_scene *scene, t_ray ray, t_surface *plane, f
 	hrec = malloc(sizeof(t_hit_record));
 	normal = *(t_vec3 *)(plane->attributes);
 	denom = -1 * dot_vec3(normal, ray.direction);
-	if (denom > 1e-6)
+	if (denom > 1e-9)
 	{
 		pl = sub_vec3(ray.origin, plane->origin);
 		t = dot_vec3(pl, normal) / denom;

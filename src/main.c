@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:46:47 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/18 16:52:09 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/18 16:57:41 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,6 @@ int	main()
 		i = -1;
 		while (++i < WIDTH)
 		{
-			if (j == HEIGHT - 50)
-				printf("sup");
 			ray = get_ray(&scene, i, j);
 			rec = closest_hit(&scene, ray, 1, INFINITY);
 			if (rec && rec->distance >= 0 && rec->distance != INFINITY)
