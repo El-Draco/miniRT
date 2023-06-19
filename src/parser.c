@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 19:47:49 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/18 15:24:27 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/18 18:59:12 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ t_surface *retrieve_sphere(char **tokens)
 	surf->origin.y = float_parser(tokens[2]);
 	surf->origin.z = float_parser(tokens[3]);
 	diameter = malloc(sizeof(float) * 1);
-	*diameter = float_parser(tokens[4]);
+	*diameter = float_parser(tokens[4]) / 2;
 	surf->attributes = diameter;
 	surf->color.red = float_parser(tokens[5]) / 255.0;
 	surf->color.green = float_parser(tokens[6]) / 255.0;

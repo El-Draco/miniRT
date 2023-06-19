@@ -164,12 +164,185 @@ t_hit_record *ray_plane_intersect(t_scene *scene, t_ray ray, t_surface *plane, f
 	return hrec;
 }
 
+t_vec3 get_cylinder_normal(t_vec3 p, t_vec3 a, t_vec3 b, float r)
+{
+	t_vec3 pa;
+	t_vec3 ba;
+	float ba_ba;
+	float pa_ba;
+	float h;
+
+	pa = sub_vec3(p, a);
+	ba = sub_vec3(b, a);
+	ba_ba = dot_vec3(ba, ba);
+	pa_ba = dot_vec3(pa, ba);
+	h = dot_vec3(pa, ba) / ba_ba;
+	return (scale_vec3(sub_vec3(pa, scale_vec3(ba, h)), 1.0/r));
+}
+
+// t_hit_record *ray_cylinder_intersect(t_scene *scene, t_ray ray, t_surface *plane, float t0, float t1)
+// {
+// 	t_vec3 ba;
+// 	t_vec3 oc;
+// 	float baba;
+// 	float bard;
+// 	float baoc;
+// 	float k2 = baba - bard * bard;
+// 	float k1 = baba * dot_vec3(oc, ray.direction) - baoc * bard;
+// 	float k0 = baba * dot_vec3(oc, oc) - baoc * baoc - radius * radius * baba;
+// 	float h = k1 * k1 - k2 * k0;
+// 	if (h < 0.0)
+// 		return vec4(-1.0); // no intersection
+// 	h = sqrt(h);
+// 	float t = (-k1 - h) / k2;
+// 	// body
+// 	float y = baoc + t * bard;
+// 	if (y > 0.0 && y < baba)
+// 		ret = vec4(t, (sub_vec3(add_vec3(oc,scale_vec3(ray.direction, t)), ba) * y / baba) / radius);
+// 	// caps
+// 	t = (((y < 0.0) ? 0.0 : baba) - baoc) / bard;
+// 	if (abs(k1 + k2 * t) < h)
+// 	{
+// 		return vec4(t, ba * sign(y) / sqrt(baba));
+// 	}
+// 	return vec4(-1.0); // no intersection
+// }
+
+t_hit_record *ray_cylinder_interesect(t_ray ray, t_surface *surface, float t0, float t1)
+{
+	t_hit_record *hit_record;
+	t_cylinder *attr;
+
+	attr = (t_cylinder *)(surface->attributes);
+	hit_record = malloc(sizeof(t_hit_record));
+	// Step 1: Calculate the cylinder's axis and half-height
+	t_vec3 axis = attr->orientation;
+	float half_height = attr->height / 2.0;
+
+	// Step 2: Calculate the ray's direction vector and origin relative to the cylinder's coordinate system
+	t_vec3 ray_dir = ray.direction;
+	t_vec3 ray_origin = ray.origin;
+	ray_origin.x -= attr->orientation.x * half_height;
+	ray_origin.y -= attr->orientation.y * half_height;
+	ray_origin.z -= attr->orientation.z * half_height;
+
+	// Step 3: Calculate the coefficients of the quadratic equation
+	float a = dot_vec3(ray_dir, ray_dir) - pow(dot_vec3(ray_dir, axis), 2);
+	float b = 2 * (dot_vec3(ray_dir, ray_origin) - dot_vec3(ray_dir, axis) * dot_vec3(ray_origin, axis));
+	float c = dot_vec3(ray_origin, ray_origin) - pow(dot_vec3(ray_origin, axis), 2) - pow(attr->diameter / 2.0, 2);
+
+	// Step 4: Solve the quadratic equation
+	float discriminant = pow(b, 2) - 4 * a * c;
+	if (discriminant >= 0)
+	{
+		float x1 = (-b - sqrt(discriminant)) / (2 * a);
+		float x2 = (-b + sqrt(discriminant)) / (2 * a);
+		float t = fmin(x1, x2);
+		if (t < t0 || t > t1)
+		{
+			hit_record = malloc(sizeof(t_hit_record));
+			hit_record->surface = surface;
+			hit_record->distance = INFINITY;
+			hit_record->normal = (t_vec3){0, 0, 0};
+			return (hit_record);
+		}
+		// Step 5: Check if the intersection point is within the capped cylinder
+		t_vec3 intersection = {
+			ray.origin.x + ray_dir.x * t,
+			ray.origin.y + ray_dir.y * t,
+			ray.origin.z + ray_dir.z * t};
+
+		float proj = dot_vec3(intersection, axis);
+
+		t_bool intersected = FALSE;
+		t_vec3 normal;
+
+		// Check if the intersection point lies within the open ends of the cylinder
+		if (proj >= -half_height && proj <= half_height)
+		{
+			intersected = TRUE;
+			normal = (t_vec3){
+				intersection.x - attr->orientation.x * proj,
+				intersection.y - attr->orientation.y * proj,
+				intersection.z - attr->orientation.z * proj};
+		}
+
+		// Check if the intersection point lies on the bottom cap of the cylinder
+		t_vec3 bottom_cap_center = attr->orientation;
+		bottom_cap_center.x *= -half_height;
+		bottom_cap_center.y *= -half_height;
+		bottom_cap_center.z *= -half_height;
+
+		float distance_to_bottom_cap_center = dot_vec3(ray.origin, axis) - dot_vec3(bottom_cap_center, axis);
+		t_vec3 point_on_bottom_cap = {
+			ray.origin.x - bottom_cap_center.x - distance_to_bottom_cap_center * axis.x,
+			ray.origin.y - bottom_cap_center.y - distance_to_bottom_cap_center * axis.y,
+			ray.origin.z - bottom_cap_center.z - distance_to_bottom_cap_center * axis.z};
+
+		float distance_to_point_on_bottom_cap = sqrt(pow(point_on_bottom_cap.x - ray.origin.x, 2) + pow(point_on_bottom_cap.y - ray.origin.y, 2) + pow(point_on_bottom_cap.z - ray.origin.z, 2));
+
+		if (distance_to_point_on_bottom_cap <= attr->diameter / 2.0)
+		{
+			if (t >= t0 && t<= t1 && (t >= distance_to_bottom_cap_center || intersected == FALSE))
+			{
+				intersected = TRUE;
+				t = -distance_to_bottom_cap_center;
+				normal = attr->orientation;
+			}
+		}
+
+		// Check if the intersection point lies on the top cap of the cylinder
+		t_vec3 top_cap_center = attr->orientation;
+		top_cap_center.x *= half_height;
+		top_cap_center.y *= half_height;
+		top_cap_center.z *= half_height;
+
+		float distance_to_top_cap_center = dot_vec3(ray.origin, axis) - dot_vec3(top_cap_center, axis);
+		t_vec3 point_on_top_cap = {
+			ray.origin.x - top_cap_center.x - distance_to_top_cap_center * axis.x,
+			ray.origin.y - top_cap_center.y - distance_to_top_cap_center * axis.y,
+			ray.origin.z - top_cap_center.z - distance_to_top_cap_center * axis.z};
+
+		float distance_to_point_on_top_cap = sqrt(pow(point_on_top_cap.x - ray.origin.x, 2) + pow(point_on_top_cap.y - ray.origin.y, 2) + pow(point_on_top_cap.z - ray.origin.z, 2));
+
+		if (distance_to_point_on_top_cap <= attr->diameter / 2.0)
+		{
+			if ((t >= t0 && t <= t1) && (t >= distance_to_top_cap_center || intersected == FALSE))
+			{
+				intersected = TRUE;
+				t = -distance_to_top_cap_center;
+				normal = attr->orientation;
+			}
+		}
+		if (intersected && t >=0)
+		{
+			hit_record = malloc(sizeof(t_hit_record));
+			hit_record->surface = surface;
+			hit_record->distance = t;
+			hit_record->normal = normal;
+		}
+	}
+
+	// Step 6: Handle the case when there is no intersection
+	if (hit_record == NULL)
+	{
+		hit_record = malloc(sizeof(t_hit_record));
+		hit_record->surface = surface;
+		hit_record->distance = INFINITY;
+		hit_record->normal = (t_vec3){0, 0, 0};
+	}
+
+	return hit_record;
+}
+
 t_hit_record *hit_surface(t_scene *scene, t_ray ray, t_surface *surf, float t0, float t1)
 {
 	if (surf->type == SPHERE)
 		return (ray_sphere_intersect(scene, ray, surf, t0, t1));
 	if (surf->type == PLANE)
 		return (ray_plane_intersect(scene, ray, surf, t0, t1));
+	if (surf->type == CYLINDER)
+		return (ray_cylinder_interesect(ray, surf, t0, t1));
 	return (NULL);
 }
 

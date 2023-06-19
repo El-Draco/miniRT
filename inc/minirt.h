@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:53:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/18 16:51:41 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/19 17:09:57 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ typedef struct s_ray
     t_vec3	origin;
     t_vec3	direction;
 }	t_ray;
-// t_ray[0] = origin & t_ray[1] = direction
 
 typedef struct s_hit_record
 {
@@ -110,18 +109,18 @@ typedef struct s_hit_record
 	t_vec3		normal;
 }				t_hit_record;
 
-int		key_hook(int keycode, t_scene *scene);
-int		mouse_hook(int keycode, int x, int y, t_scene *scene);
-int		close_program(t_scene *scene);
-void	my_mlx_pixel_put(t_image *data, int x, int y, int color);
-t_vec3 construct_basis(t_scene *scene);
-t_vec3 evaluate_ray(t_ray *ray, float t);
-t_vec3 non_collinear_vec(t_vec3 vector);
-float get_focal_distance(float fov);
-t_ray get_ray(t_scene *scene, unsigned int i, unsigned int j);
-void display_ray(t_ray ray);
-int parser(t_scene *scene, char *filename);
-t_hit_record *closest_hit(t_scene *scene, t_ray ray, float t0, float t1);
-t_rgb shade(t_scene *scene, t_hit_record *hrec, t_ray ray);
+int				key_hook(int keycode, t_scene *scene);
+int				mouse_hook(int keycode, int x, int y, t_scene *scene);
+int				close_program(t_scene *scene);
+void			my_mlx_pixel_put(t_image *data, int x, int y, int color);
+t_vec3			construct_basis(t_scene *scene);
+t_vec3			evaluate_ray(t_ray *ray, float t);
+t_vec3			non_collinear_vec(t_vec3 vector);
+float			get_focal_distance(float fov);
+t_ray			get_ray(t_scene *scene, unsigned int i, unsigned int j);
+void			display_ray(t_ray ray);
+int				parser(t_scene *scene, char *filename);
+t_hit_record	*closest_hit(t_scene *scene, t_ray ray, float t0, float t1);
+t_rgb			shade(t_scene *scene, t_hit_record *hrec, t_ray ray);
 
 #endif
