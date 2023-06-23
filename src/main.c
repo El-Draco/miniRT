@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:46:47 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/18 17:11:44 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/23 11:53:57 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ t_rgb illuminate(t_scene *scene, t_ray ray, t_hit_record *hrec)
 	t_rgb diffuse;
 	t_rgb surf_col;
 	t_rgb amb;
-	t_vec3 point_on_sphere = evaluate_ray(&ray, hrec->distance);
-	t_vec3 light_ray = sub_vec3(scene->light.origin, point_on_sphere);
+	t_vec3 point_on_surf = evaluate_ray(&ray, hrec->distance);
+	t_vec3 light_ray = sub_vec3(scene->light.origin, point_on_surf);
 	t_vec3 light_normal = normalize_vec3(light_ray);
 	t_vec3 hit_normal = hrec->normal;
 	surf_col = hrec->surface->color;
