@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:47:06 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/24 19:34:49 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/24 20:38:31 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,24 @@ int	key_hook(int keycode, t_scene *scene)
 		mlx_destroy_window(scene->mlx, scene->window);
 		exit(0);
 	}
+	if (keycode == 13)
+		scene->camera.origin.z -= 1;
+	if (keycode == 0)
+		scene->camera.origin.x += 1;
+	if (keycode == 2)
+		scene->camera.origin.x -= 1;
+	if (keycode == 1)
+		scene->camera.origin.z += 1;
+	if (keycode == 126)
+		scene->camera.origin.y += 1;
+	if (keycode == 125)
+		scene->camera.origin.y -= 1;
+	mlx_destroy_image(scene->mlx, scene->image.img);
+	scene->image.img = mlx_new_image(scene->mlx, WIDTH, HEIGHT);
+	scene->image.addr = mlx_get_data_addr(scene->image.img,
+										  &scene->image.bits_per_pixel, &scene->image.line_length,
+										  &scene->image.endian);
+	routine(scene);
 	return (0);
 }
 

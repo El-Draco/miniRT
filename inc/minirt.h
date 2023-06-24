@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:53:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/24 20:01:13 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/24 20:33:29 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,8 @@ typedef struct s_hit_record
 	t_vec3		normal;
 }				t_hit_record;
 
+void routine(t_scene *scene);
+
 //parser:
 int parser(t_scene *scene, char *filename);
 char *input_sanitizer(char *line);
@@ -130,7 +132,6 @@ t_hit_record *ray_plane_intersect(t_scene *scene, t_ray ray, t_surface *plane, f
 t_hit_record *ray_sphere_intersect(t_scene *scene, t_ray ray, t_surface *sphere, float t0, float t1);
 t_vec3 evaluate_ray(t_ray *ray, float t);
 t_ray get_ray(t_scene *scene, unsigned int i, unsigned int j);
-
 // mlx:
 void my_mlx_pixel_put(t_image *data, int x, int y, int color);
 int key_hook(int keycode, t_scene *scene);
