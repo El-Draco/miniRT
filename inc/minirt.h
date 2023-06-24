@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:53:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/24 20:33:29 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/24 20:45:56 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct s_camera
 {
 	t_vec3			origin;
 	t_vec3			orientation;
-	unsigned char	field_of_view;
+	float	field_of_view;
 	t_basis			basis;
 }					t_camera;
 
