@@ -247,16 +247,17 @@ t_hit_record *ray_cylinder_intersect(t_scene *scene, t_ray ray, t_surface *cyl, 
 	}
 	// caps
 	t = ((((y < 0.0)) ? 0.0 : baba) - baoc) / bard;
-	if (abs(k1 + k2 * t < h))
+	if (fabsf(k1 + k2 * t) < h)
 	{
 		float sign = (y >= 0.0f) ? 1.0f : -1.0f;
 		ret = scale_vec3(ba, sign / sqrt(baba));
 		ans = (t_hvec){t, ret.x, ret.y, ret.z};
 		hrec->distance = t;
 		p = add_vec3(ray.origin, scale_vec3(ray.direction, t));
-		hrec->normal = get_cylinder_normal(p, a, b, radius);
+		hrec->normal = scale_vec3(attr->orientation, -1 * sign);
 		return (hrec);
 	}
+
 	return (hrec); // no intersection
 }
 

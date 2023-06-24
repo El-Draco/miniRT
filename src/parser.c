@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 19:47:49 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/18 18:59:12 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/23 19:33:52 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,7 +259,8 @@ t_surface *retrieve_shapes(t_scene *scene, t_list *lines)
 		}
 		iter = iter->next;
 	}
-	surfaces->next = NULL;
+	if (surfaces)
+		surfaces->next = NULL;
 	return (head);
 }
 
