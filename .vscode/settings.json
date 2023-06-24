@@ -5,6 +5,7 @@
 		"mlx.h": "c",
 		"libmath.h": "c",
 		"limits": "c",
-		"fcntl.h": "c"
+		"fcntl.h": "c",
+		"stdio.h": "c"
 	}
 }

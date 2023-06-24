@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:53:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/23 19:27:16 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/24 20:01:13 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,18 +109,32 @@ typedef struct s_hit_record
 	t_vec3		normal;
 }				t_hit_record;
 
-int				key_hook(int keycode, t_scene *scene);
-int				mouse_hook(int keycode, int x, int y, t_scene *scene);
-int				close_program(t_scene *scene);
-void			my_mlx_pixel_put(t_image *data, int x, int y, int color);
-t_vec3			construct_basis(t_scene *scene);
-t_vec3			evaluate_ray(t_ray *ray, float t);
-t_vec3			non_collinear_vec(t_vec3 vector);
-float			get_focal_distance(float fov);
-t_ray			get_ray(t_scene *scene, unsigned int i, unsigned int j);
-void			display_ray(t_ray ray);
-int				parser(t_scene *scene, char *filename);
-t_hit_record	*closest_hit(t_scene *scene, t_ray ray, float t0, float t1);
-t_rgb			shade(t_scene *scene, t_hit_record *hrec, t_ray ray);
+//parser:
+int parser(t_scene *scene, char *filename);
+char *input_sanitizer(char *line);
+float float_parser(char *s);
+void retrieve_amb_light(t_scene *scene, char *line);
+void retrieve_point_light(t_scene *scene, char *line);
+t_surface *retrieve_sphere(char **tokens);
+t_surface *retrieve_plane(char **tokens);
+t_surface *retrieve_shapes(t_scene *scene, t_list *lines);
+void retrieve_camera(t_scene *scene, char *line);
+
+//raytracer:
+void set_up_camera(t_scene *scene);
+t_ray get_ray(t_scene *scene, unsigned int i, unsigned int j);
+t_hit_record *closest_hit(t_scene *scene, t_ray ray, float t0, float t1);
+t_rgb shade(t_scene *scene, t_hit_record *hrec, t_ray ray);
+t_hit_record *ray_cylinder_intersect(t_scene *scene, t_ray ray, t_surface *cyl, float t0, float t1);
+t_hit_record *ray_plane_intersect(t_scene *scene, t_ray ray, t_surface *plane, float t0, float t1);
+t_hit_record *ray_sphere_intersect(t_scene *scene, t_ray ray, t_surface *sphere, float t0, float t1);
+t_vec3 evaluate_ray(t_ray *ray, float t);
+t_ray get_ray(t_scene *scene, unsigned int i, unsigned int j);
+
+// mlx:
+void my_mlx_pixel_put(t_image *data, int x, int y, int color);
+int key_hook(int keycode, t_scene *scene);
+int mouse_hook(int keycode, int x, int y, t_scene *scene);
+int close_program(t_scene *scene);
 
 #endif
