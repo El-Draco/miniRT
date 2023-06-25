@@ -6,49 +6,74 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 19:40:00 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/24 19:40:19 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/25 20:32:48 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minirt.h"
 
-t_rgb illuminate(t_scene *scene, t_ray ray, t_hit_record *hrec)
-{
-	t_rgb diffuse;
-	t_rgb surf_col;
-	t_rgb amb;
-	t_vec3 point_on_surf = evaluate_ray(&ray, hrec->distance);
-	t_vec3 light_ray = sub_vec3(scene->light.origin, point_on_surf);
-	t_vec3 light_normal = normalize_vec3(light_ray);
-	t_vec3 hit_normal = hrec->normal;
-	surf_col = hrec->surface->color;
 
+static t_rgb	calculate_ambient_and_diffuse(t_scene *scene, t_hit_record *hrec)
+{
+	t_rgb	amb_diff;
+	t_rgb	diffuse;
+	t_rgb	surf_col;
+	t_rgb	amb;
+
+	surf_col = hrec->surface->color;
 	amb = scene->ambient.color;
 	amb = mult_rgb(amb, surf_col);
 	amb = scale_rgb(amb, scene->ambient.intensity);
-
 	diffuse = mult_rgb(scene->light.color, surf_col);
-	float visibility = 1.0f;
-	t_ray shadow_ray;
-	shadow_ray.origin = point_on_surf;
-	shadow_ray.direction = scale_vec3(light_normal, 1);
-	t_hit_record *shadow_rec = closest_hit(scene, shadow_ray, 0.001, INFINITY);
+	amb_diff = add_rgb(diffuse, amb);
+	return (amb_diff);
+}
 
-	if (shadow_rec && shadow_rec->distance >= 0 && shadow_rec->distance != INFINITY)
+static float	add_shadows(t_scene *scene, t_vec3 point, t_vec3 light_ray, t_hit_record **hrec)
+{
+	float			visibility;
+	t_ray			shadow_ray;
+	t_hit_record	*shadow_rec;
+
+	visibility = 1.0f;
+	shadow_ray.direction = scale_vec3(light_ray, 1);
+	shadow_ray.origin = add_vec3(point, scale_vec3(shadow_ray.direction, 1e-4));
+	shadow_rec = closest_hit(scene, shadow_ray, 0.0001, (*hrec)->distance);
+	if (shadow_rec && shadow_rec->distance > 0 && shadow_rec->distance < (*hrec)->distance)
+		visibility = 0.0f;
+	return (visibility);
+}
+
+static t_rgb	illuminate(t_scene *scene, t_ray ray, t_hit_record *hrec)
+{
+	t_vec3	point_on_surf;
+	t_vec3	light_ray;
+	t_vec3	hit_normal;
+	t_rgb	light;
+	float	visibility;
+
+	point_on_surf = evaluate_ray(&ray, hrec->distance);
+	light_ray = sub_vec3(scene->light.origin, point_on_surf);
+	light_ray = normalize_vec3(light_ray);
+	hit_normal = hrec->normal;
+	visibility = add_shadows(scene, point_on_surf, light_ray, &hrec);
+	if (visibility <= 0.0f)
 	{
-		// Point is in shadow, reduce visibility
-		visibility = 0.0;
+		light = scene->ambient.color;
+		light = mult_rgb(light, hrec->surface->color);
+		light = scale_rgb(light, scene->ambient.intensity * 0.2);
+		return (light);
 	}
-	diffuse = scale_rgb(diffuse, visibility * scene->light.intensity * fmaxf(0.0, dot_vec3(hit_normal, light_normal)));
-	diffuse = add_rgb(diffuse, amb);
-	return (diffuse);
+	light = calculate_ambient_and_diffuse(scene, hrec);
+	light = scale_rgb(light, visibility * scene->light.intensity * fmaxf(0.0, dot_vec3(hit_normal, light_ray)));
+	return (light);
 }
 
 t_rgb shade(t_scene *scene, t_hit_record *hrec, t_ray ray)
 {
-	t_rgb col;
+	t_rgb	col;
 
-	if (hrec && hrec->distance < INFINITY)
+	if (hrec && hrec->distance != INFINITY)
 	{
 		col = illuminate(scene, ray, hrec);
 		return (col);

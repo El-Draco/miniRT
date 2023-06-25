@@ -6,13 +6,13 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:46:47 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/24 21:36:57 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/25 19:56:38 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minirt.h"
 
-void initialize_mlx(t_scene *scene)
+static void	initialize_mlx(t_scene *scene)
 {
 	scene->mlx = mlx_init();
 	scene->window = mlx_new_window(scene->mlx, WIDTH, HEIGHT, "MiniRT");
@@ -22,13 +22,13 @@ void initialize_mlx(t_scene *scene)
 										 &scene->image.endian);
 }
 
-void routine(t_scene *scene)
+void	render_scene(t_scene *scene)
 {
-	int i;
-	int j;
-	t_ray ray;
-	t_hit_record *rec;
-	t_rgb color;
+	int				i;
+	int				j;
+	t_ray			ray;
+	t_hit_record	*rec;
+	t_rgb			color;
 
 	i = -1;
 	j = -1;
@@ -40,6 +40,8 @@ void routine(t_scene *scene)
 		{
 			ray = get_ray(scene, i, j);
 			rec = closest_hit(scene, ray, 1, INFINITY);
+			if (i == 518 && j == 522)
+				printf("sup");
 			if (rec && rec->distance >= 0 && rec->distance != INFINITY)
 			{
 				color = shade(scene, rec, ray);
@@ -52,15 +54,15 @@ void routine(t_scene *scene)
 
 int	main(int argc, char **argv)
 {
-	t_scene scene;
+	t_scene	scene;
 
-	(void) argc;
-	parser(&scene, argv[1]);
+	if (parser(&scene, argc, argv) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	initialize_mlx(&scene);
-	routine(&scene);
+	render_scene(&scene);
 	mlx_key_hook(scene.window, &key_hook, &scene);
 	mlx_mouse_hook(scene.window, &mouse_hook, &scene);
 	mlx_hook(scene.window, 17, 0, &close_program, &scene);
 	mlx_loop(scene.mlx);
-	return (0);
+	return (EXIT_SUCCESS);
 }

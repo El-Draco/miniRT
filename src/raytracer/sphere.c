@@ -6,15 +6,15 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 19:44:42 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/24 19:59:22 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/25 16:08:04 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minirt.h"
 
-void ft_swap(float *a, float *b)
+static void	ft_swap(float *a, float *b)
 {
-	float temp;
+	float	temp;
 
 	if (*a > *b)
 	{
@@ -24,36 +24,49 @@ void ft_swap(float *a, float *b)
 	}
 }
 
-t_hit_record *ray_sphere_intersect(t_scene *scene, t_ray ray, t_surface *sphere, float t0, float t1)
+static float	get_first_intersection(float x, float y, float t0, float t1)
 {
-	float discriminant;
-	float x1;
-	float x2;
-	float radius;
-	t_hit_record *rec;
-	t_vec3 p;
+	ft_swap(&x, &y);
+	if (x >= t0 && x <= t1)
+		return (x);
+	if (y >= t0 && y <= t1)
+		return (y);
+	return (0.0f);
+}
 
-	(void)scene;
+static t_vec3	get_sphere_normal(t_ray ray, float distance, t_vec3 sphere_origin, float radius)
+{
+	t_vec3 normal;
+	t_vec3 point;
+
+	point = add_vec3(ray.origin, scale_vec3(ray.direction, distance));
+	normal = normalize_vec3(scale_vec3(sub_vec3(point, sphere_origin), 1 / radius));
+	return (normal);
+}
+
+t_hit_record	*ray_sphere_intersect(t_ray ray, t_surface *sphere, float t0, float t1)
+{
+	t_vec3			oc;
+	float			b;
+	float			c;
+	float			h;
+	float			radius;
+	t_hit_record	*rec;
+
 	rec = malloc(sizeof(t_hit_record));
 	radius = *(float *)(sphere->attributes);
-	discriminant = pow(dot_vec3(ray.direction, sub_vec3(ray.origin, sphere->origin)), 2);
-	discriminant -= (dot_vec3(ray.direction, ray.direction) * ((dot_vec3(sub_vec3(ray.origin, sphere->origin), sub_vec3(ray.origin, sphere->origin))) - (radius * radius)));
-	if (discriminant <= 0)
-	{
-		rec->distance = INFINITY;
-		return (rec);
-	}
-	x1 = (dot_vec3(scale_vec3(ray.direction, -1), sub_vec3(ray.origin, sphere->origin)) + sqrt(discriminant)) / dot_vec3(ray.direction, ray.direction);
-	x2 = (dot_vec3(scale_vec3(ray.direction, -1), sub_vec3(ray.origin, sphere->origin)) - sqrt(discriminant)) / dot_vec3(ray.direction, ray.direction);
-	ft_swap(&x1, &x2);
-	if (x1 >= t0 && x1 <= t1)
-		rec->distance = x1;
-	else if (x2 >= t0 && x2 <= t1)
-		rec->distance = x2;
-	else
-		rec->distance = 0;
-	p = add_vec3(ray.origin, scale_vec3(ray.direction, rec->distance));
+	oc = sub_vec3(ray.origin, sphere->origin);
+	b = dot_vec3(oc, ray.direction);
+	c = dot_vec3(oc, oc) - (radius * radius);
+	h = b * b - c;
+	if (h < 0.0f)
+		return (no_intersection(rec));
+	h = sqrt(h);
+	h = get_first_intersection(-b - h, -b + h, t0, t1);
+	if (h <= 0.0f)
+		return (no_intersection(rec));
+	rec->distance = h;
 	rec->surface = sphere;
-	rec->normal = normalize_vec3(scale_vec3(sub_vec3(p, sphere->origin), 1 / radius));
+	rec->normal = get_sphere_normal(ray, h, sphere->origin, radius);
 	return (rec);
 }

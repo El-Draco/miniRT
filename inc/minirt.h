@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:53:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/24 20:45:56 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/25 15:45:00 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,10 +109,10 @@ typedef struct s_hit_record
 	t_vec3		normal;
 }				t_hit_record;
 
-void routine(t_scene *scene);
+void render_scene(t_scene *scene);
 
 //parser:
-int parser(t_scene *scene, char *filename);
+int parser(t_scene *scene, int argc, char **argv);
 char *input_sanitizer(char *line);
 float float_parser(char *s);
 void retrieve_amb_light(t_scene *scene, char *line);
@@ -127,9 +127,10 @@ void set_up_camera(t_scene *scene);
 t_ray get_ray(t_scene *scene, unsigned int i, unsigned int j);
 t_hit_record *closest_hit(t_scene *scene, t_ray ray, float t0, float t1);
 t_rgb shade(t_scene *scene, t_hit_record *hrec, t_ray ray);
-t_hit_record *ray_cylinder_intersect(t_scene *scene, t_ray ray, t_surface *cyl, float t0, float t1);
-t_hit_record *ray_plane_intersect(t_scene *scene, t_ray ray, t_surface *plane, float t0, float t1);
-t_hit_record *ray_sphere_intersect(t_scene *scene, t_ray ray, t_surface *sphere, float t0, float t1);
+t_hit_record *no_intersection(t_hit_record *hrec);
+t_hit_record *ray_cylinder_intersect(t_ray ray, t_surface *cyl, float t0, float t1);
+t_hit_record *ray_plane_intersect(t_ray ray, t_surface *plane, float t0, float t1);
+t_hit_record *ray_sphere_intersect(t_ray ray, t_surface *sphere, float t0, float t1);
 t_vec3 evaluate_ray(t_ray *ray, float t);
 t_ray get_ray(t_scene *scene, unsigned int i, unsigned int j);
 // mlx:

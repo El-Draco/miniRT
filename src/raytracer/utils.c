@@ -6,13 +6,13 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 19:35:31 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/24 19:59:20 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/25 16:08:35 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minirt.h"
 
-void my_mlx_pixel_put(t_image *data, int x, int y, int color)
+void	my_mlx_pixel_put(t_image *data, int x, int y, int color)
 {
 	char *dst;
 
@@ -22,12 +22,12 @@ void my_mlx_pixel_put(t_image *data, int x, int y, int color)
 
 
 
-t_bool fequal(float a, float b)
+t_bool	fequal(float a, float b)
 {
-	return fabs(a - b) < 0.000001;
+	return (fabs(a - b) < 0.000001);
 }
 
-float ft_max(float x, float y)
+float	ft_max(float x, float y)
 {
 	if (x < y)
 		return (y);
