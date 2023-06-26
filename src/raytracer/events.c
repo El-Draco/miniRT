@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:47:06 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/25 19:55:21 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/26 10:05:41 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,10 @@ int	key_hook(int keycode, t_scene *scene)
 
 int	mouse_hook(int keycode, int x, int y, t_scene *scene)
 {
+	static int prev_x;
+	static int prev_y;
+
 	(void)keycode;
-	(void)scene;
-	(void)x;
-	(void)y;
-
-	static int prev_x = 0; // Previous x position
-	static int prev_y = 0; // Previous y position
-
-	// Update camera orientation based on cursor positions
 	float angle_x = calculate_angle(prev_x, prev_y, x, y);
 	float angle_y = calculate_angle(prev_y, prev_x, y, x);
 	scene->camera.orientation.x += 0.1 * angle_x;
@@ -71,7 +66,6 @@ int	mouse_hook(int keycode, int x, int y, t_scene *scene)
 	render_scene(scene);
 	prev_x = x;
 	prev_y = y;
-	printf("x = %d and y = %d\n", x, y);
 	return (0);
 }
 

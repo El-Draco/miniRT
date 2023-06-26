@@ -6,6 +6,7 @@
 		"libmath.h": "c",
 		"limits": "c",
 		"fcntl.h": "c",
-		"stdio.h": "c"
+		"stdio.h": "c",
+		"algorithm": "c"
 	}
 }

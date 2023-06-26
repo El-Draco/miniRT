@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:53:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/25 15:45:00 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/26 12:25:11 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,24 @@ typedef struct s_hit_record
 	t_vec3		normal;
 }				t_hit_record;
 
+typedef struct s_ray_cyl_data
+{
+	t_vec3	p;
+	t_vec3	a;
+	t_vec3	b;
+	t_vec3	ba;
+	t_vec3	oc;
+	float	k0;
+	float	k1;
+	float	k2;
+	float	h;
+	float	y;
+	float	t0;
+	float	t1;
+	float	t;
+	float	sign;
+}				t_ray_cyl_data;
+
 void render_scene(t_scene *scene);
 
 //parser:
@@ -125,12 +143,12 @@ void retrieve_camera(t_scene *scene, char *line);
 //raytracer:
 void set_up_camera(t_scene *scene);
 t_ray get_ray(t_scene *scene, unsigned int i, unsigned int j);
-t_hit_record *closest_hit(t_scene *scene, t_ray ray, float t0, float t1);
+t_hit_record closest_hit(t_scene *scene, t_ray ray, float t0, float t1);
 t_rgb shade(t_scene *scene, t_hit_record *hrec, t_ray ray);
-t_hit_record *no_intersection(t_hit_record *hrec);
-t_hit_record *ray_cylinder_intersect(t_ray ray, t_surface *cyl, float t0, float t1);
-t_hit_record *ray_plane_intersect(t_ray ray, t_surface *plane, float t0, float t1);
-t_hit_record *ray_sphere_intersect(t_ray ray, t_surface *sphere, float t0, float t1);
+t_hit_record construct_hit_rec(t_hit_record *hrec, float dist, t_vec3 normal, t_surface *surf);
+t_hit_record ray_cylinder_intersect(t_ray ray, t_surface *cyl, float t0, float t1);
+t_hit_record ray_plane_intersect(t_ray ray, t_surface *plane, float t0, float t1);
+t_hit_record ray_sphere_intersect(t_ray ray, t_surface *sphere, float t0, float t1);
 t_vec3 evaluate_ray(t_ray *ray, float t);
 t_ray get_ray(t_scene *scene, unsigned int i, unsigned int j);
 // mlx:

@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:46:47 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/25 19:56:38 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/26 10:18:15 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	render_scene(t_scene *scene)
 	int				i;
 	int				j;
 	t_ray			ray;
-	t_hit_record	*rec;
+	t_hit_record	hrec;
 	t_rgb			color;
 
 	i = -1;
@@ -39,12 +39,10 @@ void	render_scene(t_scene *scene)
 		while (++i < WIDTH)
 		{
 			ray = get_ray(scene, i, j);
-			rec = closest_hit(scene, ray, 1, INFINITY);
-			if (i == 518 && j == 522)
-				printf("sup");
-			if (rec && rec->distance >= 0 && rec->distance != INFINITY)
+			hrec = closest_hit(scene, ray, 1, INFINITY);
+			if (hrec.distance >= 0 && hrec.distance != INFINITY)
 			{
-				color = shade(scene, rec, ray);
+				color = shade(scene, &hrec, ray);
 				my_mlx_pixel_put(&scene->image, i, j, get_color(rgb_to_color(color)));
 			}
 		}

@@ -6,7 +6,7 @@
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/minirt",
-			"args": ["scenes/room.rt"],
+			"args": ["scenes/cyl.rt"],
 			"environment": [],
 			"cwd": "${workspaceFolder}",
 			"MIMode": "lldb",

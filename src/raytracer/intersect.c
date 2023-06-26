@@ -6,48 +6,45 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 19:47:15 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/25 16:00:58 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/26 10:26:25 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minirt.h"
 
-t_hit_record *no_intersection(t_hit_record *hrec)
+t_hit_record construct_hit_rec(t_hit_record *hrec, float dist, t_vec3 normal, t_surface *surf)
 {
-	hrec->distance = INFINITY;
-	hrec->normal = (t_vec3){0, 0, 0};
-	hrec->surface = NULL;
-	return (hrec);
+	hrec->distance = dist;
+	hrec->normal = normal;
+	hrec->surface = surf;
+	return (*hrec);
 }
 
-	static t_hit_record *hit_surface(t_ray ray, t_surface *surf, float t0, float t1)
+static t_hit_record hit_surface(t_ray ray, t_surface *surf, float t0, float t1)
 {
 	if (surf->type == SPHERE)
 		return (ray_sphere_intersect(ray, surf, t0, t1));
 	if (surf->type == PLANE)
 		return (ray_plane_intersect(ray, surf, t0, t1));
-	if (surf->type == CYLINDER)
-		return (ray_cylinder_intersect(ray, surf, t0, t1));
-	return (NULL);
+	return (ray_cylinder_intersect(ray, surf, t0, t1));
 }
 
-t_hit_record	*closest_hit(t_scene *scene, t_ray ray, float t0, float t1)
+t_hit_record	closest_hit(t_scene *scene, t_ray ray, float t0, float t1)
 {
-	t_hit_record	*closest;
+	t_hit_record	closest;
 	t_surface		*surf;
-	t_hit_record	*rec;
+	t_hit_record	hrec;
 
 	surf = scene->surfaces;
-	closest = malloc(sizeof(t_hit_record));
-	closest->distance = INFINITY;
+	closest.distance = INFINITY;
 	while (surf)
 	{
-		rec = hit_surface(ray, surf, t0, t1);
-		if (rec && rec->distance > 0 && rec->distance < INFINITY)
+		hrec = hit_surface(ray, surf, t0, t1);
+		if (hrec.distance > 0 && hrec.distance != INFINITY)
 		{
-			closest = rec;
-			t1 = rec->distance;
-			closest->surface = surf;
+			closest = hrec;
+			t1 = hrec.distance;
+			closest.surface = surf;
 		}
 		surf = surf->next;
 	}

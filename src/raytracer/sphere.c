@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 19:44:42 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/25 16:08:04 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/26 10:27:27 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,29 +44,26 @@ static t_vec3	get_sphere_normal(t_ray ray, float distance, t_vec3 sphere_origin,
 	return (normal);
 }
 
-t_hit_record	*ray_sphere_intersect(t_ray ray, t_surface *sphere, float t0, float t1)
+t_hit_record	ray_sphere_intersect(t_ray ray, t_surface *sphere, float t0, float t1)
 {
 	t_vec3			oc;
 	float			b;
 	float			c;
 	float			h;
 	float			radius;
-	t_hit_record	*rec;
+	t_hit_record	hrec;
 
-	rec = malloc(sizeof(t_hit_record));
 	radius = *(float *)(sphere->attributes);
 	oc = sub_vec3(ray.origin, sphere->origin);
 	b = dot_vec3(oc, ray.direction);
 	c = dot_vec3(oc, oc) - (radius * radius);
 	h = b * b - c;
 	if (h < 0.0f)
-		return (no_intersection(rec));
+		return (construct_hit_rec(&hrec, INFINITY, (t_vec3){0,0,0}, sphere));
 	h = sqrt(h);
 	h = get_first_intersection(-b - h, -b + h, t0, t1);
 	if (h <= 0.0f)
-		return (no_intersection(rec));
-	rec->distance = h;
-	rec->surface = sphere;
-	rec->normal = get_sphere_normal(ray, h, sphere->origin, radius);
-	return (rec);
+		return (construct_hit_rec(&hrec, INFINITY, (t_vec3){0, 0, 0}, sphere));
+	hrec = construct_hit_rec(&hrec, h, get_sphere_normal(ray, h, sphere->origin, radius), sphere);
+	return (hrec);
 }

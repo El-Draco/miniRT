@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 14:13:03 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/25 16:05:10 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/26 10:06:21 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ t_vec3	evaluate_ray(t_ray *ray, float t)
 
 static float	get_focal_distance(float fov)
 {
-	// WARNING: possible division by 0
 	return (1 / tan((fov + 0.0001) / 2));
 }
 
