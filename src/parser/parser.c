@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 19:47:49 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/25 13:53:20 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/26 13:44:59 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,26 @@ static t_bool validate_args(int argc, char **argv)
 	if (argc == 1 || argc > 2)
 		return (FALSE);
 	return (!ft_strncmp("", argv[1], 2));
+}
+
+static void parse_lines(t_scene *scene, t_list *lines)
+{
+	char	identifier;
+	char	*line;
+	while (lines)
+	{
+		line = (char *)(lines->content);
+		identifier = line[0];
+		if (identifier == 'A')
+			retrieve_amb_light(scene, line);
+		else if (identifier == 'C')
+			retrieve_camera(scene, line);
+		else if (identifier == 'L')
+			retrieve_point_light(scene, line);
+		else
+			retrieve_shape(scene, lines);
+		lines = lines->next;
+	}
 }
 
 int parser(t_scene *scene, int argc, char **argv)
@@ -32,9 +52,8 @@ int parser(t_scene *scene, int argc, char **argv)
 	if (fd < 0)
 	{
 		printf("Error while opening file\n");
-		return (0);
+		return (EXIT_FAILURE);
 	}
-	lines = NULL;
 	line = get_next_line(fd);
 	while (line)
 	{
@@ -42,10 +61,8 @@ int parser(t_scene *scene, int argc, char **argv)
 		ft_lstadd_back(&lines, ft_lstnew(clean_line));
 		line = get_next_line(fd);
 	}
-	retrieve_amb_light(scene, (char *)(lines->content));
-	retrieve_camera(scene, (char *)(lines->next->content));
-	retrieve_point_light(scene, (char *)(lines->next->next->content));
-	scene->surfaces = retrieve_shapes(scene, lines->next->next->next);
+	parse_lines(scene, lines);
+	ft_lstclear(&lines, free);
 	close(fd);
 	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:53:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/26 12:25:11 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/26 13:31:39 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,9 +135,8 @@ char *input_sanitizer(char *line);
 float float_parser(char *s);
 void retrieve_amb_light(t_scene *scene, char *line);
 void retrieve_point_light(t_scene *scene, char *line);
-t_surface *retrieve_sphere(char **tokens);
-t_surface *retrieve_plane(char **tokens);
-t_surface *retrieve_shapes(t_scene *scene, t_list *lines);
+void retrieve_shape(t_scene *scene, t_list *line);
+
 void retrieve_camera(t_scene *scene, char *line);
 
 //raytracer:

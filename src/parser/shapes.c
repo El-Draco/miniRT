@@ -6,13 +6,34 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 19:26:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/24 19:28:19 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/26 13:44:55 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minirt.h"
 
-t_surface *retrieve_sphere(char **tokens)
+static t_surface *add_surface(t_surface **surfaces, t_surface *surf)
+{
+	t_surface *iterator;
+
+
+	if (!surf)
+		return (*surfaces);
+	if (!*surfaces)
+	{
+		surf->next = NULL;
+		*surfaces = surf;
+		return (*surfaces);
+	}
+	iterator = *surfaces;
+	while (iterator->next)
+		iterator = iterator->next;
+	iterator->next = surf;
+	iterator->next->next = NULL;
+	return (*surfaces);
+}
+
+static t_surface *retrieve_sphere(char **tokens)
 {
 	float *diameter;
 	t_surface *surf;
@@ -31,7 +52,7 @@ t_surface *retrieve_sphere(char **tokens)
 	return (surf);
 }
 
-t_surface *retrieve_plane(char **tokens)
+static t_surface *retrieve_plane(char **tokens)
 {
 	t_vec3 *orientation;
 	t_vec3 temp;
@@ -57,7 +78,7 @@ t_surface *retrieve_plane(char **tokens)
 	return (surf);
 }
 
-t_surface *retrieve_cylinder(char **tokens)
+static t_surface *retrieve_cylinder(char **tokens)
 {
 	t_cylinder *props;
 	t_surface *surf;
@@ -80,47 +101,26 @@ t_surface *retrieve_cylinder(char **tokens)
 	return (surf);
 }
 
-t_surface *retrieve_shapes(t_scene *scene, t_list *lines)
+void	retrieve_shape(t_scene *scene, t_list *line)
 {
-	int i;
-	char **tokens;
-	t_surface *surfaces;
 	t_surface *surf;
-	t_list *iter;
-	t_surface *head;
+	char **tokens;
+	int i;
 
-	surfaces = NULL;
-	iter = lines;
-	scene->num_surfaces = 0;
-	while (iter)
-	{
-		tokens = ft_split((char *)(iter->content), ' ');
-		if (!tokens || !tokens[0])
-			break;
-		if (!ft_strncmp(tokens[0], "sp", 3))
-			surf = retrieve_sphere(tokens);
-		else if (!ft_strncmp(tokens[0], "pl", 3))
-			surf = retrieve_plane(tokens);
-		else if (!ft_strncmp(tokens[0], "cy", 3))
-			surf = retrieve_cylinder(tokens);
-		i = -1;
-		while (tokens[++i])
-			free(tokens[i]);
-		free(tokens);
-		if (surfaces == NULL)
-		{
-			surfaces = surf;
-			head = surfaces;
-		}
-		else
-		{
-			surfaces->next = surf;
-			scene->num_surfaces++;
-			surfaces = surfaces->next;
-		}
-		iter = iter->next;
-	}
-	if (surfaces)
-		surfaces->next = NULL;
-	return (head);
+	surf = NULL;
+	tokens = ft_split((char *)(line->content), ' ');
+	if (!tokens || !tokens[0])
+		return ;
+	if (!ft_strncmp(tokens[0], "sp", 3))
+		surf = retrieve_sphere(tokens);
+	else if (!ft_strncmp(tokens[0], "pl", 3))
+		surf = retrieve_plane(tokens);
+	else if (!ft_strncmp(tokens[0], "cy", 3))
+		surf = retrieve_cylinder(tokens);
+	i = -1;
+	while (tokens[++i])
+		free(tokens[i]);
+	free(tokens);
+	scene->surfaces = add_surface(&scene->surfaces, surf);
+	scene->num_surfaces++;
 }
