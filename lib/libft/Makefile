@@ -6,7 +6,7 @@
 #    By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/30 12:12:15 by kalmheir          #+#    #+#              #
-#    Updated: 2023/06/03 20:10:56 by rriyas           ###   ########.fr        #
+#    Updated: 2023/06/26 13:03:04 by rriyas           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ OBJECTS		:= $(SOURCES:.c=.o)
 LIBC		:= ar rcs
 CC			:= gcc -g3
 RM			:= rm -f
-CFLAGS		:= -Wall -Wextra -Werror -g3
+CFLAGS		:= -Wall -Wextra -Werror
 MLXFLAGS	:= -Imlx
 
 nomlxc: nomlx clean

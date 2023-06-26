@@ -6,7 +6,7 @@
 #    By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/17 11:45:08 by rriyas            #+#    #+#              #
-#    Updated: 2023/06/04 15:48:12 by rriyas           ###   ########.fr        #
+#    Updated: 2023/06/26 13:03:09 by rriyas           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ RM		= rm -f
 CFLAGS = -Wall -Wextra -Werror -g3
 
 .c.o:
-		${CC} ${CFLAGS} -g -c $< -o ${<:.c=.o}
+		${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
 
 $(NAME): ${OBJS}
 		ar rcs ${NAME} ${OBJS}

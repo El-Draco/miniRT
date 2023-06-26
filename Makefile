@@ -6,7 +6,7 @@
 #    By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/17 11:45:08 by rriyas            #+#    #+#              #
-#    Updated: 2023/06/25 16:22:54 by rriyas           ###   ########.fr        #
+#    Updated: 2023/06/26 13:02:50 by rriyas           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,10 +18,10 @@ SRCS	= src/main.c src/parser/camera.c src/parser/lights.c src/parser/parser.c sr
 			src/raytracer/intersect.c src/raytracer/shade.c src/raytracer/events.c src/raytracer/utils.c
 OBJS	= ${SRCS:.c=.o}
 LIB		= lib/minilibx_opengl_20191021/libmlx.a
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g -Ofast -march=native -flto -fno-signed-zeros -funroll-loops
 
 $(NAME):	${OBJS} ${LIB} libmath.a libft.a
-			${CC} ${CFLAGS} libmath.a libft.a -I lib/minilibx_opengl_20191021/ -g $(OBJS) -L lib/minilibx_opengl_20191021/ -lmlx -framework OpenGL -framework AppKit -o $(NAME)
+			${CC} ${CFLAGS} libmath.a libft.a -I lib/minilibx_opengl_20191021/ $(OBJS) -L lib/minilibx_opengl_20191021/ -lmlx -framework OpenGL -framework AppKit -o $(NAME)
 
 ${LIB}:
 			make -C lib/minilibx_opengl_20191021/
