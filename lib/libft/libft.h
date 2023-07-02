@@ -41,10 +41,10 @@ typedef enum e_mlx_event {
 }	t_mlx_event;
 
 typedef struct s_color {
-	unsigned char	alpha;
-	unsigned char	red;
-	unsigned char	green;
-	unsigned char	blue;
+	unsigned short	alpha;
+	unsigned short	red;
+	unsigned short	green;
+	unsigned short	blue;
 }	t_color;
 
 typedef struct s_point {

@@ -13,7 +13,7 @@
 #ifndef MINIRT_H
 # define MINIRT_H
 
-# include "../lib/minilibx_opengl_20191021/mlx.h"
+# include "../lib/minilibx-linux/mlx.h"
 # include "../lib/libmath/libmath.h"
 # include <stdlib.h>
 # include <unistd.h>
