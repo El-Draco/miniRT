@@ -18,7 +18,7 @@ SRCS	= src/main.c src/parser/camera.c src/parser/lights.c src/parser/parser.c sr
 			src/raytracer/intersect.c src/raytracer/shade.c src/raytracer/events.c src/raytracer/utils.c
 OBJS	= ${SRCS:.c=.o}
 LIB		= lib/minilibx_opengl_20191021/libmlx.a
-CFLAGS = -Wall -Wextra -Werror -g -lXext -lX11 -lm -lz
+CFLAGS = -Wall -Wextra -Werror -g3 -lXext -lX11 -lm -lz
 
 $(NAME):	${OBJS} ${LIB} libmath.a libft.a
 			${CC} ${CFLAGS} -I lib/minilibx-linux/ libmath.a libft.a $(OBJS) -L lib/minilibx-linux/ -lmlx -O3 -lXext -lX11 -lm -lz libmath.a libft.a -o $(NAME)

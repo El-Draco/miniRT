@@ -9,9 +9,9 @@
 			"args": ["scenes/cyl.rt"],
 			"environment": [],
 			"cwd": "${workspaceFolder}",
-			"MIMode": "lldb",
+			"MIMode": "gdb",
+			"miDebuggerPath": "/usr/bin/gdb",
 			"preLaunchTask": "C/C++: gcc build active file",
-			"stopAtEntry": true
 		}
 	]
 }
