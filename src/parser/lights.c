@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 19:26:17 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/04 18:53:53 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/04 22:06:47 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_bool retrieve_amb_light(t_scene *scene, char *line)
 	free(tokens);
 	if (!status)
 		return (status);
-	if ((scene->ambient.intensity < EPSILON) || (scene->ambient.intensity - 1.0f > EPSILON))
+	if ((scene->ambient.intensity < EPSILON) || (scene->ambient.intensity - 2.0f > EPSILON))
 		return (FALSE);
 	temp = normalize_rgb(scene->ambient.color);
 	scene->ambient.color.red = temp.red;

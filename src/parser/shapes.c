@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 19:26:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/04 18:50:58 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/04 19:57:06 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static t_surface *add_surface(t_surface **surfaces, t_surface *surf)
 {
 	t_surface *iterator;
 
-
+	iterator = NULL;
 	if (!surf)
 		return (*surfaces);
 	if (!*surfaces)

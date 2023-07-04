@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 19:47:49 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/04 18:52:55 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/04 22:05:19 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,18 @@
 static t_bool valid_args(int argc, char **argv)
 {
 	char *file_name;
+	t_bool status;
 
 	if (argc == 1 || argc > 2)
 		return (FALSE);
 	if (!ft_strncmp("", argv[1], 2) || ft_strlen(argv[1]) <= 3)
 		return (FALSE);
 	file_name = ft_substr(argv[1], ft_strlen(argv[1]) - 3, 4);
+	status = FALSE;
 	if (!ft_strncmp(file_name, ".rt", 4))
-		return (TRUE);
-	return (FALSE);
+		status = TRUE;
+	free(file_name);
+	return (status);
 }
 
 t_bool valid_char(char *str, t_bool floating)
@@ -139,6 +142,19 @@ t_bool parse_identifier(char **tokens, char *valid)
 	return (FALSE);
 }
 
+void clear_surfaces(t_surface *surfaces)
+{
+	t_surface *surf;
+
+	surf = surfaces;
+	while (surf)
+	{
+		surf = surf->next;
+		free(surfaces);
+		surfaces = surf;
+	}
+}
+
 static t_bool parse_lines(t_scene *scene, t_list *lines)
 {
 	char *line;
@@ -162,7 +178,10 @@ static t_bool parse_lines(t_scene *scene, t_list *lines)
 		line = (char *)(lines->content);
 		status = retrieve_shape(scene, lines);
 		if (status == FALSE)
+		{
+			clear_surfaces(scene->surfaces);
 			return (FALSE);
+		}
 		lines = lines->next;
 	}
 	return (status);

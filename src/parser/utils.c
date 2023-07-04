@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 19:26:55 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/04 18:57:11 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/04 19:48:23 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,12 +106,15 @@ static void clean_commas(t_list **tok_list, char **tokens, int i, char *comma_po
 {
 	char *temp;
 	char *val;
+	char *val_str;
 	int j;
 
 	j = 0;
 	while (comma_pos || ft_strlen(tokens[i]) > 0)
 	{
-		val = ft_strdup(ft_substr(tokens[i], 0, comma_pos - tokens[i]));
+		val_str = ft_substr(tokens[i], 0, comma_pos - tokens[i]);
+		val = ft_strdup(val_str);
+		free(val_str);
 		ft_lstadd_back(&(*tok_list), ft_lstnew(val));
 		if (comma_pos)
 			ft_lstadd_back(&(*tok_list), ft_lstnew(ft_strdup(",")));

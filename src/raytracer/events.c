@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:47:06 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/04 18:58:36 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/04 22:06:02 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	key_hook(int keycode, t_scene *scene)
 	if (keycode == 53)
 	{
 		mlx_destroy_window(scene->mlx, scene->window);
+		clear_surfaces(scene->surfaces);
 		exit(0);
 	}
 	if (keycode == 13)
@@ -51,5 +52,6 @@ int	key_hook(int keycode, t_scene *scene)
 int	close_program(t_scene *scene)
 {
 	mlx_destroy_window(scene->mlx, scene->window);
+	clear_surfaces(scene->surfaces);
 	exit(0);
 }

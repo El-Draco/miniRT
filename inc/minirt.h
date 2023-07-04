@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:53:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/04 17:41:22 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/04 22:05:29 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,8 @@ t_bool parse_vec3(char **tokens, t_vec3 *vec);
 t_bool parse_float(char **tokens, float *num);
 t_bool retrieve_camera(t_scene *scene, char *line);
 t_bool parse_identifier(char **tokens, char *valid);
+void clear_surfaces(t_surface *surfaces);
+
 // raytracer:
 void set_up_camera(t_scene *scene);
 t_ray get_ray(t_scene *scene, unsigned int i, unsigned int j);
