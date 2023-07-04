@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 19:47:49 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/04 22:05:19 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/04 23:22:11 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ int count_dots(char *str)
 
 t_bool parse_float(char **tokens, float *num)
 {
-	if (!valid_char(tokens[0], TRUE))
+	if (!tokens[0] || !valid_char(tokens[0], TRUE))
 		return (FALSE);
 	if (count_dots(tokens[0]) > 1)
 		return (FALSE);
@@ -150,6 +150,7 @@ void clear_surfaces(t_surface *surfaces)
 	while (surf)
 	{
 		surf = surf->next;
+		free(surfaces->attributes);
 		free(surfaces);
 		surfaces = surf;
 	}
@@ -157,16 +158,15 @@ void clear_surfaces(t_surface *surfaces)
 
 static t_bool parse_lines(t_scene *scene, t_list *lines)
 {
-	char *line;
 	t_bool status;
 
 	if (!lines)
 		return (FALSE);
 	status = retrieve_amb_light(scene, (char *)(lines->content));
-	if (lines)
+	if (lines->next)
 		lines = lines->next;
 	status &= retrieve_camera(scene, (char *)(lines->content));
-	if (lines)
+	if (lines->next)
 		lines = lines->next;
 	status &= retrieve_point_light(scene, (char *)(lines->content));
 	if (lines)
@@ -175,7 +175,6 @@ static t_bool parse_lines(t_scene *scene, t_list *lines)
 		return (FALSE);
 	while (lines)
 	{
-		line = (char *)(lines->content);
 		status = retrieve_shape(scene, lines);
 		if (status == FALSE)
 		{
@@ -215,6 +214,8 @@ int parser(t_scene *scene, int argc, char **argv)
 			else
 				ft_lstadd_back(&lines, ft_lstnew(clean_line));
 		}
+		else
+			free(line);
 		line = get_next_line(fd);
 	}
 	status = parse_lines(scene, lines);
