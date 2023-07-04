@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 19:26:17 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/04 11:53:57 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/04 17:52:15 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ t_bool retrieve_amb_light(t_scene *scene, char *line)
 	status = parse_identifier(tokens, "A") &&
 			parse_float(tokens + 1, &(scene->ambient.intensity)) &&
 			parse_rgb(tokens + 2, &(scene->ambient.color));
+	if (!status)
+		return (status);
+	if ((scene->ambient.intensity < EPSILON) || (scene->ambient.intensity - 1.0f > EPSILON))
+		return (FALSE);
 	temp = normalize_rgb(scene->ambient.color);
 	scene->ambient.color.red = temp.red;
 	scene->ambient.color.green = temp.green;
@@ -43,8 +47,12 @@ t_bool retrieve_point_light(t_scene *scene, char *line)
 	tokens = ft_split(line, ' ');
 	status = parse_identifier(tokens, "L") &&
 				parse_vec3(tokens + 1, &(scene->light.origin)) &&
-				parse_float(tokens + 4, &(scene->light.intensity)) &&
-				parse_rgb(tokens + 5, &(scene->light.color));
+				parse_float(tokens + 6, &(scene->light.intensity)) &&
+				parse_rgb(tokens + 7, &(scene->light.color));
+	if (!status)
+		return (status);
+	if ((scene->light.intensity < EPSILON )|| (scene->light.intensity - 1.0f > EPSILON))
+		return (FALSE);
 	scene->light.color.red /= 255.0;
 	scene->light.color.green /= 255.0;
 	scene->light.color.blue /= 255.0;

@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:53:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/04 12:02:02 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/04 17:41:22 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 #define HEIGHT 720
 #define WIDTH 1080
-
+#define EPSILON 1e-4
 typedef struct s_image
 {
 	void *img;
@@ -142,6 +142,7 @@ t_bool retrieve_amb_light(t_scene *scene, char *line);
 t_bool retrieve_point_light(t_scene *scene, char *line);
 t_bool retrieve_shape(t_scene *scene, t_list *line);
 
+t_bool invalid_rgb_range(t_rgb rgb);
 t_bool parse_rgb(char **tokens, t_rgb *rgb);
 t_bool parse_vec3(char **tokens, t_vec3 *vec);
 t_bool parse_float(char **tokens, float *num);

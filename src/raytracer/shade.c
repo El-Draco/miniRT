@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 19:40:00 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/26 10:28:51 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/04 17:41:58 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static float	add_shadows(t_scene *scene, t_vec3 point, t_vec3 light_ray, t_hit_r
 
 	visibility = 1.0f;
 	shadow_ray.direction = scale_vec3(light_ray, 1);
-	shadow_ray.origin = add_vec3(point, scale_vec3(shadow_ray.direction, 1e-2));
+	shadow_ray.origin = add_vec3(point, scale_vec3(shadow_ray.direction, EPSILON));
 	shadow_rec = closest_hit(scene, shadow_ray, 0.0001, hrec->distance);
 	if (shadow_rec.distance > 0 && shadow_rec.distance < hrec->distance)
 		visibility = 0.0f;
