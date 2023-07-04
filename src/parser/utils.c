@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 19:26:55 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/04 14:45:28 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/04 18:57:11 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,5 +168,9 @@ char *input_sanitizer(char *line)
 			clean_commas(&tok_list, tokens, i, comma_pos);
 	}
 	free(line);
+	i = -1;
+	while (tokens[++i])
+		free(tokens[i]);
+	free(tokens);
 	return (merge_tokens(&tok_list));
 }

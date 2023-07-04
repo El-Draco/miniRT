@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:46:47 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/04 15:19:18 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/04 18:57:25 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ int main(int argc, char **argv)
 	initialize_mlx(&scene);
 	render_scene(&scene);
 	mlx_key_hook(scene.window, &key_hook, &scene);
-	// mlx_mouse_hook(scene.window, &mouse_hook, &scene);
 	mlx_hook(scene.window, 17, 0, &close_program, &scene);
 	mlx_loop(scene.mlx);
 	return (EXIT_SUCCESS);

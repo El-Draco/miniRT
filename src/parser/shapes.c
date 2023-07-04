@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 19:26:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/04 18:05:30 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/04 18:50:58 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,10 @@ static t_bool retrieve_sphere(char **tokens, t_surface *surface)
 				parse_float(tokens + 6, diameter) &&
 				parse_rgb(tokens + 7, &(surface->color));
 	if (!status)
+	{
+		free(diameter);
 		return (status);
+	}
 	surface->attributes = diameter;
 	surface->color.red /= 255.0;
 	surface->color.green /= 255.0;
@@ -64,10 +67,11 @@ static t_bool retrieve_plane(char **tokens, t_surface *surface)
 				parse_vec3(tokens + 1, &(surface->origin)) &&
 				parse_vec3(tokens + 6, &(*orientation)) &&
 				parse_rgb(tokens + 11, &(surface->color));
-	if (!status)
+	if (!status || fabsf(get_vec3_magnitude(*orientation) - 1.0f) > EPSILON)
+	{
+		free(orientation);
 		return (status);
-	if (fabsf(get_vec3_magnitude(*orientation) - 1.0f) > EPSILON)
-		return (FALSE);
+	}
 	surface->attributes = orientation;
 	surface->color.red /= 255.0;
 	surface->color.green /= 255.0;
@@ -88,10 +92,11 @@ static t_bool retrieve_cylinder(char **tokens, t_surface *surface)
 				parse_float(tokens + 11, &(props->diameter)) &&
 				parse_float(tokens + 12, &(props->height)) &&
 				parse_rgb(tokens + 13, &(surface->color));
-	if (!status)
-		return (status);
-	if (fabsf(get_vec3_magnitude(props->orientation) - 1.0f) > EPSILON)
+	if (!status || fabsf(get_vec3_magnitude(props->orientation) - 1.0f) > EPSILON)
+	{
+		free(props);
 		return (FALSE);
+	}
 	surface->attributes = props;
 	surface->color.red /= 255.0;
 	surface->color.green /= 255.0;
@@ -122,7 +127,10 @@ t_bool	retrieve_shape(t_scene *scene, t_list *line)
 		free(tokens[i]);
 	free(tokens);
 	if (status == FALSE)
+	{
+		free(surf);
 		return (FALSE);
+	}
 	scene->surfaces = add_surface(&scene->surfaces, surf);
 	scene->num_surfaces++;
 	return (status);

@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 19:47:49 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/04 17:51:07 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/04 18:52:55 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,7 @@ int parser(t_scene *scene, int argc, char **argv)
 	t_list *lines;
 	char *clean_line;
 	int fd;
+	t_bool status;
 
 	if (!valid_args(argc, argv))
 		return (EXIT_FAILURE);
@@ -197,9 +198,10 @@ int parser(t_scene *scene, int argc, char **argv)
 		}
 		line = get_next_line(fd);
 	}
-	if (!parse_lines(scene, lines))
-		return (EXIT_FAILURE);
+	status = parse_lines(scene, lines);
 	ft_lstclear(&lines, free);
+	if (status == FALSE)
+		return (EXIT_FAILURE);
 	close(fd);
 	return (EXIT_SUCCESS);
 }

@@ -6,20 +6,11 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 14:13:03 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/27 09:22:18 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/04 18:59:00 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minirt.h"
-
-void	display_ray(t_ray ray)
-{
-	printf("[ Ray : Direction - ");
-	print_vec3(ray.direction);
-	printf("\t Origin - ");
-	print_vec3(ray.origin);
-	printf("\n");
-}
 
 t_vec3	evaluate_ray(t_ray *ray, float t)
 {
