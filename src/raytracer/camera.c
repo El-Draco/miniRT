@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 19:47:03 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/25 13:48:53 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/06/27 09:35:53 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ static t_vec3	get_non_collinear_vec(t_vec3 vector)
 	else
 		minimum = 'z';
 	if (minimum == 'x')
-		return ((t_vec3){1, vector.y + 1.1, vector.z});
+		return ((t_vec3){0.1, vector.y + 0.1, vector.z});
 	else if (minimum == 'y')
-		return ((t_vec3){vector.x + 1, 1.1, vector.z});
-	return ((t_vec3){vector.x, vector.y + 1, 1.1});
+		return ((t_vec3){vector.x + 0.1, 0.1, vector.z});
+	return ((t_vec3){vector.x, vector.y + 0.1, 0.1});
 }
 
 static t_vec3	construct_basis(t_scene *scene)

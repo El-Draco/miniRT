@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 19:45:56 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/26 12:43:15 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/04 11:49:06 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,15 +60,13 @@ static t_bool intersects_cyl_caps(t_ray ray, t_ray_cyl_data *data)
 	float num;
 	float denom;
 
-	data->t = 0.0f;
+	num = 0.0f;
 	if (data->y > 1e-5)
-		data->t = dot_vec3(data->ba, data->ba);
+		num = dot_vec3(data->ba, data->ba) - dot_vec3(data->ba, data->oc);
 	else
-	{
-		num = data->t - dot_vec3(data->ba, data->oc);
-		denom = dot_vec3(data->ba, ray.direction);
-		data->t = num / denom;
-	}
+		num = -dot_vec3(data->ba, data->oc);
+	denom = dot_vec3(data->ba, ray.direction);
+	data->t = num / denom;
 	if (data->t < data->t0 || data->t > data->t1)
 		return (FALSE);
 	if (fabsf(data->k1 + data->k2 * data->t) < data->h)

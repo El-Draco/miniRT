@@ -6,12 +6,11 @@
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/minirt",
-			"args": ["scenes/cyl.rt"],
+			"args": ["scenes/room.rt"],
 			"environment": [],
 			"cwd": "${workspaceFolder}",
 			"MIMode": "lldb",
 			"preLaunchTask": "C/C++: gcc build active file",
-			"stopAtEntry": true
 		}
 	]
 }

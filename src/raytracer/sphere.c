@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 19:44:42 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/26 10:27:27 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/04 11:48:57 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_hit_record	ray_sphere_intersect(t_ray ray, t_surface *sphere, float t0, float 
 	float			radius;
 	t_hit_record	hrec;
 
-	radius = *(float *)(sphere->attributes);
+	radius = (*(float *)(sphere->attributes)) / 2.0;
 	oc = sub_vec3(ray.origin, sphere->origin);
 	b = dot_vec3(oc, ray.direction);
 	c = dot_vec3(oc, oc) - (radius * radius);

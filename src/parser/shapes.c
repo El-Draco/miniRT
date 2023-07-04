@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 19:26:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/26 13:44:55 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/04 12:05:27 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,94 +33,95 @@ static t_surface *add_surface(t_surface **surfaces, t_surface *surf)
 	return (*surfaces);
 }
 
-static t_surface *retrieve_sphere(char **tokens)
+static t_bool retrieve_sphere(char **tokens, t_surface *surface)
 {
 	float *diameter;
-	t_surface *surf;
+	t_bool status;
 
-	surf = malloc(sizeof(t_surface));
-	surf->type = SPHERE;
-	surf->origin.x = float_parser(tokens[1]);
-	surf->origin.y = float_parser(tokens[2]);
-	surf->origin.z = float_parser(tokens[3]);
+	surface->type = SPHERE;
 	diameter = malloc(sizeof(float) * 1);
-	*diameter = float_parser(tokens[4]) / 2;
-	surf->attributes = diameter;
-	surf->color.red = float_parser(tokens[5]) / 255.0;
-	surf->color.green = float_parser(tokens[6]) / 255.0;
-	surf->color.blue = float_parser(tokens[7]) / 255.0;
-	return (surf);
+	status = parse_identifier(tokens, "sp") &&
+				parse_vec3(tokens + 1, &(surface->origin)) &&
+				parse_float(tokens + 4, diameter) &&
+				parse_rgb(tokens + 5, &(surface->color));
+	if (!status)
+		return (status);
+	surface->attributes = diameter;
+	surface->color.red /= 255.0;
+	surface->color.green /= 255.0;
+	surface->color.blue /= 255.0;
+	return (status);
 }
 
-static t_surface *retrieve_plane(char **tokens)
+static t_bool retrieve_plane(char **tokens, t_surface *surface)
 {
 	t_vec3 *orientation;
 	t_vec3 temp;
-	t_surface *surf;
+	t_bool status;
 
-	surf = malloc(sizeof(t_surface));
-	surf->type = PLANE;
-	surf->origin.x = float_parser(tokens[1]);
-	surf->origin.y = float_parser(tokens[2]);
-	surf->origin.z = float_parser(tokens[3]);
+	surface->type = PLANE;
 	orientation = malloc(sizeof(t_vec3) * 1);
-	orientation->x = float_parser(tokens[4]);
-	orientation->y = float_parser(tokens[5]);
-	orientation->z = float_parser(tokens[6]);
-	surf->attributes = orientation;
+	status = parse_identifier(tokens, "pl") &&
+				parse_vec3(tokens + 1, &(surface->origin)) &&
+				parse_vec3(tokens + 4, orientation) &&
+				parse_rgb(tokens + 7, &(surface->color));
+	if (!status)
+		return (status);
+	surface->attributes = orientation;
 	temp = *orientation;
 	temp = normalize_vec3(temp);
 	*orientation = temp;
-	surf->attributes = orientation;
-	surf->color.red = float_parser(tokens[7]) / 255.0;
-	surf->color.green = float_parser(tokens[8]) / 255.0;
-	surf->color.blue = float_parser(tokens[9]) / 255.0;
-	return (surf);
+	surface->attributes = orientation;
+	surface->color.red /= 255.0;
+	surface->color.green /= 255.0;
+	surface->color.blue /= 255.0;
+	return (status);
 }
 
-static t_surface *retrieve_cylinder(char **tokens)
+static t_bool retrieve_cylinder(char **tokens, t_surface *surface)
 {
 	t_cylinder *props;
-	t_surface *surf;
+	t_bool status;
 
-	surf = malloc(sizeof(t_surface));
-	surf->type = CYLINDER;
-	surf->origin.x = float_parser(tokens[1]);
-	surf->origin.y = float_parser(tokens[2]);
-	surf->origin.z = float_parser(tokens[3]);
+	surface->type = CYLINDER;
 	props = malloc(sizeof(t_cylinder) * 1);
-	props->orientation.x = float_parser(tokens[4]);
-	props->orientation.y = float_parser(tokens[5]);
-	props->orientation.z = float_parser(tokens[6]);
-	props->diameter = float_parser(tokens[7]);
-	props->height = float_parser(tokens[8]);
-	surf->attributes = props;
-	surf->color.red = float_parser(tokens[9]) / 255.0;
-	surf->color.green = float_parser(tokens[10]) / 255.0;
-	surf->color.blue = float_parser(tokens[11]) / 255.0;
-	return (surf);
+	status = parse_identifier(tokens, "cy") &&
+				parse_vec3(tokens + 1, &(surface->origin)) &&
+				parse_vec3(tokens + 4, &(props->orientation)) &&
+				parse_float(tokens + 7, &(props->diameter)) &&
+				parse_float(tokens + 8, &(props->height)) &&
+				parse_rgb(tokens + 9, &(surface->color));
+	if (!status)
+		return (status);
+	surface->attributes = props;
+	surface->color.red /= 255.0;
+	surface->color.green /= 255.0;
+	surface->color.blue /= 255.0;
+	return (status);
 }
 
-void	retrieve_shape(t_scene *scene, t_list *line)
+t_bool	retrieve_shape(t_scene *scene, t_list *line)
 {
 	t_surface *surf;
 	char **tokens;
+	t_bool status;
 	int i;
 
-	surf = NULL;
+	surf = malloc(sizeof(t_surface));
 	tokens = ft_split((char *)(line->content), ' ');
 	if (!tokens || !tokens[0])
-		return ;
+		return (TRUE);
 	if (!ft_strncmp(tokens[0], "sp", 3))
-		surf = retrieve_sphere(tokens);
+		status = retrieve_sphere(tokens, surf);
 	else if (!ft_strncmp(tokens[0], "pl", 3))
-		surf = retrieve_plane(tokens);
+		status = retrieve_plane(tokens, surf);
 	else if (!ft_strncmp(tokens[0], "cy", 3))
-		surf = retrieve_cylinder(tokens);
+		status = retrieve_cylinder(tokens, surf);
 	i = -1;
 	while (tokens[++i])
 		free(tokens[i]);
 	free(tokens);
 	scene->surfaces = add_surface(&scene->surfaces, surf);
 	scene->num_surfaces++;
+	return (status);
 }
