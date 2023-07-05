@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:46:47 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/04 18:57:25 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/05 11:26:13 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,18 +48,6 @@ void	render_scene(t_scene *scene)
 		}
 	}
 	mlx_put_image_to_window(scene->mlx, scene->window, scene->image.img, 0, 0);
-}
-
-void display_surfaces(t_scene *scene)
-{
-	t_surface *surf;
-
-	surf = scene->surfaces;
-	while (surf)
-	{
-		printf("%f %f %f\n", surf->origin.x, surf->origin.y, surf->origin.z);
-		surf = surf->next;
-	}
 }
 
 int main(int argc, char **argv)

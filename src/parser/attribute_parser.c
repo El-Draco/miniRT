@@ -1,0 +1,79 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   attribute_parser.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/05 11:18:46 by rriyas            #+#    #+#             */
+/*   Updated: 2023/07/05 11:24:46 by rriyas           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../inc/minirt.h"
+
+static int count_dots(char *str)
+{
+	int i;
+	int count;
+
+	count = 0;
+	i = -1;
+	while (str[++i])
+	{
+		if (str[i] == '.')
+			count++;
+	}
+	return (count);
+}
+
+t_bool parse_float(char **tokens, float *num)
+{
+	if (!tokens[0] || !valid_char(tokens[0], TRUE))
+		return (FALSE);
+	if (count_dots(tokens[0]) > 1)
+		return (FALSE);
+	*num = float_parser(tokens[0]);
+	return (TRUE);
+}
+
+t_bool parse_identifier(char **tokens, char *valid)
+{
+	if (!ft_strncmp(tokens[0], valid, 5))
+		return (TRUE);
+	return (FALSE);
+}
+
+t_bool parse_rgb(char **tokens, t_rgb *rgb)
+{
+	if (!check_commas(tokens))
+		return (FALSE);
+	if (!valid_char(tokens[0], FALSE))
+		return (FALSE);
+	rgb->red = ft_atoi(tokens[0]);
+	if (!valid_char(tokens[2], FALSE))
+		return (FALSE);
+	rgb->green = ft_atoi(tokens[2]);
+	if (!valid_char(tokens[4], FALSE))
+		return (FALSE);
+	rgb->blue = ft_atoi(tokens[4]);
+	if (invalid_rgb_range(*rgb))
+		return (FALSE);
+	return (TRUE);
+}
+
+t_bool parse_vec3(char **tokens, t_vec3 *vec)
+{
+	if (!check_commas(tokens))
+		return (FALSE);
+	if (!valid_char(tokens[0], TRUE))
+		return (FALSE);
+	vec->x = float_parser(tokens[0]);
+	if (!valid_char(tokens[2], TRUE))
+		return (FALSE);
+	vec->y = float_parser(tokens[2]);
+	if (!valid_char(tokens[4], TRUE))
+		return (FALSE);
+	vec->z = float_parser(tokens[4]);
+	return (TRUE);
+}

@@ -6,14 +6,15 @@
 #    By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/17 11:45:08 by rriyas            #+#    #+#              #
-#    Updated: 2023/07/04 22:08:26 by rriyas           ###   ########.fr        #
+#    Updated: 2023/07/05 11:27:33 by rriyas           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= minirt
 CC		= gcc
 RM		= rm -f
-SRCS	= src/main.c src/parser/camera.c src/parser/lights.c src/parser/parser.c src/parser/shapes.c src/parser/utils.c\
+SRCS	= src/main.c src/parser/lights.c src/parser/parser.c src/parser/shapes.c src/parser/lexer.c\
+			src/parser/attribute_parser.c src/parser/validate.c\
 			src/raytracer/camera.c src/raytracer/cylinder.c src/raytracer/plane.c src/raytracer/sphere.c src/raytracer/ray.c\
 			src/raytracer/intersect.c src/raytracer/shade.c src/raytracer/events.c src/raytracer/utils.c
 OBJS	= ${SRCS:.c=.o}

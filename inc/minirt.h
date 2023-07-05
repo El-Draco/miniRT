@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:53:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/04 22:05:29 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/05 11:29:07 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,9 @@ t_bool retrieve_amb_light(t_scene *scene, char *line);
 t_bool retrieve_point_light(t_scene *scene, char *line);
 t_bool retrieve_shape(t_scene *scene, t_list *line);
 
+t_bool valid_char(char *str, t_bool floating);
+t_bool check_commas(char **tokens);
+t_bool valid_args(int argc, char **argv);
 t_bool invalid_rgb_range(t_rgb rgb);
 t_bool parse_rgb(char **tokens, t_rgb *rgb);
 t_bool parse_vec3(char **tokens, t_vec3 *vec);

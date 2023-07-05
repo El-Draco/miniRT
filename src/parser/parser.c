@@ -6,141 +6,12 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 19:47:49 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/04 23:22:11 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/05 11:45:16 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minirt.h"
 
-static t_bool valid_args(int argc, char **argv)
-{
-	char *file_name;
-	t_bool status;
-
-	if (argc == 1 || argc > 2)
-		return (FALSE);
-	if (!ft_strncmp("", argv[1], 2) || ft_strlen(argv[1]) <= 3)
-		return (FALSE);
-	file_name = ft_substr(argv[1], ft_strlen(argv[1]) - 3, 4);
-	status = FALSE;
-	if (!ft_strncmp(file_name, ".rt", 4))
-		status = TRUE;
-	free(file_name);
-	return (status);
-}
-
-t_bool valid_char(char *str, t_bool floating)
-{
-	int i;
-
-	i = -1;
-	while (str[++i])
-	{
-		if (floating && str[i] && ft_isalpha(str[i]) && str[i] != '.')
-			return (FALSE);
-		if (!floating && str[i] && (ft_isalpha(str[i]) || str[i] == '.' ))
-			return (FALSE);
-	}
-	return (TRUE);
-}
-
-t_bool check_commas(char **tokens)
-{
-	int i;
-
-	i = -1;
-	while (++i < 5)
-		if (!tokens[i])
-			return (FALSE);
-	if (!ft_strncmp(tokens[0], ",", 2) || ft_strncmp(tokens[1], ",", 2))
-		return (FALSE);
-	if (ft_strncmp(tokens[1], ",", 2) || !ft_strncmp(tokens[2], ",", 2))
-		return (FALSE);
-	if (!ft_strncmp(tokens[2], ",", 2) || ft_strncmp(tokens[3], ",", 2))
-		return (FALSE);
-	if (ft_strncmp(tokens[3], ",", 2) || !ft_strncmp(tokens[4], ",", 2))
-		return (FALSE);
-	if (tokens[5] && !ft_strncmp(tokens[5], ",", 2))
-		return (FALSE);
-	return (TRUE);
-}
-
-t_bool invalid_rgb_range(t_rgb rgb)
-{
-	if (rgb.red <0.0f || rgb.red > 255.0f)
-		return (TRUE);
-	if (rgb.green < 0.0f || rgb.green > 255.0f)
-		return (TRUE);
-	if (rgb.blue < 0.0f || rgb.blue > 255.0f)
-		return (TRUE);
-	return (FALSE);
-}
-
-t_bool parse_rgb(char **tokens, t_rgb *rgb)
-{
-	if (!check_commas(tokens))
-		return (FALSE);
-	if (!valid_char(tokens[0], FALSE))
-		return (FALSE);
-	rgb->red = ft_atoi(tokens[0]);
-	if (!valid_char(tokens[2], FALSE))
-		return (FALSE);
-	rgb->green = ft_atoi(tokens[2]);
-	if (!valid_char(tokens[4], FALSE))
-		return (FALSE);
-	rgb->blue = ft_atoi(tokens[4]);
-	if (invalid_rgb_range(*rgb))
-		return (FALSE);
-	return (TRUE);
-}
-
-t_bool parse_vec3(char **tokens, t_vec3 *vec)
-{
-	if (!check_commas(tokens))
-		return (FALSE);
-	if (!valid_char(tokens[0], TRUE))
-		return (FALSE);
-	vec->x = float_parser(tokens[0]);
-	if (!valid_char(tokens[2], TRUE))
-		return (FALSE);
-	vec->y = float_parser(tokens[2]);
-	if (!valid_char(tokens[4], TRUE))
-		return (FALSE);
-	vec->z = float_parser(tokens[4]);
-	return (TRUE);
-}
-
-int count_dots(char *str)
-{
-	int i;
-	int count;
-
-	count = 0;
-	i = -1;
-	while (str[++i])
-	{
-		if (str[i] == '.')
-			count++;
-	}
-	return (count);
-}
-
-t_bool parse_float(char **tokens, float *num)
-{
-	if (!tokens[0] || !valid_char(tokens[0], TRUE))
-		return (FALSE);
-	if (count_dots(tokens[0]) > 1)
-		return (FALSE);
-	*num = float_parser(tokens[0]);
-	return (TRUE);
-}
-
-t_bool parse_identifier(char **tokens, char *valid)
-{
-	if (!ft_strncmp(tokens[0], valid, 5))
-		return (TRUE);
-	return (FALSE);
-}
 
 void clear_surfaces(t_surface *surfaces)
 {
@@ -156,12 +27,10 @@ void clear_surfaces(t_surface *surfaces)
 	}
 }
 
-static t_bool parse_lines(t_scene *scene, t_list *lines)
+static t_bool get_scene_attributes(t_scene *scene, t_list *lines)
 {
 	t_bool status;
 
-	if (!lines)
-		return (FALSE);
 	status = retrieve_amb_light(scene, (char *)(lines->content));
 	if (lines->next)
 		lines = lines->next;
@@ -169,30 +38,56 @@ static t_bool parse_lines(t_scene *scene, t_list *lines)
 	if (lines->next)
 		lines = lines->next;
 	status &= retrieve_point_light(scene, (char *)(lines->content));
-	if (lines)
+	if (lines->next)
 		lines = lines->next;
-	if (status == FALSE)
+	return (status);
+}
+
+static t_bool parse_lines(t_scene *scene, t_list *lines)
+{
+	t_bool valid;
+
+	if (!lines)
 		return (FALSE);
+	valid = get_scene_attributes(scene, lines);
+	if (!valid)
+		return (FALSE);
+	lines = lines->next->next->next;
 	while (lines)
 	{
-		status = retrieve_shape(scene, lines);
-		if (status == FALSE)
+		valid = retrieve_shape(scene, lines);
+		if (!valid)
 		{
 			clear_surfaces(scene->surfaces);
 			return (FALSE);
 		}
 		lines = lines->next;
 	}
-	return (status);
+	return (valid);
+}
+
+static void insert_line(char *line, t_list **lines)
+{
+	char *cleaned_line;
+
+	cleaned_line = input_sanitizer(line);
+	if (cleaned_line)
+	{
+		if (!*lines)
+			*lines = ft_lstnew(cleaned_line);
+		else
+			ft_lstadd_back(lines, ft_lstnew(cleaned_line));
+	}
+	else
+		free(line);
 }
 
 int parser(t_scene *scene, int argc, char **argv)
 {
 	char *line;
 	t_list *lines;
-	char *clean_line;
 	int fd;
-	t_bool status;
+	t_bool valid;
 
 	if (!valid_args(argc, argv))
 		return (EXIT_FAILURE);
@@ -206,22 +101,13 @@ int parser(t_scene *scene, int argc, char **argv)
 	line = get_next_line(fd);
 	while (line)
 	{
-		clean_line = input_sanitizer(line);
-		if (clean_line)
-		{
-			if (!lines)
-				lines = ft_lstnew(clean_line);
-			else
-				ft_lstadd_back(&lines, ft_lstnew(clean_line));
-		}
-		else
-			free(line);
+		insert_line(line, &lines);
 		line = get_next_line(fd);
 	}
-	status = parse_lines(scene, lines);
+	valid = parse_lines(scene, lines);
 	ft_lstclear(&lines, free);
-	if (status == FALSE)
-		return (EXIT_FAILURE);
 	close(fd);
+	if (!valid)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
