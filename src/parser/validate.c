@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 11:23:33 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/05 11:28:26 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/05 15:24:23 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ t_bool check_commas(char **tokens)
 	while (++i < 5)
 		if (!tokens[i])
 			return (FALSE);
-	if (!ft_strncmp(tokens[0], ",", 2) || ft_strncmp(tokens[1], ",", 2))
+	if (!ft_strncmp(tokens[0], ",", 2) || ft_strncmp(tokens[1], ",", 2) || (ft_strlen(tokens[1]) == 1 && tokens[1][0] == '.'))
 		return (FALSE);
 	if (ft_strncmp(tokens[1], ",", 2) || !ft_strncmp(tokens[2], ",", 2))
 		return (FALSE);
@@ -61,6 +61,12 @@ t_bool check_commas(char **tokens)
 	if (ft_strncmp(tokens[3], ",", 2) || !ft_strncmp(tokens[4], ",", 2))
 		return (FALSE);
 	if (tokens[5] && !ft_strncmp(tokens[5], ",", 2))
+		return (FALSE);
+	if (ft_strlen(tokens[0]) == 1 && tokens[0][0] == '.')
+		return (FALSE);
+	if (ft_strlen(tokens[2]) == 1 && tokens[2][0] == '.')
+		return (FALSE);
+	if (ft_strlen(tokens[4]) == 1 && tokens[4][0] == '.')
 		return (FALSE);
 	return (TRUE);
 }

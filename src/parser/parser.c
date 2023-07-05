@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 19:47:49 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/05 11:45:16 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/05 14:23:04 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,24 @@ void clear_surfaces(t_surface *surfaces)
 
 static t_bool get_scene_attributes(t_scene *scene, t_list *lines)
 {
-	t_bool status;
+	t_bool valid;
 
-	status = retrieve_amb_light(scene, (char *)(lines->content));
+	valid = retrieve_amb_light(scene, (char *)(lines->content));
+	if (!valid)
+		return (FALSE);
 	if (lines->next)
 		lines = lines->next;
-	status &= retrieve_camera(scene, (char *)(lines->content));
+	valid &= retrieve_camera(scene, (char *)(lines->content));
+	if (!valid)
+		return (FALSE);
 	if (lines->next)
 		lines = lines->next;
-	status &= retrieve_point_light(scene, (char *)(lines->content));
+	valid &= retrieve_point_light(scene, (char *)(lines->content));
+	if (!valid)
+		return (FALSE);
 	if (lines->next)
 		lines = lines->next;
-	return (status);
+	return (valid);
 }
 
 static t_bool parse_lines(t_scene *scene, t_list *lines)
@@ -99,7 +105,7 @@ int parser(t_scene *scene, int argc, char **argv)
 		return (EXIT_FAILURE);
 	}
 	line = get_next_line(fd);
-	while (line)
+	while (line && *line)
 	{
 		insert_line(line, &lines);
 		line = get_next_line(fd);

@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 11:18:46 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/05 11:24:46 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/05 15:00:47 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,16 +64,18 @@ t_bool parse_rgb(char **tokens, t_rgb *rgb)
 
 t_bool parse_vec3(char **tokens, t_vec3 *vec)
 {
+	t_bool valid;
+
 	if (!check_commas(tokens))
 		return (FALSE);
-	if (!valid_char(tokens[0], TRUE))
+	valid = parse_float(tokens, &(vec->x));
+	if (!valid)
 		return (FALSE);
-	vec->x = float_parser(tokens[0]);
-	if (!valid_char(tokens[2], TRUE))
+	valid = parse_float(tokens + 2, &(vec->y));
+	if (!valid)
 		return (FALSE);
-	vec->y = float_parser(tokens[2]);
-	if (!valid_char(tokens[4], TRUE))
+	valid = parse_float(tokens + 4, &(vec->z));
+	if (!valid)
 		return (FALSE);
-	vec->z = float_parser(tokens[4]);
 	return (TRUE);
 }

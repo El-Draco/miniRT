@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 19:26:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/05 11:53:05 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/05 15:18:04 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,10 @@ static t_bool retrieve_sphere(char **tokens, t_surface *surface)
 				parse_vec3(tokens + 1, &(surface->origin)) &&
 				parse_float(tokens + 6, diameter) &&
 				parse_rgb(tokens + 7, &(surface->color));
-	if (!valid)
+	if (!valid || *diameter <= 0.0f || tokens[12])
 	{
 		free(diameter);
-		return (valid);
+		return (FALSE);
 	}
 	surface->attributes = diameter;
 	surface->color.red /= 255.0;
@@ -67,7 +67,7 @@ static t_bool retrieve_plane(char **tokens, t_surface *surface)
 				parse_vec3(tokens + 1, &(surface->origin)) &&
 				parse_vec3(tokens + 6, &(*orientation)) &&
 				parse_rgb(tokens + 11, &(surface->color));
-	if (!valid || fabsf(get_vec3_magnitude(*orientation) - 1.0f) > EPSILON)
+	if (!valid || fabsf(get_vec3_magnitude(*orientation) - 1.0f) > EPSILON || tokens[16])
 	{
 		free(orientation);
 		return (FALSE);
@@ -92,7 +92,8 @@ static t_bool retrieve_cylinder(char **tokens, t_surface *surface)
 				parse_float(tokens + 11, &(props->diameter)) &&
 				parse_float(tokens + 12, &(props->height)) &&
 				parse_rgb(tokens + 13, &(surface->color));
-	if (!valid || fabsf(get_vec3_magnitude(props->orientation) - 1.0f) > EPSILON)
+	if (!valid || fabsf(get_vec3_magnitude(props->orientation) - 1.0f) > EPSILON ||
+		props->diameter <= 0.0f || props->height <= 0.0f || tokens[18])
 	{
 		free(props);
 		return (FALSE);
@@ -115,7 +116,12 @@ t_bool	retrieve_shape(t_scene *scene, t_list *line)
 	tokens = ft_split((char *)(line->content), ' ');
 	valid = FALSE;
 	if (!tokens || !tokens[0])
-		return (TRUE);
+	{
+		i = -1;
+		while (tokens[++i])
+			free(tokens[i]);
+		free(tokens);
+	}
 	if (!ft_strncmp(tokens[0], "sp", 3))
 		valid = retrieve_sphere(tokens, surf);
 	else if (!ft_strncmp(tokens[0], "pl", 3))

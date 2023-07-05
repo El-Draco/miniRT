@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 19:26:55 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/05 11:20:05 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/05 14:22:12 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,10 +102,14 @@ char *input_sanitizer(char *line)
 	clean_whitespaces(line);
 	tok_list = NULL;
 	tokens = ft_split(line, ' ');
-	if (!*tokens)
-		free(tokens);
 	if (!tokens || !*tokens)
+	{
+		i = -1;
+		while (tokens[++i])
+			free(tokens[i]);
+		free(tokens);
 		return (NULL);
+	}
 	i = -1;
 	while (tokens[++i])
 	{
