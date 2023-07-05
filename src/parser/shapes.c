@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 19:26:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/05 15:18:04 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/05 23:03:13 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,28 +110,19 @@ t_bool	retrieve_shape(t_scene *scene, t_list *line)
 	t_surface *surf;
 	char **tokens;
 	t_bool valid;
-	int i;
 
 	surf = malloc(sizeof(t_surface));
 	tokens = ft_split((char *)(line->content), ' ');
 	valid = FALSE;
 	if (!tokens || !tokens[0])
-	{
-		i = -1;
-		while (tokens[++i])
-			free(tokens[i]);
-		free(tokens);
-	}
+		free_split_ptr(tokens);
 	if (!ft_strncmp(tokens[0], "sp", 3))
 		valid = retrieve_sphere(tokens, surf);
 	else if (!ft_strncmp(tokens[0], "pl", 3))
 		valid = retrieve_plane(tokens, surf);
 	else if (!ft_strncmp(tokens[0], "cy", 3))
 		valid = retrieve_cylinder(tokens, surf);
-	i = -1;
-	while (tokens[++i])
-		free(tokens[i]);
-	free(tokens);
+	free_split_ptr(tokens);
 	if (!valid)
 	{
 		free(surf);

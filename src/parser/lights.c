@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 19:26:17 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/05 22:35:34 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/05 23:04:49 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 t_bool retrieve_camera(t_scene *scene, char *line)
 {
 	char **tokens;
-	int i;
 	t_bool valid;
 
 	tokens = ft_split(line, ' ');
@@ -26,10 +25,7 @@ t_bool retrieve_camera(t_scene *scene, char *line)
 
 	if (!valid || tokens[12])
 		valid = FALSE;
-	i = -1;
-	while (tokens[++i])
-		free(tokens[i]);
-	free(tokens);
+	free_split_ptr(tokens);
 	if (!valid || (scene->camera.field_of_view < 0) || (scene->camera.field_of_view - 180.0f > EPSILON))
 		return (FALSE);
 	if (fabsf(get_vec3_magnitude(scene->camera.orientation) - 1.0f) > EPSILON)
@@ -40,7 +36,6 @@ t_bool retrieve_camera(t_scene *scene, char *line)
 t_bool retrieve_amb_light(t_scene *scene, char *line)
 {
 	char **tokens;
-	int i;
 	t_rgb temp;
 	t_bool valid;
 
@@ -50,10 +45,7 @@ t_bool retrieve_amb_light(t_scene *scene, char *line)
 			parse_rgb(tokens + 2, &(scene->ambient.color));
 	if (!valid || tokens[7])
 		valid = FALSE;
-	i = -1;
-	while (tokens[++i])
-		free(tokens[i]);
-	free(tokens);
+	free_split_ptr(tokens);
 	if (!valid)
 		return (valid);
 	if ((scene->ambient.intensity < 0.0f) || (scene->ambient.intensity - 1.0f > EPSILON))
@@ -68,7 +60,6 @@ t_bool retrieve_amb_light(t_scene *scene, char *line)
 t_bool retrieve_point_light(t_scene *scene, char *line)
 {
 	char **tokens;
-	int i;
 	t_bool valid;
 
 	tokens = ft_split(line, ' ');
@@ -78,10 +69,7 @@ t_bool retrieve_point_light(t_scene *scene, char *line)
 				parse_rgb(tokens + 7, &(scene->light.color));
 	if(!valid || tokens[12])
 		valid = FALSE;
-	i = -1;
-	while (tokens[++i])
-		free(tokens[i]);
-	free(tokens);
+	free_split_ptr(tokens);
 	if (!valid)
 		return (valid);
 	if ((scene->light.intensity < 0.0f )|| (scene->light.intensity - 1.0f > EPSILON))

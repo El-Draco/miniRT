@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 19:26:55 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/05 14:22:12 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/05 23:02:09 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,7 @@ char *input_sanitizer(char *line)
 	tokens = ft_split(line, ' ');
 	if (!tokens || !*tokens)
 	{
-		i = -1;
-		while (tokens[++i])
-			free(tokens[i]);
-		free(tokens);
+		free_split_ptr(tokens);
 		return (NULL);
 	}
 	i = -1;
@@ -123,9 +120,6 @@ char *input_sanitizer(char *line)
 			clean_commas(&tok_list, tokens, i, comma_pos);
 	}
 	free(line);
-	i = -1;
-	while (tokens[++i])
-		free(tokens[i]);
-	free(tokens);
+	free_split_ptr(tokens);
 	return (merge_tokens(&tok_list));
 }

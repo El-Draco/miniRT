@@ -6,7 +6,7 @@
 #    By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/30 12:12:15 by kalmheir          #+#    #+#              #
-#    Updated: 2023/06/26 13:03:04 by rriyas           ###   ########.fr        #
+#    Updated: 2023/07/05 23:05:23 by rriyas           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ MLXUTILS	:= $(shell find src/mlx -name '*.c')
 MLXUOBJS	:= $(MLXFLAGS) $(MLXUTILS:.c=.o)
 OBJECTS		:= $(SOURCES:.c=.o)
 LIBC		:= ar rcs
-CC			:= gcc -g3
+CC			:= cc -g3
 RM			:= rm -f
 CFLAGS		:= -Wall -Wextra -Werror
 MLXFLAGS	:= -Imlx

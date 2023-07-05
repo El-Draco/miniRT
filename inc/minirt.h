@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:53:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/05 21:34:59 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/05 23:01:22 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,7 @@ char *ft_ftoa(float n);
 int count_dots(char *str);
 
 t_bool valid_char(char *str, t_bool floating);
+void free_split_ptr(char **tokens);
 t_bool check_commas(char **tokens);
 t_bool valid_args(int argc, char **argv);
 t_bool invalid_rgb_range(t_rgb rgb);

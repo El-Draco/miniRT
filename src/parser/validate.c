@@ -6,11 +6,21 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 11:23:33 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/05 22:56:37 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/05 23:01:04 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minirt.h"
+
+void free_split_ptr(char **tokens)
+{
+	int i;
+
+	i = -1;
+	while (tokens[++i])
+		free(tokens[i]);
+	free(tokens);
+}
 
 t_bool valid_args(int argc, char **argv)
 {

@@ -6,12 +6,12 @@
 #    By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/17 11:45:08 by rriyas            #+#    #+#              #
-#    Updated: 2023/07/05 14:27:17 by rriyas           ###   ########.fr        #
+#    Updated: 2023/07/05 23:05:03 by rriyas           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= minirt
-CC		= gcc
+CC		= cc
 RM		= rm -f
 SRCS	= src/main.c src/parser/lights.c src/parser/parser.c src/parser/shapes.c src/parser/lexer.c\
 			src/parser/attribute_parser.c src/parser/validate.c\
