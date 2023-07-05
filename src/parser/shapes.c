@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 19:26:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/04 23:12:48 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/05 11:53:05 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,63 +36,63 @@ static t_surface *add_surface(t_surface **surfaces, t_surface *surf)
 static t_bool retrieve_sphere(char **tokens, t_surface *surface)
 {
 	float *diameter;
-	t_bool status;
+	t_bool valid;
 
 	surface->type = SPHERE;
 	diameter = malloc(sizeof(float) * 1);
-	status = parse_identifier(tokens, "sp") &&
+	valid = parse_identifier(tokens, "sp") &&
 				parse_vec3(tokens + 1, &(surface->origin)) &&
 				parse_float(tokens + 6, diameter) &&
 				parse_rgb(tokens + 7, &(surface->color));
-	if (!status)
+	if (!valid)
 	{
 		free(diameter);
-		return (status);
+		return (valid);
 	}
 	surface->attributes = diameter;
 	surface->color.red /= 255.0;
 	surface->color.green /= 255.0;
 	surface->color.blue /= 255.0;
-	return (status);
+	return (valid);
 }
 
 static t_bool retrieve_plane(char **tokens, t_surface *surface)
 {
 	t_vec3 *orientation;
-	t_bool status;
+	t_bool valid;
 
 	surface->type = PLANE;
 	orientation = malloc(sizeof(t_vec3) * 1);
-	status = parse_identifier(tokens, "pl") &&
+	valid = parse_identifier(tokens, "pl") &&
 				parse_vec3(tokens + 1, &(surface->origin)) &&
 				parse_vec3(tokens + 6, &(*orientation)) &&
 				parse_rgb(tokens + 11, &(surface->color));
-	if (!status || fabsf(get_vec3_magnitude(*orientation) - 1.0f) > EPSILON)
+	if (!valid || fabsf(get_vec3_magnitude(*orientation) - 1.0f) > EPSILON)
 	{
 		free(orientation);
-		return (status);
+		return (FALSE);
 	}
 	surface->attributes = orientation;
 	surface->color.red /= 255.0;
 	surface->color.green /= 255.0;
 	surface->color.blue /= 255.0;
-	return (status);
+	return (valid);
 }
 
 static t_bool retrieve_cylinder(char **tokens, t_surface *surface)
 {
 	t_cylinder *props;
-	t_bool status;
+	t_bool valid;
 
 	surface->type = CYLINDER;
 	props = malloc(sizeof(t_cylinder) * 1);
-	status = parse_identifier(tokens, "cy") &&
+	valid = parse_identifier(tokens, "cy") &&
 				parse_vec3(tokens + 1, &(surface->origin)) &&
 				parse_vec3(tokens + 6, &(props->orientation)) &&
 				parse_float(tokens + 11, &(props->diameter)) &&
 				parse_float(tokens + 12, &(props->height)) &&
 				parse_rgb(tokens + 13, &(surface->color));
-	if (!status || fabsf(get_vec3_magnitude(props->orientation) - 1.0f) > EPSILON)
+	if (!valid || fabsf(get_vec3_magnitude(props->orientation) - 1.0f) > EPSILON)
 	{
 		free(props);
 		return (FALSE);
@@ -101,37 +101,37 @@ static t_bool retrieve_cylinder(char **tokens, t_surface *surface)
 	surface->color.red /= 255.0;
 	surface->color.green /= 255.0;
 	surface->color.blue /= 255.0;
-	return (status);
+	return (valid);
 }
 
 t_bool	retrieve_shape(t_scene *scene, t_list *line)
 {
 	t_surface *surf;
 	char **tokens;
-	t_bool status;
+	t_bool valid;
 	int i;
 
 	surf = malloc(sizeof(t_surface));
 	tokens = ft_split((char *)(line->content), ' ');
-	status = FALSE;
+	valid = FALSE;
 	if (!tokens || !tokens[0])
 		return (TRUE);
 	if (!ft_strncmp(tokens[0], "sp", 3))
-		status = retrieve_sphere(tokens, surf);
+		valid = retrieve_sphere(tokens, surf);
 	else if (!ft_strncmp(tokens[0], "pl", 3))
-		status = retrieve_plane(tokens, surf);
+		valid = retrieve_plane(tokens, surf);
 	else if (!ft_strncmp(tokens[0], "cy", 3))
-		status = retrieve_cylinder(tokens, surf);
+		valid = retrieve_cylinder(tokens, surf);
 	i = -1;
 	while (tokens[++i])
 		free(tokens[i]);
 	free(tokens);
-	if (status == FALSE)
+	if (!valid)
 	{
 		free(surf);
 		return (FALSE);
 	}
 	scene->surfaces = add_surface(&scene->surfaces, surf);
 	scene->num_surfaces++;
-	return (status);
+	return (valid);
 }
