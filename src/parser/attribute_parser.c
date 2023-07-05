@@ -6,13 +6,13 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 11:18:46 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/05 15:00:47 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/05 22:30:29 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minirt.h"
 
-static int count_dots(char *str)
+int count_dots(char *str)
 {
 	int i;
 	int count;

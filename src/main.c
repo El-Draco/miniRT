@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:46:47 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/05 14:26:58 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/05 19:15:11 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,34 @@ void	render_scene(t_scene *scene)
 	mlx_put_image_to_window(scene->mlx, scene->window, scene->image.img, 0, 0);
 }
 
+char	*ft_ftoa(float n)
+{
+	char *res;
+	char *floating;
+	int int_part;
+	float float_part;
+	int i;
+
+	int_part = (int)n;
+	float_part = n - (float)int_part;
+	res = ft_itoa(int_part);
+	if (float_part < 0.0f && int_part == 0)
+		res = join_and_free("-", res, FALSE, TRUE);
+	if (float_part < 0.0f)
+		float_part = -float_part;
+	res = join_and_free(res, ".", TRUE, FALSE), i = -1;
+	while (float_part < 1.0f && float_part != 0.0f && ++i < 6)
+	{
+		float_part *= 10;
+		if (float_part < 1.0f)
+			res = join_and_free(res, "0", TRUE, FALSE);
+	}
+	while (++i < 7)
+		float_part *= 10;
+	floating = ft_itoa((int)(float_part));
+	return (join_and_free(res, floating, TRUE, TRUE));
+}
+
 int main(int argc, char **argv)
 {
 	t_scene	scene;
@@ -64,5 +92,7 @@ int main(int argc, char **argv)
 	mlx_key_hook(scene.window, &key_hook, &scene);
 	mlx_hook(scene.window, 17, 0, &close_program, &scene);
 	mlx_loop(scene.mlx);
+	float a = -99.909090405f;
+	printf("Float = %f and str = %s",a, ft_ftoa(a));
 	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:53:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/05 11:29:07 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/05 21:34:59 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,8 @@ float float_parser(char *s);
 t_bool retrieve_amb_light(t_scene *scene, char *line);
 t_bool retrieve_point_light(t_scene *scene, char *line);
 t_bool retrieve_shape(t_scene *scene, t_list *line);
+char *ft_ftoa(float n);
+int count_dots(char *str);
 
 t_bool valid_char(char *str, t_bool floating);
 t_bool check_commas(char **tokens);

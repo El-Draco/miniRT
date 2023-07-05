@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 11:23:33 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/05 15:24:23 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/05 22:56:37 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,37 @@ t_bool valid_char(char *str, t_bool floating)
 {
 	int i;
 
-	i = -1;
-	while (str[++i])
+	i = 0;
+	if (floating)
 	{
-		if (floating && str[i] && ft_isalpha(str[i]) && str[i] != '.')
+		if (str && str[0] != '+' && str[0] != '-' && !ft_isdigit(str[0]))
 			return (FALSE);
-		if (!floating && str[i] && (ft_isalpha(str[i]) || str[i] == '.'))
+		if (count_dots(str) > 1)
+			return (FALSE);
+		if (str[0] == '-' || str[0] == '+')
+			i++;
+		if (!str[i] || !ft_isdigit(str[i]))
+			return (FALSE);
+		while (str[i] && str[i] != '.')
+		{
+			if (!ft_isdigit(str[i]))
+				return (FALSE);
+			i++;
+		}
+		if (!str[i])
+			return (TRUE);
+		i++;
+		while (str[i])
+		{
+			if (!ft_isdigit(str[i]))
+				return (FALSE);
+			i++;
+		}
+		return (TRUE);
+	}
+	else
+	{
+		if (ft_strncmp(str, ft_itoa(ft_atoi(str)), ft_strlen(str)))
 			return (FALSE);
 	}
 	return (TRUE);
@@ -52,7 +77,7 @@ t_bool check_commas(char **tokens)
 	while (++i < 5)
 		if (!tokens[i])
 			return (FALSE);
-	if (!ft_strncmp(tokens[0], ",", 2) || ft_strncmp(tokens[1], ",", 2) || (ft_strlen(tokens[1]) == 1 && tokens[1][0] == '.'))
+	if (!ft_strncmp(tokens[0], ",", 2) || ft_strncmp(tokens[1], ",", 2))
 		return (FALSE);
 	if (ft_strncmp(tokens[1], ",", 2) || !ft_strncmp(tokens[2], ",", 2))
 		return (FALSE);
