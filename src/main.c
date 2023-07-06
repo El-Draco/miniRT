@@ -12,9 +12,9 @@
 
 #include "../inc/minirt.h"
 
-int split_count(char **tokens)
+int	split_count(char **tokens)
 {
-	int i;
+	int	i;
 
 	if (!tokens)
 		return (0);

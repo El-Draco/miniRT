@@ -63,20 +63,15 @@ static char	*merge_tokens(t_list **tok_list)
 	return (ret);
 }
 
-char	*input_sanitizer(char *line)
+static t_list	*tokenize(char **tokens)
 {
-	char	**tokens;
 	int		i;
-	char	*comma_pos;
 	t_list	*tok_list;
+	char	*comma_pos;
 	t_list	*node;
 
-	clean_whitespaces(line);
-	tokens = ft_split(line, ' ');
-	if (!tokens || !*tokens)
-		return (free_split_ptr(tokens));
-	tok_list = NULL;
 	i = -1;
+	tok_list = NULL;
 	while (tokens[++i])
 	{
 		comma_pos = ft_strchr(tokens[i], ',');
@@ -88,7 +83,20 @@ char	*input_sanitizer(char *line)
 		else
 			clean_commas(&tok_list, tokens, i, comma_pos);
 	}
+	return (tok_list);
+}
+
+char	*input_sanitizer(char *line)
+{
+	char	**raw_token;
+	t_list	*tok_list;
+
+	clean_whitespaces(line);
+	raw_token = ft_split(line, ' ');
+	if (!raw_token || !*raw_token)
+		return (free_split_ptr(raw_token));
+	tok_list = tokenize(raw_token);
 	free(line);
-	free_split_ptr(tokens);
+	free_split_ptr(raw_token);
 	return (merge_tokens(&tok_list));
 }

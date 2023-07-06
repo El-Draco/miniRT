@@ -62,9 +62,7 @@ t_bool	retrieve_amb_light(t_scene *scene, char *line)
 		|| (scene->ambient.intensity - 1.0f > EPSILON))
 		return (FALSE);
 	temp = normalize_rgb(scene->ambient.color);
-	scene->ambient.color.red = temp.red;
-	scene->ambient.color.green = temp.green;
-	scene->ambient.color.blue = temp.blue;
+	scene->ambient.color = temp;
 	return (valid);
 }
 
@@ -74,7 +72,8 @@ t_bool	retrieve_point_light(t_scene *scene, char *line)
 	t_bool	valid;
 
 	tokens = ft_split(line, ' ');
-	if (split_count(tokens) != 12) {
+	if (split_count(tokens) != 12)
+	{
 		free_split_ptr(tokens);
 		return (FALSE);
 	}
@@ -87,12 +86,10 @@ t_bool	retrieve_point_light(t_scene *scene, char *line)
 	free_split_ptr(tokens);
 	if (!valid)
 		return (valid);
-	if ((scene->light.intensity < 0.0f )
+	if ((scene->light.intensity < 0.0f)
 		|| (scene->light.intensity - 1.0f > EPSILON))
 		return (FALSE);
-	scene->light.color.red /= 255.0;
-	scene->light.color.green /= 255.0;
-	scene->light.color.blue /= 255.0;
-	scene->light.color = normalize_rgb(scene->light.color);
+	scene->light.color
+		= normalize_rgb(scale_rgb(scene->light.color, 1 / 255.0));
 	return (valid);
 }

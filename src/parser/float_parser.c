@@ -42,7 +42,8 @@ t_bool	is_valid_float(char *str)
 
 t_bool	valid_number(char *str, t_bool floating)
 {
-	char *temp;
+	char	*temp;
+
 	if (floating)
 		return (is_valid_float(str));
 	else

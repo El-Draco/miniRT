@@ -12,15 +12,18 @@
 
 #include "../../inc/minirt.h"
 
+static void	exit_program(t_scene *scene)
+{
+	clear_surfaces(scene->surfaces);
+	mlx_destroy_window(scene->mlx, scene->window);
+	mlx_destroy_image(scene->mlx, scene->image.img);
+	exit(0);
+}
+
 int	key_hook(int keycode, t_scene *scene)
 {
 	if (keycode == 53)
-	{
-		clear_surfaces(scene->surfaces);
-		mlx_destroy_window(scene->mlx, scene->window);
-		mlx_destroy_image(scene->mlx, scene->image.img);
-		exit(0);
-	}
+		exit_program(scene);
 	if (keycode == 13)
 		scene->camera.origin.z += 1;
 	if (keycode == 0)
@@ -44,7 +47,6 @@ int	key_hook(int keycode, t_scene *scene)
 
 int	close_program(t_scene *scene)
 {
-	clear_surfaces(scene->surfaces);
-	mlx_destroy_image(scene->mlx, scene->image.img);
-	exit(0);
+	exit_program(scene);
+	return (EXIT_SUCCESS);
 }

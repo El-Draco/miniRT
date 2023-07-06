@@ -42,7 +42,6 @@ all: $(NAME) $(OBJECTS) $(MLXUOBJS)
 .c.o:
 	$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
 
-
 clean:
 	$(RM) $(OBJECTS)
 	$(RM) $(MLXUOBJS)

@@ -9,8 +9,7 @@
 			"args": ["scenes/room.rt"],
 			"environment": [],
 			"cwd": "${workspaceFolder}",
-			"MIMode": "gdb",
-			"miDebuggerPath": "/usr/bin/gdb",
+			"MIMode": "lldb",
 			"preLaunchTask": "C/C++: gcc build active file",
 		}
 	]

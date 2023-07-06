@@ -14,7 +14,7 @@
 # define  GET_NEXT_LINE_H
 
 # include    <unistd.h>
-# include    <stdlib.h> 
+# include    <stdlib.h>
 
 int		ft_len(const char *s);
 long	ft__strchr(const char *s, int c);
