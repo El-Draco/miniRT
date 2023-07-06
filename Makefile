@@ -19,7 +19,7 @@ SRCS	= src/main.c src/parser/camera_lights.c src/parser/parser.c src/parser/shap
 			src/raytracer/intersect.c src/raytracer/shade.c src/raytracer/events.c src/raytracer/utils.c
 OBJS	= ${SRCS:.c=.o}
 LIB		= lib/minilibx_opengl_20191021/libmlx.a
-CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror 
 
 $(NAME):	${OBJS} ${LIB} libmath.a libft.a
 			${CC} ${CFLAGS} libmath.a libft.a -I lib/minilibx_opengl_20191021/ $(OBJS) -L lib/minilibx_opengl_20191021/ -lmlx -framework OpenGL -framework AppKit -o $(NAME)
