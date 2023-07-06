@@ -20,18 +20,6 @@ t_color	rgb_to_color(t_rgb rgb)
 	ret.red = (int)(rgb.red * 255);
 	ret.green = (int)(rgb.green * 255);
 	ret.blue = (int)(rgb.blue * 255);
-	if (ret.red > 255)
-		ret.red = 255;
-	if (ret.green > 255)
-		ret.green = 255;
-	if (ret.blue > 255)
-		ret.blue = 255;
-	if (ret.red < 0)
-		ret.red = 0;
-	if (ret.green < 0)
-		ret.green = 0;
-	if (ret.blue < 0)
-		ret.blue = 0;
 	return (ret);
 }
 

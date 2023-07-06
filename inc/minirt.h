@@ -13,7 +13,7 @@
 #ifndef MINIRT_H
 # define MINIRT_H
 
-# include "../lib/minilibx_opengl_20191021/mlx.h"
+# include "../lib/minilibx-linux/mlx.h"
 # include "../lib/libmath/libmath.h"
 # include <stdlib.h>
 # include <unistd.h>
@@ -134,7 +134,7 @@ typedef struct s_ray_cyl_data
 }	t_ray_cyl_data;
 
 void			render_scene(t_scene *scene);
-
+int				split_count(char **tokens);
 t_bool			parse_sucesfull(t_scene *scene, int argc, char **argv);
 char			*input_sanitizer(char *line);
 float			ft_atof(char *s);

@@ -58,6 +58,7 @@ static t_bool	parse_lines(t_scene *scene, t_list *lines)
 	if (!valid)
 		return (FALSE);
 	lines = lines->next->next->next;
+	scene->surfaces = NULL;
 	while (lines)
 	{
 		valid = retrieve_shape(scene, lines);

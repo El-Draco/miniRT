@@ -42,15 +42,18 @@ t_bool	is_valid_float(char *str)
 
 t_bool	valid_number(char *str, t_bool floating)
 {
-	int	i;
-
-	i = 0;
+	char *temp;
 	if (floating)
 		return (is_valid_float(str));
 	else
 	{
-		if (ft_strncmp(str, ft_itoa(ft_atoi(str)), ft_strlen(str)))
+		temp = ft_itoa(ft_atoi(str));
+		if (ft_strncmp(str, temp, ft_strlen(str)))
+		{
+			free(temp);
 			return (FALSE);
+		}
+		free(temp);
 	}
 	return (TRUE);
 }

@@ -13,7 +13,7 @@
 #ifndef LIBMATH_H
 # define LIBMATH_H
 
-# include "../minilibx_opengl_20191021/mlx.h"
+# include "../minilibx-linux/mlx.h"
 # include "../libft/libft.h"
 
 # include <stdlib.h>

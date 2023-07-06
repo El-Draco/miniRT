@@ -75,6 +75,7 @@ char	*input_sanitizer(char *line)
 	tokens = ft_split(line, ' ');
 	if (!tokens || !*tokens)
 		return (free_split_ptr(tokens));
+	tok_list = NULL;
 	i = -1;
 	while (tokens[++i])
 	{

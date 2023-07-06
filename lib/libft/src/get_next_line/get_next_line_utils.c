@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 20:56:37 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/06 15:09:02 by rriyas           ###   ########.fr       */
+/*   Updated: 2021/10/23 14:31:05 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	ft_len(const char *s)
 	return (i);
 }
 
-long	ft_strchr(const char *s, int c)
+long	ft__strchr(const char *s, int c)
 {
 	int	i;
 
@@ -35,7 +35,7 @@ long	ft_strchr(const char *s, int c)
 	return (-1);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft__strjoin(char *s1, char *s2)
 {
 	int		i;
 	char	*temp;
@@ -64,7 +64,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (temp);
 }
 
-char	*sbstr(char *s, unsigned int start, size_t len)
+char	*ft__sbstr(char *s, unsigned int start, size_t len)
 {
 	char	*result;
 	size_t	i;
@@ -82,7 +82,7 @@ char	*sbstr(char *s, unsigned int start, size_t len)
 	return (result);
 }
 
-char	*ft_strdup(const char *s1)
+char	*ft__strdup(const char *s1)
 {
 	size_t	i;
 	char	*s;

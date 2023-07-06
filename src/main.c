@@ -12,6 +12,18 @@
 
 #include "../inc/minirt.h"
 
+int split_count(char **tokens)
+{
+	int i;
+
+	if (!tokens)
+		return (0);
+	i = 0;
+	while (tokens[i])
+		i++;
+	return (i);
+}
+
 static void	initialize_mlx(t_scene *scene)
 {
 	scene->mlx = mlx_init();

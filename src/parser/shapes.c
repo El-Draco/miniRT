@@ -40,6 +40,8 @@ static t_bool	retrieve_sphere(char **tokens, t_surface *surface)
 
 	surface->type = SPHERE;
 	diameter = malloc(sizeof(float) * 1);
+	if (split_count(tokens) != 12)
+		return (FALSE);
 	valid = parse_identifier(tokens, "sp")
 		& parse_vec3(tokens + 1, &(surface->origin))
 		& parse_float(tokens + 6, diameter)
@@ -62,6 +64,8 @@ static t_bool	retrieve_plane(char **tokens, t_surface *surface)
 	t_bool	valid;
 
 	surface->type = PLANE;
+	if (split_count(tokens) != 16)
+		return (FALSE);
 	orientation = malloc(sizeof(t_vec3) * 1);
 	valid = parse_identifier(tokens, "pl")
 		& parse_vec3(tokens + 1, &(surface->origin))
@@ -86,6 +90,8 @@ static t_bool	retrieve_cylinder(char **tokens, t_surface *surface)
 	t_bool		valid;
 
 	surface->type = CYLINDER;
+	if (split_count(tokens) != 18)
+		return (FALSE);
 	props = malloc(sizeof(t_cylinder) * 1);
 	valid = parse_identifier(tokens, "cy")
 		& parse_vec3(tokens + 1, &(surface->origin))

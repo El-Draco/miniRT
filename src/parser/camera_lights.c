@@ -18,6 +18,11 @@ t_bool	retrieve_camera(t_scene *scene, char *line)
 	t_bool	valid;
 
 	tokens = ft_split(line, ' ');
+	if (split_count(tokens) != 12)
+	{
+		free_split_ptr(tokens);
+		return (FALSE);
+	}
 	valid = parse_identifier(tokens, "C")
 		& parse_vec3(tokens + 1, &(scene->camera.origin))
 		& parse_vec3(tokens + 6, &(scene->camera.orientation))
@@ -40,6 +45,11 @@ t_bool	retrieve_amb_light(t_scene *scene, char *line)
 	t_bool	valid;
 
 	tokens = ft_split(line, ' ');
+	if (split_count(tokens) != 7)
+	{
+		free_split_ptr(tokens);
+		return (FALSE);
+	}
 	valid = parse_identifier(tokens, "A")
 		& parse_float(tokens + 1, &(scene->ambient.intensity))
 		& parse_rgb(tokens + 2, &(scene->ambient.color));
@@ -64,6 +74,10 @@ t_bool	retrieve_point_light(t_scene *scene, char *line)
 	t_bool	valid;
 
 	tokens = ft_split(line, ' ');
+	if (split_count(tokens) != 12) {
+		free_split_ptr(tokens);
+		return (FALSE);
+	}
 	valid = parse_identifier(tokens, "L")
 		& parse_vec3(tokens + 1, &(scene->light.origin))
 		& parse_float(tokens + 6, &(scene->light.intensity))
