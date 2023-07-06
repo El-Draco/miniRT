@@ -6,7 +6,7 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 19:47:03 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/27 09:35:53 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/06 14:37:53 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ static t_vec3	get_non_collinear_vec(t_vec3 vector)
 
 static t_vec3	construct_basis(t_scene *scene)
 {
-	t_vec3 w;
-	t_vec3 t;
-	t_vec3 u;
+	t_vec3	w;
+	t_vec3	t;
+	t_vec3	u;
 
 	w = normalize_vec3(scale_vec3(scene->camera.orientation, -1));
 	t = normalize_vec3(get_non_collinear_vec(w));
@@ -43,7 +43,9 @@ static t_vec3	construct_basis(t_scene *scene)
 
 void	set_up_camera(t_scene *scene)
 {
-	scene->camera.basis.w = normalize_vec3(scale_vec3(scene->camera.orientation, -1));
+	scene->camera.basis.w
+		= normalize_vec3(scale_vec3(scene->camera.orientation, -1));
 	scene->camera.basis.u = construct_basis(scene);
-	scene->camera.basis.v = normalize_vec3(cross_vec3(scene->camera.basis.w, scene->camera.basis.u));
+	scene->camera.basis.v = normalize_vec3(cross_vec3(scene->camera.basis.w,
+				scene->camera.basis.u));
 }

@@ -6,13 +6,14 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 19:47:15 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/26 10:26:25 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/06 14:54:19 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minirt.h"
 
-t_hit_record construct_hit_rec(t_hit_record *hrec, float dist, t_vec3 normal, t_surface *surf)
+t_hit_record	construct_hit_rec(t_hit_record *hrec, float dist,
+	t_vec3 normal, t_surface *surf)
 {
 	hrec->distance = dist;
 	hrec->normal = normal;
@@ -20,7 +21,7 @@ t_hit_record construct_hit_rec(t_hit_record *hrec, float dist, t_vec3 normal, t_
 	return (*hrec);
 }
 
-static t_hit_record hit_surface(t_ray ray, t_surface *surf, float t0, float t1)
+static t_hit_record	hit_surface(t_ray ray, t_surface *surf, float t0, float t1)
 {
 	if (surf->type == SPHERE)
 		return (ray_sphere_intersect(ray, surf, t0, t1));

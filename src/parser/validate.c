@@ -6,26 +6,27 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 11:23:33 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/05 23:01:04 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/06 14:36:38 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minirt.h"
 
-void free_split_ptr(char **tokens)
+char	*free_split_ptr(char **tokens)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (tokens[++i])
 		free(tokens[i]);
 	free(tokens);
+	return (NULL);
 }
 
-t_bool valid_args(int argc, char **argv)
+t_bool	valid_args(int argc, char **argv)
 {
-	char *file_name;
-	t_bool status;
+	char	*file_name;
+	t_bool	status;
 
 	if (argc == 1 || argc > 2)
 		return (FALSE);
@@ -39,49 +40,9 @@ t_bool valid_args(int argc, char **argv)
 	return (status);
 }
 
-t_bool valid_char(char *str, t_bool floating)
+t_bool	check_commas(char **tokens)
 {
-	int i;
-
-	i = 0;
-	if (floating)
-	{
-		if (str && str[0] != '+' && str[0] != '-' && !ft_isdigit(str[0]))
-			return (FALSE);
-		if (count_dots(str) > 1)
-			return (FALSE);
-		if (str[0] == '-' || str[0] == '+')
-			i++;
-		if (!str[i] || !ft_isdigit(str[i]))
-			return (FALSE);
-		while (str[i] && str[i] != '.')
-		{
-			if (!ft_isdigit(str[i]))
-				return (FALSE);
-			i++;
-		}
-		if (!str[i])
-			return (TRUE);
-		i++;
-		while (str[i])
-		{
-			if (!ft_isdigit(str[i]))
-				return (FALSE);
-			i++;
-		}
-		return (TRUE);
-	}
-	else
-	{
-		if (ft_strncmp(str, ft_itoa(ft_atoi(str)), ft_strlen(str)))
-			return (FALSE);
-	}
-	return (TRUE);
-}
-
-t_bool check_commas(char **tokens)
-{
-	int i;
+	int	i;
 
 	i = -1;
 	while (++i < 5)
@@ -106,7 +67,7 @@ t_bool check_commas(char **tokens)
 	return (TRUE);
 }
 
-t_bool invalid_rgb_range(t_rgb rgb)
+t_bool	invalid_rgb_range(t_rgb rgb)
 {
 	if (rgb.red < 0.0f || rgb.red > 255.0f)
 		return (TRUE);

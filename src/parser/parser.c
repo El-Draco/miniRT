@@ -6,16 +6,15 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 19:47:49 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/05 14:23:04 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/06 14:33:20 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minirt.h"
 
-
-void clear_surfaces(t_surface *surfaces)
+void	clear_surfaces(t_surface *surfaces)
 {
-	t_surface *surf;
+	t_surface	*surf;
 
 	surf = surfaces;
 	while (surf)
@@ -27,9 +26,9 @@ void clear_surfaces(t_surface *surfaces)
 	}
 }
 
-static t_bool get_scene_attributes(t_scene *scene, t_list *lines)
+static t_bool	get_scene_attributes(t_scene *scene, t_list *lines)
 {
-	t_bool valid;
+	t_bool	valid;
 
 	valid = retrieve_amb_light(scene, (char *)(lines->content));
 	if (!valid)
@@ -49,9 +48,9 @@ static t_bool get_scene_attributes(t_scene *scene, t_list *lines)
 	return (valid);
 }
 
-static t_bool parse_lines(t_scene *scene, t_list *lines)
+static t_bool	parse_lines(t_scene *scene, t_list *lines)
 {
-	t_bool valid;
+	t_bool	valid;
 
 	if (!lines)
 		return (FALSE);
@@ -72,9 +71,9 @@ static t_bool parse_lines(t_scene *scene, t_list *lines)
 	return (valid);
 }
 
-static void insert_line(char *line, t_list **lines)
+static void	insert_line(char *line, t_list **lines)
 {
-	char *cleaned_line;
+	char	*cleaned_line;
 
 	cleaned_line = input_sanitizer(line);
 	if (cleaned_line)
@@ -88,15 +87,15 @@ static void insert_line(char *line, t_list **lines)
 		free(line);
 }
 
-int parser(t_scene *scene, int argc, char **argv)
+t_bool	parse_sucesfull(t_scene *scene, int argc, char **argv)
 {
-	char *line;
-	t_list *lines;
-	int fd;
-	t_bool valid;
+	char	*line;
+	t_list	*lines;
+	int		fd;
+	t_bool	valid;
 
 	if (!valid_args(argc, argv))
-		return (EXIT_FAILURE);
+		return (FALSE);
 	fd = open(argv[1], O_RDONLY, 0666);
 	lines = NULL;
 	if (fd < 0)
@@ -113,7 +112,5 @@ int parser(t_scene *scene, int argc, char **argv)
 	valid = parse_lines(scene, lines);
 	ft_lstclear(&lines, free);
 	close(fd);
-	if (!valid)
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+	return (valid);
 }

@@ -6,12 +6,12 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/24 13:52:38 by kalmheir          #+#    #+#             */
-/*   Updated: 2023/06/11 15:16:07 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/06 15:09:31 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifdef __APPLE__
-#include "../../../minilibx_opengl_20191021/mlx.h"
+# include "../../../minilibx_opengl_20191021/mlx.h"
 #else
 # include "../../../minilibx-linux/mlx.h"
 #endif

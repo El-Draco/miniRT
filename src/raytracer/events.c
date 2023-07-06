@@ -6,19 +6,11 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 11:47:06 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/05 14:45:51 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/06 14:53:52 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minirt.h"
-
-// Function to calculate the angle between two points
-float calculate_angle(float x1, float y1, float x2, float y2)
-{
-	// Calculate the angle between the two points using trigonometry
-	float angle = atan2(y2 - y1, x2 - x1);
-	return angle;
-}
 
 int	key_hook(int keycode, t_scene *scene)
 {
@@ -43,8 +35,8 @@ int	key_hook(int keycode, t_scene *scene)
 	mlx_destroy_image(scene->mlx, scene->image.img);
 	scene->image.img = mlx_new_image(scene->mlx, WIDTH, HEIGHT);
 	scene->image.addr = mlx_get_data_addr(scene->image.img,
-										  &scene->image.bits_per_pixel, &scene->image.line_length,
-										  &scene->image.endian);
+			&scene->image.bits_per_pixel, &scene->image.line_length,
+			&scene->image.endian);
 	render_scene(scene);
 	return (0);
 }

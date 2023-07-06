@@ -6,15 +6,15 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 20:56:37 by rriyas            #+#    #+#             */
-/*   Updated: 2023/06/03 20:10:47 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/06 15:09:02 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int ft_len(const char *s)
+int	ft_len(const char *s)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (s[i])
@@ -22,9 +22,9 @@ int ft_len(const char *s)
 	return (i);
 }
 
-long ft_strchr(const char *s, int c)
+long	ft_strchr(const char *s, int c)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (s[++i])
@@ -35,11 +35,11 @@ long ft_strchr(const char *s, int c)
 	return (-1);
 }
 
-char *ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
-	int i;
-	char *temp;
-	int l1;
+	int		i;
+	char	*temp;
+	int		l1;
 
 	if (!s1 || !s2)
 		return (NULL);
@@ -64,10 +64,10 @@ char *ft_strjoin(char *s1, char *s2)
 	return (temp);
 }
 
-char *sbstr(char *s, unsigned int start, size_t len)
+char	*sbstr(char *s, unsigned int start, size_t len)
 {
-	char *result;
-	size_t i;
+	char	*result;
+	size_t	i;
 
 	result = malloc(len + 1);
 	if (!result)
@@ -82,10 +82,10 @@ char *sbstr(char *s, unsigned int start, size_t len)
 	return (result);
 }
 
-char *ft_strdup(const char *s1)
+char	*ft_strdup(const char *s1)
 {
-	size_t i;
-	char *s;
+	size_t	i;
+	char	*s;
 
 	i = 0;
 	s = (char *)malloc(1 + sizeof(char) * ft_len(s1));

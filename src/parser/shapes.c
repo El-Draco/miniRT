@@ -6,15 +6,15 @@
 /*   By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 19:26:19 by rriyas            #+#    #+#             */
-/*   Updated: 2023/07/05 23:03:13 by rriyas           ###   ########.fr       */
+/*   Updated: 2023/07/06 14:36:01 by rriyas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minirt.h"
 
-static t_surface *add_surface(t_surface **surfaces, t_surface *surf)
+static t_surface	*add_surface(t_surface **surfaces, t_surface *surf)
 {
-	t_surface *iterator;
+	t_surface	*iterator;
 
 	iterator = NULL;
 	if (!surf)
@@ -33,17 +33,17 @@ static t_surface *add_surface(t_surface **surfaces, t_surface *surf)
 	return (*surfaces);
 }
 
-static t_bool retrieve_sphere(char **tokens, t_surface *surface)
+static t_bool	retrieve_sphere(char **tokens, t_surface *surface)
 {
-	float *diameter;
-	t_bool valid;
+	float	*diameter;
+	t_bool	valid;
 
 	surface->type = SPHERE;
 	diameter = malloc(sizeof(float) * 1);
-	valid = parse_identifier(tokens, "sp") &&
-				parse_vec3(tokens + 1, &(surface->origin)) &&
-				parse_float(tokens + 6, diameter) &&
-				parse_rgb(tokens + 7, &(surface->color));
+	valid = parse_identifier(tokens, "sp")
+		& parse_vec3(tokens + 1, &(surface->origin))
+		& parse_float(tokens + 6, diameter)
+		& parse_rgb(tokens + 7, &(surface->color));
 	if (!valid || *diameter <= 0.0f || tokens[12])
 	{
 		free(diameter);
@@ -56,18 +56,19 @@ static t_bool retrieve_sphere(char **tokens, t_surface *surface)
 	return (valid);
 }
 
-static t_bool retrieve_plane(char **tokens, t_surface *surface)
+static t_bool	retrieve_plane(char **tokens, t_surface *surface)
 {
-	t_vec3 *orientation;
-	t_bool valid;
+	t_vec3	*orientation;
+	t_bool	valid;
 
 	surface->type = PLANE;
 	orientation = malloc(sizeof(t_vec3) * 1);
-	valid = parse_identifier(tokens, "pl") &&
-				parse_vec3(tokens + 1, &(surface->origin)) &&
-				parse_vec3(tokens + 6, &(*orientation)) &&
-				parse_rgb(tokens + 11, &(surface->color));
-	if (!valid || fabsf(get_vec3_magnitude(*orientation) - 1.0f) > EPSILON || tokens[16])
+	valid = parse_identifier(tokens, "pl")
+		& parse_vec3(tokens + 1, &(surface->origin))
+		& parse_vec3(tokens + 6, &(*orientation))
+		& parse_rgb(tokens + 11, &(surface->color));
+	if (!valid || fabsf(get_vec3_magnitude(*orientation) - 1.0f) > EPSILON
+		|| tokens[16])
 	{
 		free(orientation);
 		return (FALSE);
@@ -79,21 +80,22 @@ static t_bool retrieve_plane(char **tokens, t_surface *surface)
 	return (valid);
 }
 
-static t_bool retrieve_cylinder(char **tokens, t_surface *surface)
+static t_bool	retrieve_cylinder(char **tokens, t_surface *surface)
 {
-	t_cylinder *props;
-	t_bool valid;
+	t_cylinder	*props;
+	t_bool		valid;
 
 	surface->type = CYLINDER;
 	props = malloc(sizeof(t_cylinder) * 1);
-	valid = parse_identifier(tokens, "cy") &&
-				parse_vec3(tokens + 1, &(surface->origin)) &&
-				parse_vec3(tokens + 6, &(props->orientation)) &&
-				parse_float(tokens + 11, &(props->diameter)) &&
-				parse_float(tokens + 12, &(props->height)) &&
-				parse_rgb(tokens + 13, &(surface->color));
-	if (!valid || fabsf(get_vec3_magnitude(props->orientation) - 1.0f) > EPSILON ||
-		props->diameter <= 0.0f || props->height <= 0.0f || tokens[18])
+	valid = parse_identifier(tokens, "cy")
+		& parse_vec3(tokens + 1, &(surface->origin))
+		& parse_vec3(tokens + 6, &(props->orientation))
+		& parse_float(tokens + 11, &(props->diameter))
+		& parse_float(tokens + 12, &(props->height))
+		& parse_rgb(tokens + 13, &(surface->color));
+	if (!valid
+		|| fabsf(get_vec3_magnitude(props->orientation) - 1.0f) > EPSILON
+		|| props->diameter <= 0.0f || props->height <= 0.0f || tokens[18])
 	{
 		free(props);
 		return (FALSE);
@@ -107,9 +109,9 @@ static t_bool retrieve_cylinder(char **tokens, t_surface *surface)
 
 t_bool	retrieve_shape(t_scene *scene, t_list *line)
 {
-	t_surface *surf;
-	char **tokens;
-	t_bool valid;
+	t_surface	*surf;
+	char		**tokens;
+	t_bool		valid;
 
 	surf = malloc(sizeof(t_surface));
 	tokens = ft_split((char *)(line->content), ' ');

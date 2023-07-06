@@ -6,13 +6,13 @@
 #    By: rriyas <rriyas@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/17 11:45:08 by rriyas            #+#    #+#              #
-#    Updated: 2023/07/05 23:05:34 by rriyas           ###   ########.fr        #
+#    Updated: 2023/07/06 15:15:52 by rriyas           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libmath.a
 
-SRCS =	color_funcs.c hvec_funcs.c matrix_funcs.c vec3_funcs.c libmath_utils.c
+SRCS =	rgb.c rgb_utils.c vector3.c vector3_utils.c display.c
 
 OBJS = ${SRCS:.c=.o}
 
